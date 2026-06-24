@@ -52,6 +52,7 @@ function Recommendations() {
       }
 
       const recommendationData = response.data.recommendations;
+      console.log("Recommendation Data:", recommendationData);
 
       const moviesWithDetails = await Promise.all(
         recommendationData.map(async (movie) => {
@@ -59,7 +60,10 @@ function Recommendations() {
             `https://api.themoviedb.org/3/movie/${movie.movie_id}?api_key=${apikey}`,
           );
 
+          console.log("Movie ID:", movie.movie_id);
+          console.log("TMDB Status:", tmdbResponse.status);
           const tmdbMovie = await tmdbResponse.json();
+          console.log("TMDB Response:", tmdbMovie);
 
           return {
             _id: tmdbMovie.id,
@@ -76,7 +80,10 @@ function Recommendations() {
 
       setRecommendations(moviesWithDetails);
     } catch (error) {
-      console.error(error);
+      console.error("ERROR:", error);
+      console.error("MESSAGE:", error.message);
+      console.error("RESPONSE:", error.response);
+
       setError("Failed to fetch recommendations.");
     } finally {
       setLoading(false);
