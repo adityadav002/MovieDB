@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+const flaskUrl = import.meta.env.VITE_FLASK_URL;
 
 const apikey = import.meta.env.VITE_API_KEY;
 
@@ -10,6 +11,7 @@ function Recommendations() {
   const [recommendations, setRecommendations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const flaskUrl = import.meta.env.VITE_FLASK_URL;
 
   const searchMovies = async (e) => {
     const value = e.target.value;
@@ -37,9 +39,12 @@ function Recommendations() {
       setLoading(true);
       setError("");
 
-      const response = await axios.post("http://127.0.0.1:5000/recommend", {
-        movie: movieTitle,
-      });
+      const response = await axios.post(
+        `${flaskUrl}/recommend`,
+        {
+          movie: movieTitle,
+        }
+      );
 
       if (!response.data.success) {
         setRecommendations([]);
