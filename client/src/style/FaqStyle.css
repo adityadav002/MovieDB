@@ -1,0 +1,103 @@
+/* ==================== ROOT VARIABLES ==================== */
+:root {
+  --main-color: #e50914;
+  --background-dark: #141414;
+  --text-light: #f2f2f2;
+  --text-muted: #bbb;
+  --container-radius: 10px;
+  --transition-speed: 0.3s;
+  --font-main: 'Poppins', sans-serif;
+}
+
+/* ==================== FAQ CONTAINER ==================== */
+.faq-container {
+  max-width: 800px;
+  margin: 60px auto;
+  padding: 30px;
+  font-family: var(--font-main);
+  background: var(--background-dark);
+  border-radius: var(--container-radius);
+  color: var(--text-light);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* ==================== FAQ TITLE ==================== */
+.faq-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+  color: var(--main-color);
+}
+
+/* ==================== FAQ ITEM ==================== */
+.faq-item {
+  padding: 16px 0;
+  border-bottom: 1px solid #333;
+  transition: background var(--transition-speed) ease;
+}
+
+.faq-item:last-child {
+  border-bottom: none;
+}
+
+/* ==================== QUESTION ==================== */
+.faq-item summary {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-light);
+  cursor: pointer;
+  list-style: none;
+  position: relative;
+  padding-right: 24px;
+  outline: none;
+  transition: color var(--transition-speed);
+}
+
+.faq-item summary::after {
+  content: '+';
+  position: absolute;
+  right: 0;
+  font-size: 1.3rem;
+  color: var(--main-color);
+  transition: transform var(--transition-speed);
+}
+
+.faq-item[open] summary::after {
+  transform: rotate(45deg);
+}
+
+/* ==================== ANSWER ==================== */
+.faq-item p {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-height: 500px;
+  overflow: hidden;
+  transition: max-height var(--transition-speed) ease;
+}
+
+/* ==================== HOVER EFFECT ==================== */
+.faq-item summary:hover {
+  color: var(--main-color);
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 600px) {
+  .faq-container {
+    padding: 20px;
+  }
+
+  .faq-title {
+    font-size: 1.6rem;
+  } 
+
+  .faq-item summary {
+    font-size: 1rem;
+  }
+
+  .faq-item p {
+    font-size: 0.9rem;
+  }
+}
