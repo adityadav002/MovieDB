@@ -1,4 +1,5 @@
 import ast
+import os
 import pandas as pd
 
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -11,7 +12,10 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(
     app,
-    origins=["http://localhost:5173"],
+    origins=[
+        "http://localhost:5173",
+        os.getenv("CLIENT_URL")
+    ],
     supports_credentials=True
 )
 
