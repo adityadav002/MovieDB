@@ -43,7 +43,8 @@ function Recommendations() {
           movie: movieTitle,
         }
       );
-
+      
+      console.log("Response Data:", response.data);
       if (!response.data.success) {
         setRecommendations([]);
         setError(response.data.message);

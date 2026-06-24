@@ -184,6 +184,7 @@ def get_recommendations():
     data = request.get_json()
     movie_name = data.get("movie")
     result = recommend(movie_name)
+    print("RESULT =", result)   
     return jsonify(result)
 
 if __name__ == "__main__":
