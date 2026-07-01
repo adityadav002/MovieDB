@@ -219,13 +219,13 @@ MovieDB/
 └── .gitignore
 ```
 
-| Folder / File             | Responsibility                                                                  |
-| ------------------------- | ------------------------------------------------------------------------------- |
-| `client/`                 | The React application — pages, components, and UI logic.                        |
-| `server/src/`             | The Express API — auth, favorites, watchlist, profile.                          |
-| `server/app.py`           | Flask application serving the `/recommend` and `/health` API endpoints.         |
-| `server/cache_manager.py` | Validates, generates, and loads the ML cache on startup.                        |
-| `server/cache/`           | Auto-generated sparse TF-IDF matrix and lookup structures. Never committed.     |
+| Folder / File             | Responsibility                                                              |
+| ------------------------- | --------------------------------------------------------------------------- |
+| `client/`                 | The React application — pages, components, and UI logic.                    |
+| `server/src/`             | The Express API — auth, favorites, watchlist, profile.                      |
+| `server/app.py`           | Flask application serving the `/recommend` and `/health` API endpoints.     |
+| `server/cache_manager.py` | Validates, generates, and loads the ML cache on startup.                    |
+| `server/cache/`           | Auto-generated sparse TF-IDF matrix and lookup structures. Never committed. |
 
 ---
 
