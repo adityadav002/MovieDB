@@ -1,0 +1,347 @@
+/* Recommendations.css - Modern Cinematic Redesign */
+
+/* ==================== HERO SECTION ==================== */
+.rec-hero-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 20px 60px;
+  background: linear-gradient(135deg, #121212 0%, #0a0a0a 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.rec-hero-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 16px 0;
+  letter-spacing: -0.02em;
+}
+
+.rec-hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 600px;
+  margin: 0 0 40px 0;
+  line-height: 1.6;
+}
+
+/* ==================== SEARCH BAR ==================== */
+.rec-search-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.rec-search-icon {
+  position: absolute;
+  left: -5%;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.5rem;
+  pointer-events: none;
+  transition: color 0.3s ease;
+  border-radius: 10px;
+  padding: 2px 2px 2px 5px;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.rec-search-input {
+  width: 100%;
+  padding: 3px 50px 3px 55px;
+  font-size: 1.1rem;
+  font-family: inherit;
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 2px solid transparent;
+  border-radius: 50px;
+  outline: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.rec-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.rec-search-input:focus {
+  background-color: rgba(255, 255, 255, 0.12);
+  border-color: #e50914;
+  box-shadow: 0 8px 28px rgba(229, 9, 20, 0.15);
+}
+
+.rec-search-input:focus+.rec-search-icon {
+  color: #e50914;
+}
+
+.rec-search-clear {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.rec-search-clear:hover {
+  color: #ffffff;
+}
+
+/* ==================== PAGE LAYOUT ==================== */
+.rec-main-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+  min-height: 50vh;
+}
+
+.rec-section-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 24px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ==================== SEARCH RESULTS GRID ==================== */
+.rec-results-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 24px;
+  animation: fadeIn 0.4s ease-out;
+}
+
+@media (max-width: 1200px) {
+  .rec-results-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  .rec-results-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .rec-results-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 576px) {
+  .rec-results-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+@media (max-width: 380px) {
+  .rec-results-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==================== SEARCH RESULT CARD ==================== */
+.rec-result-card {
+  background: #1c1c1c;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.rec-result-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+  border-color: rgba(229, 9, 20, 0.4);
+}
+
+.rec-result-poster {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.rec-result-card:hover .rec-result-poster {
+  transform: scale(1.05);
+}
+
+.rec-result-poster-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.rec-result-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(229, 9, 20, 0.85);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-align: center;
+  padding: 10px;
+}
+
+.rec-result-card:hover .rec-result-overlay {
+  opacity: 1;
+}
+
+.rec-result-info {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-grow: 1;
+}
+
+.rec-result-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rec-result-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.rec-result-rating {
+  color: #f5c518;
+  font-weight: 600;
+}
+
+/* ==================== EMPTY / ERROR STATES ==================== */
+.rec-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  animation: fadeIn 0.5s ease;
+}
+
+.rec-empty-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  opacity: 0.8;
+}
+
+.rec-empty-text {
+  font-size: 1.2rem;
+  max-width: 400px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.rec-error-state {
+  background: rgba(229, 9, 20, 0.1);
+  border-left: 4px solid #e50914;
+  padding: 20px 24px;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: #ffffff;
+  animation: slideIn 0.4s ease;
+}
+
+.rec-error-icon {
+  font-size: 1.5rem;
+  color: #e50914;
+}
+
+/* ==================== SKELETON LOADER ==================== */
+.rec-skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 24px;
+}
+
+@media (max-width: 576px) {
+  .rec-skeleton-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+.rec-skeleton-card {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  background: linear-gradient(90deg, #1c1c1c 25%, #2a2a2a 50%, #1c1c1c 75%);
+  background-size: 200% 100%;
+  border-radius: 8px;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ==================== ANIMATIONS ==================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

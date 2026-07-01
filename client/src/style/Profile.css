@@ -1,0 +1,254 @@
+/* ==================== PROFILE SECTION ==================== */
+
+.profile-section {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.profile-overlay {
+  width: 100%;
+}
+
+.profile-content {
+  text-align: center;
+  max-width: 950px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  color: #ffffff;
+  font-family: "Poppins", sans-serif;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+/* ==================== ANIMATION ==================== */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==================== PROFILE AVATAR ==================== */
+
+.profile-image-container {
+  margin-bottom: 25px;
+}
+
+.profile-avatar {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 4rem;
+  font-weight: 700;
+
+  color: #ffffff;
+
+  background: linear-gradient(135deg, #e50914, #ff4444);
+
+  border: 4px solid rgba(255, 255, 255, 0.15);
+
+  box-shadow: 0 8px 25px rgba(229, 9, 20, 0.4);
+
+  transition: all 0.3s ease;
+}
+
+.profile-avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 30px rgba(229, 9, 20, 0.5);
+}
+
+/* ==================== TITLE ==================== */
+
+.profile-title {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+
+  font-weight: 700;
+
+  margin-bottom: 20px;
+
+  line-height: 1.2;
+  letter-spacing: 1px;
+
+  background: linear-gradient(135deg, #e50914, #ff4444);
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  background-clip: text;
+}
+
+/* ==================== DESCRIPTION ==================== */
+
+.profile-description {
+  font-size: clamp(1rem, 2vw, 1.15rem);
+
+  color: #dddddd;
+
+  line-height: 1.8;
+
+  max-width: 800px;
+
+  margin: 0 auto 40px;
+
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* ==================== STATS ==================== */
+
+.profile-stats {
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+
+  gap: 20px;
+
+  margin-bottom: 40px;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.06);
+
+  backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  border-radius: 20px;
+
+  padding: 25px 20px;
+
+  transition: all 0.3s ease;
+
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+
+  border-color: rgba(229, 9, 20, 0.4);
+
+  box-shadow: 0 8px 25px rgba(229, 9, 20, 0.25);
+}
+
+.stat-card h3 {
+  font-size: 2rem;
+
+  margin-bottom: 10px;
+
+  color: #e50914;
+}
+
+.stat-card p {
+  color: #cccccc;
+
+  font-size: 0.95rem;
+}
+
+/* ==================== GENRES ==================== */
+
+.profile-skills {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  justify-content: center;
+
+  gap: 12px;
+}
+
+.profile-skills span {
+  background: rgba(255, 255, 255, 0.08);
+
+  backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  color: #ffffff;
+
+  padding: 12px 20px;
+
+  border-radius: 25px;
+
+  font-size: 0.9rem;
+
+  font-weight: 500;
+
+  transition: all 0.3s ease;
+
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+}
+
+.profile-skills span:hover {
+  background: rgba(229, 9, 20, 0.2);
+
+  border-color: rgba(229, 9, 20, 0.5);
+
+  transform: translateY(-3px);
+
+  box-shadow: 0 6px 20px rgba(229, 9, 20, 0.35);
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 768px) {
+
+  .profile-content {
+    padding: 45px 20px;
+  }
+
+  .profile-avatar {
+    width: 130px;
+    height: 130px;
+
+    font-size: 3rem;
+  }
+
+  .profile-description {
+    max-width: 95%;
+  }
+
+  .profile-stats {
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .profile-section {
+    padding: 0 10px;
+  }
+
+  .profile-content {
+    padding: 35px 15px;
+  }
+
+  .profile-avatar {
+    width: 110px;
+    height: 110px;
+
+    font-size: 2.5rem;
+  }
+
+  .profile-description {
+    line-height: 1.6;
+  }
+
+  .profile-skills span {
+    padding: 9px 15px;
+
+    font-size: 0.8rem;
+  }
+}
