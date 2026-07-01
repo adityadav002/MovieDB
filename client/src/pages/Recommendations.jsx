@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import notify from "../utils/toast";
 import { FaSearch, FaTimes, FaExclamationCircle } from "react-icons/fa";
 
 import "../style/ShowListStyle.css";
@@ -38,7 +39,7 @@ function Recommendations() {
       const data = await res.json();
       setMovies(data.results || []);
     } catch (err) {
-      console.error("Search error:", err);
+      // Silent — autocomplete search shouldn't spam toasts
     }
   };
 
@@ -63,7 +64,9 @@ function Recommendations() {
 
       if (!response.data.success) {
         setRecommendations([]);
-        setError(response.data.message || "Failed to find recommendations for this movie.");
+        const errMsg = response.data.message || "Failed to find recommendations for this movie.";
+        setError(errMsg);
+        notify.info("No recommendations available for this movie.");
         return;
       }
 
@@ -90,9 +93,15 @@ function Recommendations() {
       );
 
       setRecommendations(moviesWithDetails);
+
+      if (moviesWithDetails.length > 0) {
+        notify.success("Recommendations loaded!");
+      } else {
+        notify.info("No recommendations available for this movie.");
+      }
     } catch (err) {
-      console.error("Error fetching recommendations:", err);
       setError("Failed to fetch recommendations. Please ensure the backend is running.");
+      notify.error("Unable to load recommendations.");
     } finally {
       setLoading(false);
     }

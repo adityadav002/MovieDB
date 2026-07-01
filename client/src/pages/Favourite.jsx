@@ -1,7 +1,8 @@
 /** @format */
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import api from "../utils/api";
+import notify from "../utils/toast";
 import "../style/ShowListStyle.css";
 
 function Favourite() {
@@ -18,16 +19,11 @@ function Favourite() {
       }
 
       try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_SERVER_URL}/api/favorites`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const res = await api.get("/api/favorites");
         setFavorites(res.data);
       } catch (err) {
         if (err.response?.status !== 401) {
-          console.error("Failed to fetch favorites", err);
+          // Interceptor handles 500s etc.
         }
       }
     };
@@ -39,19 +35,19 @@ function Favourite() {
     const token = localStorage.getItem("token");
     if (!token || token === "undefined") return;
 
-    try {
-      await axios.delete(
-        `${import.meta.env.VITE_SERVER_URL}/api/favorites/${movieId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+    // Optimistic removal
+    const previous = [...favorites];
+    setFavorites((prev) =>
+      prev.filter((fav) => fav.movieId !== movieId)
+    );
 
-      setFavorites((prev) =>
-        prev.filter((fav) => fav.movieId !== movieId)
-      );
+    try {
+      await api.delete(`/api/favorites/${movieId}`);
+      notify.success("Removed from Favorites.");
     } catch (err) {
-      console.error("Error removing favorite", err);
+      // Revert on failure
+      setFavorites(previous);
+      notify.error("Failed to remove from Favorites.");
     }
   };
 

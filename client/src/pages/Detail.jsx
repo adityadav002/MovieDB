@@ -4,6 +4,8 @@ import { useParams, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../style/DetailStyle.css";
 import axios from "axios";
+import api from "../utils/api";
+import notify from "../utils/toast";
 import {
   FaImdb,
   FaPlay,
@@ -37,14 +39,11 @@ function Detail() {
       }
 
       try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_SERVER_URL}/api/watch`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        const res = await api.get("/api/watch");
         setWatchList(res.data);
       } catch (err) {
         if (err.response?.status !== 401) {
-          console.error("Error fetching Watch List", err);
+          // Interceptor handles 500s etc.
         }
       }
     };
@@ -59,7 +58,7 @@ function Detail() {
     const token = localStorage.getItem("token");
 
     if (!token || token === "undefined") {
-      alert("Please login to use Watch Later ⏰");
+      notify.warning("Please login to use Watchlist.");
       return;
     }
 
@@ -83,17 +82,25 @@ function Detail() {
       ];
     });
 
-    const config = { headers: { Authorization: `Bearer ${token}` } };
-
     try {
       if (watched) {
-        await axios.delete(
-          `${import.meta.env.VITE_SERVER_URL}/api/watch/${movie._id}`,
-          config
-        );
+        await api.delete(`/api/watch/${movie._id}`);
+        notify.success("Removed from Watchlist.");
       } else {
-        await axios.post(
-          `${import.meta.env.VITE_SERVER_URL}/api/watch`,
+        await api.post("/api/watch", {
+          movieId: movie._id,
+          title: movie.title,
+          year: movie.year,
+          rating: movie.rating,
+          img: movie.poster,
+        });
+        notify.success("Added to Watchlist.");
+      }
+    } catch (err) {
+      // Revert optimistic update on failure
+      if (watched) {
+        setWatchList((prev) => [
+          ...prev,
           {
             movieId: movie._id,
             title: movie.title,
@@ -101,11 +108,13 @@ function Detail() {
             rating: movie.rating,
             img: movie.poster,
           },
-          config
+        ]);
+      } else {
+        setWatchList((prev) =>
+          prev.filter((w) => String(w.movieId) !== String(movie._id))
         );
       }
-    } catch (err) {
-      console.error("Error updating watch list", err);
+      notify.error("Failed to update Watchlist.");
     }
   };
 
@@ -122,16 +131,11 @@ function Detail() {
       }
 
       try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_SERVER_URL}/api/favorites`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const res = await api.get("/api/favorites");
         setFavorites(res.data);
       } catch (err) {
         if (err.response?.status !== 401) {
-          console.error("Error fetching favorites", err);
+          // Interceptor handles 500s etc.
         }
       }
     };
@@ -146,7 +150,7 @@ function Detail() {
   const toggleFavorite = async (movie) => {
     const token = localStorage.getItem("token");
     if (!token || token === "undefined") {
-      alert("Please login to manage favorites ❤️");
+      notify.warning("Please login to add Favorites.");
       return;
     }
 
@@ -170,19 +174,25 @@ function Detail() {
       }
     });
 
-    const config = {
-      headers: { Authorization: `Bearer ${token}` },
-    };
-
     try {
       if (isFav) {
-        await axios.delete(
-          `${import.meta.env.VITE_SERVER_URL}/api/favorites/${movie._id}`,
-          config
-        );
+        await api.delete(`/api/favorites/${movie._id}`);
+        notify.success("Removed from Favorites.");
       } else {
-        await axios.post(
-          `${import.meta.env.VITE_SERVER_URL}/api/favorites`,
+        await api.post("/api/favorites", {
+          movieId: movie._id,
+          title: movie.title,
+          year: movie.year,
+          rating: movie.rating,
+          img: movie.poster,
+        });
+        notify.success("Added to Favorites ❤️");
+      }
+    } catch (err) {
+      // Revert optimistic update on failure
+      if (isFav) {
+        setFavorites((prev) => [
+          ...prev,
           {
             movieId: movie._id,
             title: movie.title,
@@ -190,11 +200,13 @@ function Detail() {
             rating: movie.rating,
             img: movie.poster,
           },
-          config
+        ]);
+      } else {
+        setFavorites((prev) =>
+          prev.filter((fav) => String(fav.movieId) !== String(movie._id))
         );
       }
-    } catch (err) {
-      console.error("Favorite update failed", err);
+      notify.error("Failed to update Favorites.");
     }
   };
 
@@ -210,8 +222,6 @@ function Detail() {
         );
         const details = detailsRes.data;
         const imdbID = details.external_ids?.imdb_id;
-
-        console.log("IMDb ID:", imdbID);
 
         const trailer = details.videos?.results?.find(
           (v) => v.type === "Trailer"
@@ -259,7 +269,7 @@ function Detail() {
           screenshots,
         });
       } catch (err) {
-        console.error("TMDB detail fetch failed:", err);
+        notify.error("Failed to load movie details.");
       }
     }
 
@@ -394,7 +404,7 @@ function Detail() {
           className="action-btn primary-btn"
           onClick={() => {
             if (!movie.imdbID) {
-              alert("IMDb ID not found");
+              notify.error("IMDb ID not available for this movie.");
               return;
             }
             window.open(

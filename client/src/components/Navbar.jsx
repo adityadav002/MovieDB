@@ -1,7 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../style/NavbarStyle.css";
-import axios from "axios";
+import api from "../utils/api";
+import notify from "../utils/toast";
 import { BiSolidMovie } from "react-icons/bi";
 import { FiSearch, FiX } from "react-icons/fi";
 import { useAuth } from "../context/AuthContext";
@@ -59,14 +60,13 @@ function Navbar() {
 
   const handleLogout = async () => {
     try {
-      await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/auth/logout`, {
-        withCredentials: true,
-      });
+      await api.get("/api/auth/logout");
       logout();
       setMenuOpen(false);
+      notify.success("Logged out successfully.");
       navigate("/home");
     } catch (error) {
-      console.error("Logout failed:", error.response?.data || error.message);
+      notify.error("Logout failed. Please try again.");
     }
   };
 

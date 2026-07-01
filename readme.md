@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="https://img.icons8.com/fluency/96/film-reel.png" width="72" alt="MovieDB logo" />
-
 # MovieDB
 
 ### Discover. Watch. Organize. Recommend.

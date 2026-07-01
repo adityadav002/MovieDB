@@ -1,7 +1,7 @@
 import React from "react";
 import "../style/Profile.css";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../utils/api";
 
 const Profile = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -15,18 +15,12 @@ const Profile = () => {
         if (!token || token === "undefined") return;
 
         try {
-        const res = await axios.get(
-            `${import.meta.env.VITE_SERVER_URL}/api/watch`,
-            {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-            }
-        );
-
+        const res = await api.get("/api/watch");
         setWatchLaterList(res.data);
         } catch (err) {
-        console.error(err);
+            if (err.response?.status !== 401) {
+                // Interceptor handles 500s etc.
+            }
         }
     };
 
@@ -36,20 +30,15 @@ const Profile = () => {
     useEffect(() => {
     const fetchFavorites = async () => {
         const token = localStorage.getItem("token");
+        if (!token || token === "undefined") return;
 
         try {
-        const res = await axios.get(
-            `${import.meta.env.VITE_SERVER_URL}/api/favorites`,
-            {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-            }
-        );
-
+        const res = await api.get("/api/favorites");
         setFavorites(res.data);
         } catch (err) {
-        console.error(err);
+            if (err.response?.status !== 401) {
+                // Interceptor handles 500s etc.
+            }
         }
     };
 

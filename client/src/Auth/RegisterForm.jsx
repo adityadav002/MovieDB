@@ -1,6 +1,7 @@
 import { useState } from "react";
-import axios from "axios";
-axios.defaults.withCredentials = true;
+import { Navigate } from "react-router-dom";
+import api from "../utils/api";
+import notify from "../utils/toast";
 import "../style/AuthStyle.css";
 
 const RegisterForm = () => {
@@ -14,26 +15,51 @@ const RegisterForm = () => {
   }
 
   const handleSignup = async () => {
-    console.log(name, email, password);
     try {
+      // ── Validation ──
       if (!name || !email || !password) {
-        console.log("All fields are required.");
+        notify.warning("Please fill all required fields.");
         return;
       }
-      const res = await axios.post(
-        `${import.meta.env.VITE_SERVER_URL}/api/auth/register`,
-        {
-          name: name,
-          email: email,
-          password: password,
-        }
-      );
-      setName("")
-      setEmail("")
-      setPassword("")
+
+      if (!/\S+@\S+\.\S+/.test(email)) {
+        notify.warning("Invalid email format.");
+        return;
+      }
+
+      if (password.length < 8) {
+        notify.warning("Password must contain at least 8 characters.");
+        return;
+      }
+
+      const res = await api.post("/api/auth/register", {
+        name,
+        email,
+        password,
+      });
+
+      setName("");
+      setEmail("");
+      setPassword("");
+
+      notify.success("Account created successfully!");
       return res.data;
     } catch (error) {
-      console.log("Somethin went wrong RegisterForm", error);
+      const message = error.response?.data?.message || "";
+
+      if (error.response?.status === 400) {
+        if (message.toLowerCase().includes("already exists")) {
+          notify.error("An account with this email already exists.");
+        } else if (message.toLowerCase().includes("required")) {
+          notify.warning("Please fill all required fields.");
+        } else {
+          notify.error(message || "Registration failed. Please try again.");
+        }
+      } else if (!error.response) {
+        // Network error — already handled by interceptor
+      } else {
+        // 500 etc. — already handled by interceptor
+      }
     }
   };
 
@@ -73,12 +99,3 @@ const RegisterForm = () => {
 };
 
 export default RegisterForm;
-
-//       <div className="social-buttons">
-//         <button><FaFacebookF /></button>
-//         <button><FaTwitter /></button>
-//         <button><FaGoogle /></button>
-//         <button><FaGithub /></button>
-//       </div>
-
-//       <p className="text-center">or:</p>

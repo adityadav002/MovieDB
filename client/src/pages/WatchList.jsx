@@ -1,7 +1,8 @@
 /** @format */
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import axios from "axios";
+import api from "../utils/api";
+import notify from "../utils/toast";
 import "../style/ShowListStyle.css";
 import { MdWatchLater } from "react-icons/md";
 
@@ -23,16 +24,11 @@ function WatchLater() {
       }
 
       try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_SERVER_URL}/api/watch`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const res = await api.get("/api/watch");
         setWatchLaterList(res.data);
       } catch (err) {
         if (err.response?.status !== 401) {
-          console.error("Failed to fetch watch later list", err);
+          // Interceptor handles 500s etc.
         }
       }
     };
@@ -46,21 +42,21 @@ function WatchLater() {
   const removeFromWatchLater = async (movieId) => {
     const token = localStorage.getItem("token");
 
-    try {
-      await axios.delete(
-        `${import.meta.env.VITE_SERVER_URL}/api/watch/${movieId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+    // Optimistic removal
+    const previous = [...watchLaterList];
+    setWatchLaterList((prev) =>
+      prev.filter(
+        (movie) => String(movie.movieId) !== String(movieId)
+      )
+    );
 
-      setWatchLaterList((prev) =>
-        prev.filter(
-          (movie) => String(movie.movieId) !== String(movieId)
-        )
-      );
+    try {
+      await api.delete(`/api/watch/${movieId}`);
+      notify.success("Removed from Watchlist.");
     } catch (err) {
-      console.error("Failed to remove from Watch Later", err);
+      // Revert on failure
+      setWatchLaterList(previous);
+      notify.error("Failed to remove from Watchlist.");
     }
   };
 

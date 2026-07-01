@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../utils/api";
+import notify from "../utils/toast";
 import "../style/AuthStyle.css";
 import { useAuth } from "../context/AuthContext";
-
-axios.defaults.withCredentials = true;
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -13,33 +12,53 @@ const LoginForm = () => {
   const { login } = useAuth();
 
   const handleLogin = async () => {
-  try {
-    if (!email || !password) {
-      console.log("Fill all details");
-      return;
-    }
+    try {
+      // ── Validation ──
+      if (!email || !password) {
+        notify.warning("Please fill all required fields.");
+        return;
+      }
 
-    const res = await axios.post(
-      `${import.meta.env.VITE_SERVER_URL}/api/auth/login`,
-      {
+      if (!/\S+@\S+\.\S+/.test(email)) {
+        notify.warning("Invalid email format.");
+        return;
+      }
+
+      const res = await api.post("/api/auth/login", {
         email,
         password,
+      });
+
+      const { user, token } = res.data;
+      login(user, token);
+
+      setEmail("");
+      setPassword("");
+
+      notify.success(`Welcome back, ${user.name}!`);
+      navigate("/");
+    } catch (error) {
+      // Parse specific backend error messages
+      const message =
+        error.response?.data?.message || "";
+
+      if (error.response?.status === 400) {
+        if (message.toLowerCase().includes("not found")) {
+          notify.error("No account found with this email.");
+        } else if (message.toLowerCase().includes("invalid")) {
+          notify.error("Email or password is incorrect.");
+        } else if (message.toLowerCase().includes("required")) {
+          notify.warning("Please fill all required fields.");
+        } else {
+          notify.error(message || "Login failed. Please try again.");
+        }
+      } else if (!error.response) {
+        // Network error — already handled by interceptor
+      } else {
+        // 500 etc. — already handled by interceptor
       }
-    );
-    console.log("Login Response:", res.data);
-
-    const { user, token } = res.data;
-    login(user, token);               
-
-    setEmail("");
-    setPassword("");
-
-    navigate("/");
-  } catch (error) {
-    console.log("Error from LoginForm", error);
-  }
-};
-
+    }
+  };
 
   return (
     <div className="form-container">

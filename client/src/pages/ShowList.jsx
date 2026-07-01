@@ -7,6 +7,8 @@ import { useLocation } from "react-router-dom";
 import "../style/ShowListStyle.css";
 import Slider from "../components/Slider";
 import MovieCard from "../components/MovieCard";
+import api from "../utils/api";
+import notify from "../utils/toast";
 import {
   FaClapperboard,
   FaPalette,
@@ -74,8 +76,13 @@ function ShowList() {
         if (formatted.length < 20) setHasMore(false);
 
         setMovies((prev) => (page === 1 ? formatted : [...prev, ...formatted]));
+
+        // Show info toast when search yields no results
+        if (searchQuery && page === 1 && formatted.length === 0) {
+          notify.info("No movies found. Try another keyword.");
+        }
       } catch (err) {
-        console.error("Error fetching movies:", err);
+        notify.error("Search failed. Please try again.");
       }
 
       setLoading(false);
@@ -104,17 +111,12 @@ function ShowList() {
       }
 
       try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_SERVER_URL}/api/favorites`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
+        const res = await api.get("/api/favorites");
         setFavorites(res.data);
       } catch (err) {
         // ❌ DO NOT log 401 repeatedly
         if (err.response?.status !== 401) {
-          console.error("Error fetching favorites", err);
+          // Interceptor handles 500s etc.
         }
       }
     };
@@ -129,7 +131,7 @@ function ShowList() {
   const toggleFavorite = async (movie) => {
     const token = localStorage.getItem("token");
     if (!token || token === "undefined") {
-      alert("Please login to manage favorites ❤️");
+      notify.warning("Please login to add Favorites.");
       return;
     }
 
@@ -154,19 +156,25 @@ function ShowList() {
       }
     });
 
-    const config = {
-      headers: { Authorization: `Bearer ${token}` },
-    };
-
     try {
       if (isFav) {
-        await axios.delete(
-          `${import.meta.env.VITE_SERVER_URL}/api/favorites/${movie._id}`,
-          config,
-        );
+        await api.delete(`/api/favorites/${movie._id}`);
+        notify.success("Removed from Favorites.");
       } else {
-        await axios.post(
-          `${import.meta.env.VITE_SERVER_URL}/api/favorites`,
+        await api.post("/api/favorites", {
+          movieId: movie._id,
+          title: movie.title,
+          year: movie.year,
+          rating: movie.rating,
+          img: movie.poster,
+        });
+        notify.success("Added to Favorites ❤️");
+      }
+    } catch (err) {
+      // Revert optimistic update on failure
+      if (isFav) {
+        setFavorites((prev) => [
+          ...prev,
           {
             movieId: movie._id,
             title: movie.title,
@@ -174,11 +182,13 @@ function ShowList() {
             rating: movie.rating,
             img: movie.poster,
           },
-          config,
+        ]);
+      } else {
+        setFavorites((prev) =>
+          prev.filter((fav) => String(fav.movieId) !== String(movie._id))
         );
       }
-    } catch (err) {
-      console.error("Favorite update failed", err);
+      notify.error("Failed to update Favorites.");
     }
   };
 
@@ -194,7 +204,7 @@ function ShowList() {
 
       setter(res.data.results.map(mapMovie));
     } catch (err) {
-      console.error("Error fetching genre:", err);
+      // Silent — genre loading is not critical
     }
   };
 
@@ -245,7 +255,7 @@ function ShowList() {
 
         {!loading && movies.length === 0 && (
           <p className="no-results">
-            No movies found{searchQuery ? ` for “${searchQuery}”` : ""}.
+            No movies found{searchQuery ? ` for "${searchQuery}"` : ""}.
           </p>
         )}
 
