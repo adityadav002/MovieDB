@@ -87,9 +87,7 @@ function Navbar() {
           {/* Desktop Navigation */}
           {user && (
             <div className="nav-links-desktop">
-              {/* <Link to="/" onClick={closeMenu}>
-                Movies
-              </Link> */}
+              zw
               <Link to="/favourite" onClick={closeMenu}>
                 Favourites
               </Link>
@@ -155,12 +153,32 @@ function Navbar() {
         <div className={`nav-links-mobile ${menuOpen ? "show" : ""}`}>
           <div className="mobile-menu-header">
             {user && (
-              <div className="mobile-user-info">
-                <div className="user-avatar-large">
-                  {user.name?.charAt(0).toUpperCase() || "U"}
+              <>
+                <Link
+                  to="/profile"
+                  className="mobile-user-info"
+                  onClick={closeMenu}
+                >
+                  <div className="user-avatar-large">
+                    {user.name?.charAt(0).toUpperCase() || "U"}
+                  </div>
+
+                  <span className="mobile-user-name">{user.name}</span>
+                </Link>
+
+                <br />
+
+                <div className="mobile-search-container">
+                  <input
+                    type="text"
+                    placeholder="Search movies, actors..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={handleSearch}
+                    className="mobile-search-input"
+                  />
                 </div>
-                <span className="mobile-user-name">{user.name}</span>
-              </div>
+              </>
             )}
           </div>
 
@@ -174,6 +192,7 @@ function Navbar() {
                 <Link to="/" onClick={closeMenu}>
                   <span>🎬</span> Movies
                 </Link>
+
                 <Link to="/favourite" onClick={closeMenu}>
                   <span>❤️</span> Favourites
                 </Link>
