@@ -9,6 +9,7 @@ import Slider from "../components/Slider";
 import MovieCard from "../components/MovieCard";
 import api from "../utils/api";
 import notify from "../utils/toast";
+import { universalSearch } from "../services/tmdbSearch";
 import {
   FaClapperboard,
   FaPalette,
@@ -36,6 +37,8 @@ function ShowList() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [isActorSearch, setIsActorSearch] = useState(false);
+  const [actorName, setActorName] = useState("");
 
   const [favorites, setFavorites] = useState([]);
 
@@ -59,6 +62,8 @@ function ShowList() {
     setMovies([]);
     setPage(1);
     setHasMore(true);
+    setIsActorSearch(false);
+    setActorName("");
   }, [searchQuery]);
 
   useEffect(() => {
@@ -66,20 +71,31 @@ function ShowList() {
       setLoading(true);
 
       try {
-        const url = searchQuery
-          ? `https://api.themoviedb.org/3/search/movie?api_key=${apikey}&query=${searchQuery}&page=${page}`
-          : `https://api.themoviedb.org/3/movie/popular?api_key=${apikey}&page=${page}`;
+        let newMovies = [];
+        let nextHasMore = false;
 
-        const res = await axios.get(url, { withCredentials: false });
-        const formatted = res.data.results.map(mapMovie);
+        if (searchQuery) {
+          const result = await universalSearch(searchQuery, page);
+          newMovies = result.results.map(mapMovie);
+          nextHasMore = result.hasMore;
 
-        if (formatted.length < 20) setHasMore(false);
+          if (page === 1) {
+            setIsActorSearch(result.isActorSearch);
+            setActorName(result.actorName);
+          }
+        } else {
+          const url = `https://api.themoviedb.org/3/movie/popular?api_key=${apikey}&page=${page}`;
+          const res = await axios.get(url, { withCredentials: false });
+          newMovies = res.data.results.map(mapMovie);
+          nextHasMore = newMovies.length >= 20;
+        }
 
-        setMovies((prev) => (page === 1 ? formatted : [...prev, ...formatted]));
+        setHasMore(nextHasMore);
+        setMovies((prev) => (page === 1 ? newMovies : [...prev, ...newMovies]));
 
         // Show info toast when search yields no results
-        if (searchQuery && page === 1 && formatted.length === 0) {
-          notify.info("No movies found. Try another keyword.");
+        if (searchQuery && page === 1 && newMovies.length === 0) {
+          notify.info("No movies or actors found. Try another keyword.");
         }
       } catch (err) {
         notify.error("Search failed. Please try again.");
@@ -225,15 +241,27 @@ function ShowList() {
 
       <div className="showlist-container">
         {/* Main Search + Popular Movies */}
-        <div className="movie_header" id="bookmark">
-          <div className="section-header">
-            <span className="section-icon">
-              <FaClapperboard />
-            </span>
-            <h2>{searchQuery ? `Results for "${searchQuery}"` : "Movies"}</h2>
+        {isActorSearch && actorName ? (
+          <div className="movie_header" id="bookmark">
+            <div className="section-header">
+              <span className="section-icon">
+                <FaClapperboard />
+              </span>
+              <h2>Showing movies featuring {actorName}</h2>
+            </div>
+            <hr />
           </div>
-          <hr />
-        </div>
+        ) : (
+          <div className="movie_header" id="bookmark">
+            <div className="section-header">
+              <span className="section-icon">
+                <FaClapperboard />
+              </span>
+              <h2>{searchQuery ? `Results for "${searchQuery}"` : "Movies"}</h2>
+            </div>
+            <hr />
+          </div>
+        )}
 
         <div className="movie-grid">
           {movies.map((movie) => (
@@ -249,13 +277,13 @@ function ShowList() {
         {loading && (
           <div className="loading-row">
             <span className="loading-spinner-small" />
-            <p>Loading...</p>
+            <p>Searching...</p>
           </div>
         )}
 
         {!loading && movies.length === 0 && (
           <p className="no-results">
-            No movies found{searchQuery ? ` for "${searchQuery}"` : ""}.
+            No movies or actors found{searchQuery ? ` for "${searchQuery}"` : ""}.
           </p>
         )}
 

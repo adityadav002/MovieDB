@@ -87,7 +87,6 @@ function Navbar() {
           {/* Desktop Navigation */}
           {user && (
             <div className="nav-links-desktop">
-              zw
               <Link to="/favourite" onClick={closeMenu}>
                 Favourites
               </Link>
@@ -109,7 +108,7 @@ function Navbar() {
               <FiSearch className="search-icon" onClick={toggleSearch} />
               <input
                 type="text"
-                placeholder="Search movies..."
+                placeholder="Search movies or actors..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={handleSearch}
@@ -171,7 +170,7 @@ function Navbar() {
                 <div className="mobile-search-container">
                   <input
                     type="text"
-                    placeholder="Search movies, actors..."
+                    placeholder="Search movies or actors..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onKeyDown={handleSearch}
