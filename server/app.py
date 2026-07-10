@@ -7,12 +7,16 @@ from recommendation_engine import RecommendationEngine
 app = Flask(__name__)
 CORS(
     app,
-    origins=[
-        "http://localhost:5173",
-        os.getenv("CLIENT_URL", "http://localhost:5173")
-    ],
+    resources={
+        r"/*": {
+            "origins": [
+                "http://localhost:5173",
+                "https://moviedb-sf9j.onrender.com"
+            ]
+        }
+    },
     supports_credentials=True
-)
+)   
 
 # Initialize Recommendation Engine
 engine = None
@@ -30,7 +34,13 @@ except Exception as e:
 @app.route("/recommend", methods=["POST"])
 def get_recommendations():
     try:
+        print("===== RECOMMEND API HIT =====")
         data = request.get_json()
+        print("REQUEST DATA:", data)
+
+        if data:
+            print("MOVIE NAME:", data.get("movie"))
+
         if not data or "movie" not in data:
             return jsonify({"success": False, "message": "Missing 'movie' in request body"}), 400
         
@@ -43,6 +53,7 @@ def get_recommendations():
             }), 503
             
         result = engine.recommend(movie_name)
+        print("ENGINE RESULT:", result)
         
         if result["success"]:
             return jsonify(result), 200
