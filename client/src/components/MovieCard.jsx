@@ -1,24 +1,36 @@
 /** @format */
+
 import { Link } from "react-router-dom";
 import { FaStar, FaHeart, FaRegHeart } from "react-icons/fa6";
 
+const noPoster = "/no_poster_found.png";
+
 function MovieCard({ movie, isFavorite, toggleFavorite }) {
   const fav = isFavorite(movie._id);
+
   const hasRating = typeof movie.rating === "number" && movie.rating > 0;
+
+  const poster = movie.poster ? movie.poster : noPoster;
 
   return (
     <div className="movie-card">
       <Link to={`/detail/${movie._id}`} className="movie-poster-wrapper">
         <img
-          src={movie.poster}
-          alt={movie.title}
+          src={poster}
+          alt={movie.title ? `${movie.title} poster` : "Movie poster"}
           className="movie-img"
           loading="lazy"
+          draggable={false}
+          onError={(e) => {
+            e.currentTarget.src = noPoster;
+          }}
         />
 
         {hasRating && (
           <span className="movie-rating-badge">
-            <FaStar /> {movie.rating.toFixed(1)}
+            <FaStar />
+
+            {movie.rating.toFixed(1)}
           </span>
         )}
 
@@ -38,6 +50,7 @@ function MovieCard({ movie, isFavorite, toggleFavorite }) {
 
       <div className="movie-info">
         <h3>{movie.title}</h3>
+
         {movie.year && <p className="movie-year">{movie.year}</p>}
       </div>
     </div>

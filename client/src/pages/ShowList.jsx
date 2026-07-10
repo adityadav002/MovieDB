@@ -81,7 +81,7 @@ function ShowList() {
 
           if (page === 1) {
             setIsActorSearch(result.isActorSearch);
-            setActorName(result.actorName);
+            setActorName(result.actorName || "");
           }
         } else {
           const url = `https://api.themoviedb.org/3/movie/popular?api_key=${apikey}&page=${page}`;
@@ -201,7 +201,7 @@ function ShowList() {
         ]);
       } else {
         setFavorites((prev) =>
-          prev.filter((fav) => String(fav.movieId) !== String(movie._id))
+          prev.filter((fav) => String(fav.movieId) !== String(movie._id)),
         );
       }
       notify.error("Failed to update Favorites.");
@@ -257,7 +257,13 @@ function ShowList() {
               <span className="section-icon">
                 <FaClapperboard />
               </span>
-              <h2>{searchQuery ? `Results for "${searchQuery}"` : "Movies"}</h2>
+              <h2>
+                {isActorSearch
+                  ? `Movies featuring ${actorName}`
+                  : searchQuery
+                    ? `Results for "${searchQuery}"`
+                    : "Movies"}
+              </h2>
             </div>
             <hr />
           </div>
@@ -283,7 +289,8 @@ function ShowList() {
 
         {!loading && movies.length === 0 && (
           <p className="no-results">
-            No movies or actors found{searchQuery ? ` for "${searchQuery}"` : ""}.
+            No movies or actors found
+            {searchQuery ? ` for "${searchQuery}"` : ""}.
           </p>
         )}
 

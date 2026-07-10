@@ -10,64 +10,65 @@ export const searchMovies = async (query, page = 1) => {
 
 export const searchPerson = async (query) => {
   const url = `https://api.themoviedb.org/3/search/person?api_key=${apikey}&query=${encodeURIComponent(query)}`;
-  const res = await axios.get(url, { withCredentials: false });
-  return res.data.results.length > 0 ? res.data.results[0] : null;
+
+  const res = await axios.get(url, {
+    withCredentials: false,
+  });
+
+  const actors = res.data.results.filter(
+    (person) => person.known_for_department === "Acting",
+  );
+
+  return actors[0] || null;
 };
 
-export const getActorMovies = async (personId) => {
-  const url = `https://api.themoviedb.org/3/person/${personId}/movie_credits?api_key=${apikey}`;
-  const res = await axios.get(url, { withCredentials: false });
-  return res.data.cast || [];
+export const getActorMovies = async (personId, page = 1) => {
+  const url = `https://api.themoviedb.org/3/discover/movie?api_key=${apikey}&with_cast=${personId}&sort_by=vote_count.desc&page=${page}`;
+
+  const res = await axios.get(url, {
+    withCredentials: false,
+  });
+
+  return res.data;
 };
 
 export const universalSearch = async (query, page = 1) => {
   if (!query || !query.trim()) {
-    return { results: [], isActorSearch: false, hasMore: false };
-  }
-  
-  query = query.trim();
-
-  // 1. Search movies first
-  const movieData = await searchMovies(query, page);
-  
-  // If movies found or we are loading more movies (page > 1)
-  if (movieData.results.length > 0 || page > 1) {
     return {
-      results: movieData.results,
+      results: [],
       isActorSearch: false,
-      hasMore: movieData.results.length >= 20 // TMDB default page size is 20
+      hasMore: false,
     };
   }
 
-  // 2. No movies found, try person search (only on page 1 since actor movies don't have TMDB pagination)
-  if (page === 1) {
-    const person = await searchPerson(query);
-    if (person) {
-      const movies = await getActorMovies(person.id);
-      
-      // Remove duplicates by ID and sort by release date DESC
-      const uniqueMoviesMap = new Map();
-      movies.forEach(m => {
-        if (!uniqueMoviesMap.has(m.id)) {
-          uniqueMoviesMap.set(m.id, m);
-        }
-      });
-      
-      const sortedMovies = Array.from(uniqueMoviesMap.values()).sort((a, b) => {
-        if (!a.release_date) return 1;
-        if (!b.release_date) return -1;
-        return new Date(b.release_date) - new Date(a.release_date);
-      });
+  query = query.trim();
 
-      return {
-        results: sortedMovies,
-        isActorSearch: true,
-        actorName: person.name,
-        hasMore: false // No pagination for actor movie credits
-      };
-    }
+  const person = await searchPerson(query);
+
+  // Actor search
+  if (person && person.name.toLowerCase() === query.toLowerCase()) {
+    const actorMovies = await getActorMovies(person.id, page);
+
+    return {
+      results: actorMovies.results,
+
+      isActorSearch: true,
+
+      actorName: person.name,
+
+      hasMore: page < actorMovies.total_pages,
+    };
   }
 
-  // Nothing found
-  return { results: [], isActorSearch: false, hasMore: false };
+  // Normal movie search
+
+  const movieData = await searchMovies(query, page);
+
+  return {
+    results: movieData.results,
+
+    isActorSearch: false,
+
+    hasMore: page < movieData.total_pages,
+  };
 };

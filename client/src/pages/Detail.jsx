@@ -1,6 +1,6 @@
 /** @format */
 
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../style/DetailStyle.css";
 import axios from "axios";
@@ -111,7 +111,7 @@ function Detail() {
         ]);
       } else {
         setWatchList((prev) =>
-          prev.filter((w) => String(w.movieId) !== String(movie._id))
+          prev.filter((w) => String(w.movieId) !== String(movie._id)),
         );
       }
       notify.error("Failed to update Watchlist.");
@@ -203,7 +203,7 @@ function Detail() {
         ]);
       } else {
         setFavorites((prev) =>
-          prev.filter((fav) => String(fav.movieId) !== String(movie._id))
+          prev.filter((fav) => String(fav.movieId) !== String(movie._id)),
         );
       }
       notify.error("Failed to update Favorites.");
@@ -218,17 +218,17 @@ function Detail() {
       try {
         const detailsRes = await axios.get(
           `https://api.themoviedb.org/3/movie/${id}?api_key=${apikey}&append_to_response=videos,images,credits,external_ids`,
-          { withCredentials: false }
+          { withCredentials: false },
         );
         const details = detailsRes.data;
         const imdbID = details.external_ids?.imdb_id;
 
         const trailer = details.videos?.results?.find(
-          (v) => v.type === "Trailer"
+          (v) => v.type === "Trailer",
         );
 
         const director = details.credits?.crew?.find(
-          (p) => p.job === "Director"
+          (p) => p.job === "Director",
         );
 
         const directorData = director
@@ -311,9 +311,12 @@ function Detail() {
           <div className="hero-grid">
             <div className="poster-wrapper">
               <img
-                src={movie.poster}
-                alt={movie.title}
+                src={movie.poster || "/no_poster_found.png"}
+                alt={movie.title || "Movie poster"}
                 className="poster-img"
+                onError={(e) => {
+                  e.currentTarget.src = "/no_poster_found.png";
+                }}
               />
             </div>
 
@@ -409,7 +412,7 @@ function Detail() {
             }
             window.open(
               `https://streamimdb.ru/embed/movie/${movie.imdbID}`,
-              "_blank"
+              "_blank",
             );
           }}
         >
@@ -477,12 +480,24 @@ function Detail() {
               {movie.cast.map((actor, index) => {
                 const img = actor.profile_path
                   ? `https://image.tmdb.org/t/p/w185${actor.profile_path}`
-                  : "https://via.placeholder.com/185x278?text=No+Image";
+                  : "/no_actor_found.png";
 
                 return (
-                  <div className="cast-card" key={index}>
+                  <Link
+                    to={`/?q=${encodeURIComponent(actor.name)}`}
+                    className="cast-card"
+                    key={actor.id}
+                  >
                     <div className="cast-img-wrapper">
-                      <img src={img} alt={actor.name} className="cast-img" />
+                      <img
+                        src={img}
+                        alt={actor.name || "Actor"}
+                        className="cast-img"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.currentTarget.src = "/no_actor_found.png";
+                        }}
+                      />
 
                       <div className="cast-overlay">
                         <p className="cast-character-text">
@@ -492,7 +507,7 @@ function Detail() {
                     </div>
 
                     <h4 className="cast-name">{actor.name}</h4>
-                  </div>
+                  </Link>
                 );
               })}
             </div>
@@ -510,6 +525,10 @@ function Detail() {
                     src={movie.director.image}
                     alt={movie.director.name}
                     className="cast-img"
+                    loading="lazy"
+                    onError={(e) => {
+                      e.currentTarget.src = "/no_actor_found.png";
+                    }}
                   />
                 </div>
                 <h4 className="cast-name">{movie.director.name}</h4>
