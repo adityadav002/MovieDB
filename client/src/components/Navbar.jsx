@@ -12,7 +12,7 @@ function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   // Handle scroll effect
@@ -58,17 +58,7 @@ function Navbar() {
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      await api.get("/api/auth/logout");
-      logout();
-      setMenuOpen(false);
-      notify.success("Logged out successfully.");
-      navigate("/home");
-    } catch (error) {
-      notify.error("Logout failed. Please try again.");
-    }
-  };
+
 
   const closeMenu = () => {
     setMenuOpen(false);
@@ -96,7 +86,6 @@ function Navbar() {
               <Link to="/recommendations" onClick={closeMenu}>
                 Recommendations
               </Link>
-              <Link onClick={handleLogout}>Logout</Link>
             </div>
           )}
         </div>
@@ -201,10 +190,6 @@ function Navbar() {
                 <Link to="/recommendations" onClick={closeMenu}>
                   <span>💡</span> Recommendations
                 </Link>
-                <hr />
-                <button className="logout-btn" onClick={handleLogout}>
-                  <span>🚪</span> Logout
-                </button>
               </>
             )}
           </div>

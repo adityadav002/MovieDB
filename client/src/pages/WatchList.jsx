@@ -5,8 +5,10 @@ import api from "../utils/api";
 import notify from "../utils/toast";
 import "../style/ShowListStyle.css";
 import { MdWatchLater } from "react-icons/md";
+import { useAuth } from "../context/AuthContext";
 
 function WatchLater() {
+  const { user } = useAuth();
   const [watchLaterList, setWatchLaterList] = useState([]);
   const location = useLocation();
 
@@ -15,14 +17,8 @@ function WatchLater() {
   // -----------------------------------------
   useEffect(() => {
     const fetchWatchLater = async () => {
-      const token = localStorage.getItem("token");
-
-      // HARD STOP
-      if (!token || token === "undefined") {
-        setWatchLaterList([]);
-        return;
-      }
-
+      if (!user) return;
+      
       try {
         const res = await api.get("/api/watch");
         setWatchLaterList(res.data);
@@ -40,8 +36,8 @@ function WatchLater() {
   // REMOVE FROM WATCH LATER
   // -----------------------------------------
   const removeFromWatchLater = async (movieId) => {
-    const token = localStorage.getItem("token");
-
+    if (!user) return notify.error("Please login first");
+    
     // Optimistic removal
     const previous = [...watchLaterList];
     setWatchLaterList((prev) =>
@@ -74,7 +70,12 @@ function WatchLater() {
 
       <div className="movie-grid">
         {watchLaterList.length === 0 ? (
-          <p className="fav_empty">No movies in Watch Later.</p>
+          <div className="empty-state">
+            <div className="empty-state-icon">🎬</div>
+            <h2>Your Watchlist is Empty</h2>
+            <p>Movies you want to watch later will appear here.</p>
+            <Link to="/" className="submit-button" style={{display:'inline-block', marginTop:'1rem', padding:'0.5rem 1rem'}}>Explore Movies</Link>
+          </div>
         ) : (
           watchLaterList.map((movie) => (
             <div className="movie-card" key={movie.movieId}>

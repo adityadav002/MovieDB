@@ -1,18 +1,6 @@
 import axios from "axios";
 import notify from "./toast";
 
-/**
- * Centralized Axios Instance with Interceptors
- * ----------------------------------------------
- * Use `api` instead of raw `axios` for all backend API calls.
- * - Automatically attaches the Authorization header from localStorage.
- * - Response interceptor catches HTTP errors and shows user-friendly toasts.
- * - No component needs to duplicate error-handling logic.
- *
- * NOTE: TMDB API calls should still use raw `axios` with { withCredentials: false }
- *       since they are third-party and should not have auth headers.
- */
-
 const api = axios.create({
   baseURL: import.meta.env.VITE_SERVER_URL,
   withCredentials: true,
@@ -21,10 +9,6 @@ const api = axios.create({
 // ─── REQUEST INTERCEPTOR ─────────────────────────────────────────
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
-    if (token && token !== "undefined") {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
     return config;
   },
   (error) => {
@@ -51,18 +35,15 @@ api.interceptors.response.use(
     const status = error.response.status;
     const serverMessage = error.response.data?.message || error.response.data?.error;
 
-    // Map HTTP status codes to user-friendly messages
-    // Components can still handle specific cases by catching the error
-    // The interceptor provides a safety net for unhandled errors
     switch (status) {
       case 401:
-        // Don't auto-toast for 401 — login/auth components handle this specifically
+        notify.error("Session expired. Please login again.");
+        window.dispatchEvent(new Event("unauthorized"));
         break;
       case 403:
         notify.error("You don't have permission to perform this action.");
         break;
       case 404:
-        // Silent — many 404s are expected (e.g., checking if item exists)
         break;
       case 409:
         notify.warning(serverMessage || "This action has already been performed.");

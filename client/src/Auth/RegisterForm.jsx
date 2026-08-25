@@ -4,12 +4,15 @@ import api from "../utils/api";
 import notify from "../utils/toast";
 import "../style/AuthStyle.css";
 
+import { useAuth } from "../context/AuthContext";
+
 const RegisterForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  const { user, login } = useAuth();
+
   if (user) {
     return <Navigate to="/" replace />;
   }
@@ -43,6 +46,7 @@ const RegisterForm = () => {
       setPassword("");
 
       notify.success("Account created successfully!");
+      login(res.data.user);
       return res.data;
     } catch (error) {
       const message = error.response?.data?.message || "";

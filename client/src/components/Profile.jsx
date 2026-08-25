@@ -2,17 +2,19 @@ import React from "react";
 import "../style/Profile.css";
 import { useState, useEffect } from "react";
 import api from "../utils/api";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import notify from "../utils/toast";
 
 const Profile = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [watchLaterList, setWatchLaterList] = useState([]);
   const [favorites, setFavorites] = useState([]);
 
     useEffect(() => {
     const fetchWatchLater = async () => {
-        const token = localStorage.getItem("token");
-
-        if (!token || token === "undefined") return;
+        if (!user) return;
 
         try {
         const res = await api.get("/api/watch");
@@ -29,8 +31,7 @@ const Profile = () => {
 
     useEffect(() => {
     const fetchFavorites = async () => {
-        const token = localStorage.getItem("token");
-        if (!token || token === "undefined") return;
+        if (!user) return;
 
         try {
         const res = await api.get("/api/favorites");
@@ -44,6 +45,17 @@ const Profile = () => {
 
     fetchFavorites();
     }, []);
+
+  const handleLogout = async () => {
+    try {
+      await api.get("/api/auth/logout");
+      logout();
+      notify.success("Logged out successfully.");
+      navigate("/home");
+    } catch (error) {
+      notify.error("Logout failed. Please try again.");
+    }
+  };
 
   return (
     <section className="profile-section">
@@ -93,6 +105,16 @@ const Profile = () => {
               <h3>10+</h3>
               <p>Genres Explored</p>
             </div>
+          </div>
+
+          <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+            <button 
+              className="details-link" 
+              onClick={handleLogout}
+              style={{ padding: '12px 32px', cursor: 'pointer' }}
+            >
+              Logout
+            </button>
           </div>
 
       </div>

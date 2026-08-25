@@ -145,9 +145,8 @@ function ShowList() {
     favorites.some((fav) => String(fav?.movieId) === String(movieId));
 
   const toggleFavorite = async (movie) => {
-    const token = localStorage.getItem("token");
-    if (!token || token === "undefined") {
-      notify.warning("Please login to add Favorites.");
+    if (!user) {
+      notify.warning("Please login to add to WatchLater.");
       return;
     }
 

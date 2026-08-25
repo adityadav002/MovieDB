@@ -40,7 +40,7 @@ function FAQ() {
     {
       question: "Is this like Netflix or a streaming service?",
       answer:
-        "MovieDB is not a streaming platform. Think of it as your own movie library companion — track what you love, plan what to watch, and discover new favorites.",
+        "MovieDB is a streaming platform. Think of it as your own movie library companion — track what you love, plan what to watch, and discover new favorites.",
     },
     {
       question: "How do I search for movies?",

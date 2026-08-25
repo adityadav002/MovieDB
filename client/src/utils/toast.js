@@ -1,13 +1,5 @@
 import { toast, Slide } from "react-toastify";
 
-/**
- * Centralized Notification Utility
- * ---------------------------------
- * Import `notify` anywhere in the app instead of using `toast` directly.
- * Every helper uses a `toastId` derived from the message to prevent
- * duplicate notifications when buttons are clicked rapidly.
- */
-
 const defaultOptions = {
   position: "top-right",
   autoClose: 3500,
@@ -18,10 +10,6 @@ const defaultOptions = {
   transition: Slide,
 };
 
-/**
- * Generate a stable toastId from the message string.
- * This ensures the same message won't produce duplicate toasts.
- */
 const getToastId = (message) => {
   if (typeof message !== "string") return undefined;
   return message.replace(/\s+/g, "-").toLowerCase().slice(0, 64);
@@ -73,19 +61,7 @@ const notify = {
     return toast.loading(message, { ...defaultOptions, toastId, ...options });
   },
 
-  /**
-   * 🔄 Promise-based notification — shows loading → success/error automatically
-   *
-   * Usage:
-   *   notify.promise(
-   *     axios.post("/api/..."),
-   *     {
-   *       pending: "Loading...",
-   *       success: "Done!",
-   *       error: "Something went wrong.",
-   *     }
-   *   );
-   */
+
   promise(promiseFn, messages, options = {}) {
     return toast.promise(promiseFn, messages, {
       ...defaultOptions,

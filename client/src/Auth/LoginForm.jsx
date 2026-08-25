@@ -29,8 +29,8 @@ const LoginForm = () => {
         password,
       });
 
-      const { user, token } = res.data;
-      login(user, token);
+      const { user } = res.data;
+      login(user);
 
       setEmail("");
       setPassword("");

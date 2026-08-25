@@ -1,6 +1,7 @@
 /** @format */
 
 import { Outlet } from "react-router-dom";
+import { Suspense } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { ToastContainer, Slide } from "react-toastify";
@@ -11,7 +12,9 @@ function App() {
   return (
     <>
       <Navbar />
-      <Outlet />
+      <Suspense fallback={<div className="global-loader">Loading...</div>}>
+        <Outlet />
+      </Suspense>
       <Footer />
 
       {/* ─── SINGLE GLOBAL TOAST CONTAINER ─── */}

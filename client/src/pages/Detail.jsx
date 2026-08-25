@@ -55,9 +55,7 @@ function Detail() {
     watchList.some((watch) => String(watch.movieId) === String(movieId));
 
   const toggleWatch = async (movie) => {
-    const token = localStorage.getItem("token");
-
-    if (!token || token === "undefined") {
+    if (!user) {
       notify.warning("Please login to use Watchlist.");
       return;
     }
@@ -148,8 +146,7 @@ function Detail() {
     favorites.some((fav) => String(fav?.movieId) === String(movieId));
 
   const toggleFavorite = async (movie) => {
-    const token = localStorage.getItem("token");
-    if (!token || token === "undefined") {
+    if (!user) {
       notify.warning("Please login to add Favorites.");
       return;
     }

@@ -18,6 +18,11 @@ import {
   removeWatchList,
   getWatchList
 } from "../controllers/dataController.js";
+import {
+  searchTmdbMovies,
+  searchTmdbPerson,
+  getTmdbActorMovies
+} from "../controllers/tmdbController.js";
 
 const router = express.Router();
 
@@ -48,5 +53,10 @@ router.get("/drama", getDramaMovies);
 router.get("/comedy", getComedyMovies);
 
 router.get("/horror", getHorrorMovies);
+
+// TMDB PROXY ROUTES
+router.get("/tmdb/search/movie", searchTmdbMovies);
+router.get("/tmdb/search/person", searchTmdbPerson);
+router.get("/tmdb/discover/actor", getTmdbActorMovies);
 
 export default router;

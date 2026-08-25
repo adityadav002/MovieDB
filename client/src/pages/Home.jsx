@@ -5,17 +5,19 @@ import RegisterForm from "../Auth/RegisterForm.jsx";
 import "../style/AuthStyle.css";
 import FAQ from "../components/FAQ.jsx";
 import Content from "../components/Content.jsx";
+import { useAuth } from "../context/AuthContext";
 
 function Home() {
   const [activeTab, setActiveTab] = useState("login");
   const navigate = useNavigate();
 
+  const { user } = useAuth();
+
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
+    if (user) {
       navigate("/", { replace: true });
     }
-  }, [navigate]);
+  }, [user, navigate]);
 
   return (
     <>

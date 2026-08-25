@@ -41,19 +41,19 @@ export const getMovieDetails = async (req, res) => {
   }
 };
 
-export const searchMovies = async (req, res) => {
+export const searchMovies = async (req, res, next) => {
   const { q = "", page = 1, limit = 10 } = req.query;
 
   try {
-    const movies = await Movie.find({
-      title: { $regex: q, $options: "i" },
-    })
+    const query = q ? { $text: { $search: q } } : {};
+    const movies = await Movie.find(query)
       .skip((page - 1) * limit)
       .limit(parseInt(limit));
+    const total = await Movie.countDocuments(query);
 
-    res.status(200).json({ movies });
+    res.status(200).json({ movies, total, page });
   } catch (error) {
-    res.status(500).json({ error: "Search failed" });
+    next(error);
   }
 };
 
@@ -61,13 +61,18 @@ export const searchMovies = async (req, res) => {
    WATCH LIST
 =========================== */
 
-export const getWatchList = async (req, res) => {
+export const getWatchList = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const watchList = await Watch.find({ userId });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+
+    const watchList = await Watch.find({ userId })
+      .skip((page - 1) * limit)
+      .limit(limit);
     res.status(200).json(watchList);
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch WatchList" });
+    next(err);
   }
 };
 
@@ -113,13 +118,18 @@ export const removeWatchList = async (req, res) => {
    FAVORITES
 =========================== */
 
-export const getFavorites = async (req, res) => {
+export const getFavorites = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const favorites = await Favorite.find({ userId });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+
+    const favorites = await Favorite.find({ userId })
+      .skip((page - 1) * limit)
+      .limit(limit);
     res.status(200).json(favorites);
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch favorites" });
+    next(err);
   }
 };
 
@@ -165,62 +175,87 @@ export const removeFavorite = async (req, res) => {
    GENRE FILTERS
 =========================== */
 
-export const getAnimatedMovies = async (req, res) => {
+export const getAnimatedMovies = async (req, res, next) => {
   try {
-    const movies = await Movie.find({
-      genre: { $regex: /(Animated|Animation)/i },
-    });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+    const query = { genre: { $regex: /(Animated|Animation)/i } };
 
-    res.status(200).json({ movies, total: movies.length });
+    const movies = await Movie.find(query)
+      .skip((page - 1) * limit)
+      .limit(limit);
+    const total = await Movie.countDocuments(query);
+
+    res.status(200).json({ movies, total });
   } catch (error) {
-    res.status(500).json({ message: "Internal Server Error" });
+    next(error);
   }
 };
 
-export const getActionMovies = async (req, res) => {
+export const getActionMovies = async (req, res, next) => {
   try {
-    const movies = await Movie.find({
-      genre: { $regex: /Action/i },
-    });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+    const query = { genre: { $regex: /Action/i } };
 
-    res.status(200).json({ movies, total: movies.length });
+    const movies = await Movie.find(query)
+      .skip((page - 1) * limit)
+      .limit(limit);
+    const total = await Movie.countDocuments(query);
+
+    res.status(200).json({ movies, total });
   } catch (error) {
-    res.status(500).json({ message: "Internal Server Error" });
+    next(error);
   }
 };
 
-export const getDramaMovies = async (req, res) => {
+export const getDramaMovies = async (req, res, next) => {
   try {
-    const movies = await Movie.find({
-      genre: { $regex: /Drama/i },
-    });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+    const query = { genre: { $regex: /Drama/i } };
 
-    res.status(200).json({ movies, total: movies.length });
+    const movies = await Movie.find(query)
+      .skip((page - 1) * limit)
+      .limit(limit);
+    const total = await Movie.countDocuments(query);
+
+    res.status(200).json({ movies, total });
   } catch (error) {
-    res.status(500).json({ message: "Internal Server Error" });
+    next(error);
   }
 };
 
-export const getComedyMovies = async (req, res) => {
+export const getComedyMovies = async (req, res, next) => {
   try {
-    const movies = await Movie.find({
-      genre: { $regex: /Comedy/i },
-    });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+    const query = { genre: { $regex: /Comedy/i } };
 
-    res.status(200).json({ movies, total: movies.length });
+    const movies = await Movie.find(query)
+      .skip((page - 1) * limit)
+      .limit(limit);
+    const total = await Movie.countDocuments(query);
+
+    res.status(200).json({ movies, total });
   } catch (error) {
-    res.status(500).json({ message: "Internal Server Error" });
+    next(error);
   }
 };
 
-export const getHorrorMovies = async (req, res) => {
+export const getHorrorMovies = async (req, res, next) => {
   try {
-    const movies = await Movie.find({
-      genre: { $regex: /Horror/i },
-    });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+    const query = { genre: { $regex: /Horror/i } };
 
-    res.status(200).json({ movies, total: movies.length });
+    const movies = await Movie.find(query)
+      .skip((page - 1) * limit)
+      .limit(limit);
+    const total = await Movie.countDocuments(query);
+
+    res.status(200).json({ movies, total });
   } catch (error) {
-    res.status(500).json({ message: "Internal Server Error" });
+    next(error);
   }
 };

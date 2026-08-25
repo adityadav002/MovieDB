@@ -127,7 +127,7 @@ body {
   top: 42%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 2;
+  z-index: 10;
   width: 76px;
   height: 76px;
   border-radius: 50%;
@@ -669,6 +669,8 @@ body {
     width: 60px;
     height: 60px;
     font-size: 1.25rem;
+    top: 130px; /* Center over the poster */
+    z-index: 10;
   }
 
   .action-buttons {
@@ -722,10 +724,15 @@ body {
 
   .detail-content h1 {
     font-size: 1.8rem;
+    margin-top: 10px;
   }
 
   .poster-wrapper {
     width: 105px;
+  }
+
+  .hero-play-btn {
+    top: 105px; /* Center over the smaller poster (20px padding + 105*1.5/2) */
   }
 
   .hero-eyebrow {

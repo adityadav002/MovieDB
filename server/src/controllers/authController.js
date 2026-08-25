@@ -21,10 +21,16 @@ export const registerUser = async (req, res) => {
 
     const token = jwt.sign({ id: newUser._id, email }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 3600000 // 1 hour
+    });
+
     return res.status(201).json({
       message: "User created successfully",
       user: { name: newUser.name, email: newUser.email },
-      token,
     });
   } catch (error) {
     console.error("Error from registerUser:", error);
@@ -46,10 +52,16 @@ export const loginUser = async (req, res) => {
     if (isMatch) {
       const token = jwt.sign({ id: user._id, email }, process.env.JWT_SECRET, { expiresIn: "1h" });
       
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 3600000 // 1 hour
+      });
+      
       return res.status(200).json({
         message: "Login successful",
         user: { name: user.name, email: user.email },
-        token,
       });
     } else {
       return res.status(400).json({ message: "Invalid credentials" });
@@ -61,14 +73,21 @@ export const loginUser = async (req, res) => {
 };
 
 export const logoutUser = (req, res) => {
-  // Since we rely on frontend localStorage for token, the backend logout is essentially a no-op 
-  // but we can return success for consistency.
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  });
   return res.status(200).json({ message: "Logout successful" });
 };
 
 export const getCurrentUser = async (req, res) => {
   try {
-    const user = req.user;
+    const decoded = req.user;
+    if (!decoded || !decoded.id) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const user = await User.findById(decoded.id).select("-password");
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }

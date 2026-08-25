@@ -4,16 +4,15 @@ import { Link } from "react-router-dom";
 import api from "../utils/api";
 import notify from "../utils/toast";
 import "../style/ShowListStyle.css";
+import { useAuth } from "../context/AuthContext";
 
 function Favourite() {
+  const { user } = useAuth();
   const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
     const fetchFavorites = async () => {
-      const token = localStorage.getItem("token");
-
-      // 🚫 HARD STOP
-      if (!token || token === "undefined") {
+      if (!user) {
         setFavorites([]);
         return;
       }
@@ -32,8 +31,7 @@ function Favourite() {
   }, []);
 
   const removeFavorite = async (movieId) => {
-    const token = localStorage.getItem("token");
-    if (!token || token === "undefined") return;
+    if (!user) return;
 
     // Optimistic removal
     const previous = [...favorites];
@@ -62,7 +60,12 @@ function Favourite() {
 
       <div className="movie-grid">
         {favorites.length === 0 ? (
-          <p className="fav_empty">No favorites yet.</p>
+          <div className="empty-state">
+            <div className="empty-state-icon">🍿</div>
+            <h2>No Favorites Yet</h2>
+            <p>Find your favorite movies and save them here.</p>
+            <Link to="/" className="submit-button" style={{display:'inline-block', marginTop:'1rem', padding:'0.5rem 1rem'}}>Explore Movies</Link>
+          </div>
         ) : (
           favorites.map((movie) => (
             <div className="movie-card" key={movie.movieId}>

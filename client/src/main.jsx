@@ -1,19 +1,21 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
+import { lazy, Suspense } from "react";
 import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import ShowList from "./pages/ShowList.jsx";
-import Detail from "./pages/Detail.jsx";
-import Favourite from "./pages/Favourite.jsx";
-import WatchLater from "./pages/WatchList.jsx";
-import Home from "./pages/Home.jsx";
-import Recommendations from "./pages/Recommendations.jsx";
-import Profile from "./components/Profile.jsx";
-import RegisterForm from "./Auth/RegisterForm.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import { AuthProvider } from "./context/AuthContext"; 
 import NotFound from "./pages/NotFound.jsx";
+
+const ShowList = lazy(() => import("./pages/ShowList.jsx"));
+const Detail = lazy(() => import("./pages/Detail.jsx"));
+const Favourite = lazy(() => import("./pages/Favourite.jsx"));
+const WatchLater = lazy(() => import("./pages/WatchList.jsx"));
+const Home = lazy(() => import("./pages/Home.jsx"));
+const Recommendations = lazy(() => import("./pages/Recommendations.jsx"));
+const Profile = lazy(() => import("./components/Profile.jsx"));
+const RegisterForm = lazy(() => import("./Auth/RegisterForm.jsx"));
 
 const router = createBrowserRouter([
   {
