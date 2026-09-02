@@ -6,6 +6,7 @@ import "../style/DetailStyle.css";
 import axios from "axios";
 import api from "../utils/api";
 import notify from "../utils/toast";
+import { useAuth } from "../context/AuthContext";
 import {
   FaImdb,
   FaPlay,
@@ -14,6 +15,7 @@ import {
   FaHeart,
   FaRegHeart,
   FaXmark,
+  FaStar,
 } from "react-icons/fa6";
 
 const apikey = import.meta.env.VITE_API_KEY;
@@ -21,6 +23,7 @@ const apikey = import.meta.env.VITE_API_KEY;
 function Detail() {
   const { id } = useParams();
   const location = useLocation();
+  const { user } = useAuth();
   const [movie, setMovie] = useState(null);
   const [watchList, setWatchList] = useState([]);
   const [showTrailer, setShowTrailer] = useState(false);
@@ -31,9 +34,7 @@ function Detail() {
   // ------------------------------------------------
   useEffect(() => {
     const fetchWatchList = async () => {
-      const token = localStorage.getItem("token");
-
-      if (!token || token === "undefined") {
+      if (!user) {
         setWatchList([]);
         return;
       }
@@ -49,7 +50,7 @@ function Detail() {
     };
 
     fetchWatchList();
-  }, [location.pathname]);
+  }, [location.pathname, user]);
 
   const isWatched = (movieId) =>
     watchList.some((watch) => String(watch.movieId) === String(movieId));
@@ -121,9 +122,7 @@ function Detail() {
   // ------------------------------------------------
   useEffect(() => {
     const fetchFavorites = async () => {
-      const token = localStorage.getItem("token");
-
-      if (!token || token === "undefined") {
+      if (!user) {
         setFavorites([]);
         return;
       }
@@ -139,7 +138,7 @@ function Detail() {
     };
 
     fetchFavorites();
-  }, [location.pathname]);
+  }, [location.pathname, user]);
 
   const isFavorite = (movieId) =>
     Array.isArray(favorites) &&
@@ -481,7 +480,7 @@ function Detail() {
 
                 return (
                   <Link
-                    to={`/?q=${encodeURIComponent(actor.name)}`}
+                    to={`/discover?q=${encodeURIComponent(actor.name)}`}
                     className="cast-card"
                     key={actor.id}
                   >

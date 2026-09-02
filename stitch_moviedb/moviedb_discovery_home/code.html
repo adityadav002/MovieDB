@@ -1,0 +1,518 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>MovieDB - Home</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Montserrat:wght@700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary-fixed-variant": "#474649",
+                      "on-secondary": "#303032",
+                      "inverse-on-surface": "#313031",
+                      "surface-container-high": "#2a2a2b",
+                      "on-primary": "#690003",
+                      "primary": "#ffb4aa",
+                      "outline-variant": "#5e3f3b",
+                      "primary-fixed-dim": "#ffb4aa",
+                      "secondary-fixed": "#e4e2e4",
+                      "on-primary-fixed": "#410001",
+                      "secondary": "#c8c6c8",
+                      "surface-container": "#201f20",
+                      "surface-bright": "#3a393a",
+                      "error-container": "#93000a",
+                      "on-primary-container": "#fff7f6",
+                      "inverse-primary": "#c0000c",
+                      "surface": "#131314",
+                      "on-background": "#e5e2e3",
+                      "primary-fixed": "#ffdad5",
+                      "surface-dim": "#131314",
+                      "on-tertiary": "#303034",
+                      "on-secondary-container": "#b7b4b7",
+                      "secondary-fixed-dim": "#c8c6c8",
+                      "tertiary-fixed": "#e4e1e7",
+                      "surface-variant": "#353436",
+                      "tertiary-fixed-dim": "#c8c5cb",
+                      "on-surface": "#e5e2e3",
+                      "error": "#ffb4ab",
+                      "on-primary-fixed-variant": "#930007",
+                      "inverse-surface": "#e5e2e3",
+                      "on-tertiary-container": "#fbf8fe",
+                      "outline": "#af8782",
+                      "surface-tint": "#ffb4aa",
+                      "on-tertiary-fixed": "#1b1b1f",
+                      "tertiary": "#c8c5cb",
+                      "on-surface-variant": "#e9bcb6",
+                      "on-secondary-fixed": "#1b1b1d",
+                      "secondary-container": "#474649",
+                      "tertiary-container": "#737277",
+                      "background": "#131314",
+                      "primary-container": "#e50914",
+                      "surface-container-highest": "#353436",
+                      "on-error": "#690005",
+                      "surface-container-low": "#1c1b1c",
+                      "on-error-container": "#ffdad6",
+                      "on-tertiary-fixed-variant": "#47464b",
+                      "surface-container-lowest": "#0e0e0f"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "20px",
+                      "stack-lg": "32px",
+                      "gutter-mobile": "16px",
+                      "stack-sm": "8px",
+                      "stack-md": "16px",
+                      "margin-desktop": "64px",
+                      "gutter-desktop": "32px",
+                      "container-max": "1440px"
+              },
+              "fontFamily": {
+                      "display-lg": [
+                              "Montserrat"
+                      ],
+                      "headline-md": [
+                              "Montserrat"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Montserrat"
+                      ],
+                      "metadata": [
+                              "Inter"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "display-lg-mobile": [
+                              "Montserrat"
+                      ]
+              },
+              "fontSize": {
+                      "display-lg": [
+                              "64px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "800"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "metadata": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "label-caps": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "0.1em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "40px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "800"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        /* Custom slim scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0A0A0B;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a2a2b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #474649;
+        }
+        
+        .glass-panel {
+            background: rgba(10, 10, 11, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+        }
+        
+        .movie-card {
+            background-color: #161618;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .movie-card:hover {
+            transform: scale(1.05);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+            z-index: 10;
+        }
+        
+        .aspect-poster {
+            aspect-ratio: 2/3;
+        }
+        
+        body {
+            background-color: #0A0A0B; /* Pure obsidian floor */
+            color: #e5e2e3; /* on-surface */
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col pt-20">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-white/5 shadow-none flex justify-between items-center px-gutter-desktop h-20 w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-8">
+<a class="font-display-lg text-primary tracking-tighter uppercase text-3xl" href="#">MovieDB</a>
+<div class="hidden md:flex gap-6">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md hover:scale-105 transition-transform duration-200 active:scale-95 transition-all" href="#">Recommendations</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md hover:scale-105 transition-transform duration-200 active:scale-95 transition-all" href="#">Watchlist</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md hover:scale-105 transition-transform duration-200 active:scale-95 transition-all" href="#">Favorites</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface hover:text-primary transition-colors p-2 rounded-full hover:bg-surface-variant">
+<span class="material-symbols-outlined" data-icon="search" style="font-variation-settings: &quot;FILL&quot; 0;">search</span>
+</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-white/10 cursor-pointer hover:border-primary transition-colors">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="A highly detailed close-up of a sophisticated user profile avatar for a cinematic movie database app, set in a dark mode UI context with subtle red ambient lighting and deep black shadows. The avatar represents a cinephile, rendered in a hyper-realistic digital painting style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8EfADkEUGhgVqUUAHcHbE3bgYABilmFoSPh1aMQUgb-om0vmFpmlyDkeM_iPqjPk8XPMAWlA_aYaI-xEZXhMhmc752eQdau-_KboCzunKBNEnWb6qQtX3gfVuM2bT_c6LWJ_6mvKQxoDkH-PwrSbkMlBjTDlnDanSxbN9ceG-c6UjbZ5TniEf8J258YIhd0SpRlzT5INElmNAgQ64j-LBUANE3HUz9jNaVI_uPNJtPACKeu-pB075">
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-grow w-full max-w-container-max mx-auto px-gutter-mobile md:px-gutter-desktop py-stack-lg flex flex-col lg:flex-row gap-gutter-desktop relative">
+<!-- Left Column: Movie Grids -->
+<div class="flex-1 flex flex-col gap-stack-lg">
+<!-- Talk Of The Town Section -->
+<section class="flex flex-col gap-stack-md">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="campaign" style="font-variation-settings: &quot;FILL&quot; 1;">campaign</span>
+<h2 class="font-headline-md text-on-surface">Talk Of The Town</h2>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+<!-- Movie Card 1 -->
+<div class="flex flex-col gap-2 group cursor-pointer">
+<div class="movie-card rounded-lg overflow-hidden aspect-poster relative">
+<img alt="Toxic" class="w-full h-full object-cover" data-alt="A highly detailed movie poster for a dark, gritty thriller titled 'Toxic', featuring a rugged protagonist in shadows. Cinematic noir style, deep blacks, high contrast, red accent lighting, rain-slicked streets, intense mood, dramatic composition, 4k resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzfdUpbPzSmie3op_wj9PNbG0NvhQNHr1T3md1Ns9vNaWZjPNbCPJC33gLO_G60Rk1sJTFW7YciFnudHzh_LCo8f9H4ZdAWkFS0BQ84Noae9mXiDOjcsPGD8BxpGFe2fUT59hLReYd5D9GCWyoUS0KVVSzdyg3Yj3ys2MCjb_c0S2F37-rgLRe8u-gpqJhAkpxUUJftSA-Ker8VhGLCz7Fef8bUFMngDAipQLCrgk2iPtg9taMpb4T">
+<div class="absolute top-2 left-2 glass-panel rounded-full px-2 py-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-yellow-400 text-xs" data-icon="star" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="font-metadata text-metadata text-white">8.5</span>
+</div>
+</div>
+<div>
+<h3 class="font-body-md text-on-surface truncate group-hover:text-primary transition-colors">Toxic: A Fairy Tale</h3>
+<p class="font-metadata text-on-surface-variant">New Movie</p>
+</div>
+</div>
+<!-- Movie Card 2 -->
+<div class="flex flex-col gap-2 group cursor-pointer">
+<div class="movie-card rounded-lg overflow-hidden aspect-poster relative">
+<img alt="Lanterns" class="w-full h-full object-cover" data-alt="A highly detailed movie poster for a sci-fi mystery titled 'Lanterns', featuring two detectives silhouetted against an eerie glowing green light in a dark forest. Cinematic aesthetic, deep obsidian blacks, mysterious mood, fog effects, dramatic lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOjXwp52FBhMgxvJ61iOxA4eQWvBf1gVqR5Szl8GNQBD1xmbKI0fv9AdxaSFKXQMiza4XLfdRpldBlFjXvWt8IdYfkf6ZP317jX8A2BNfWiLeRMngasIBbz4DIJ6Lfdzg3GWTX7A1r26gxqYD-5QFYpXwbILja9WQbe6HnHIWbk7TRSLxr-KibtF-sPbvUS1wPUCv-NcsJE5IZA4pZFfqc967QGz92Tp4aqidozDmJyM82xdiE6OX9">
+</div>
+<div>
+<h3 class="font-body-md text-on-surface truncate group-hover:text-primary transition-colors">Lanterns</h3>
+<p class="font-metadata text-on-surface-variant">Season 1 Episode 3</p>
+</div>
+</div>
+<!-- Movie Card 3 -->
+<div class="flex flex-col gap-2 group cursor-pointer">
+<div class="movie-card rounded-lg overflow-hidden aspect-poster relative">
+<img alt="GTA VI" class="w-full h-full object-cover" data-alt="A highly detailed game poster for 'Grand Theft Auto VI', featuring stylized neon pink and blue lighting over a dark, gritty city skyline with sleek cars. High energy, cinematic contrast, deep shadows, vibrant accent colors, hyper-realistic rendering." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzKZJebgRo8619ucLhGCUrMfe2oXiwzrJ_HOSE2eYeH1CodBzJGexH43uqkQc2ZpSqX4FuxUe8y-FYCBopNIJ78JXQa_Jw0NxKh93yJJzlwnAf_19eK85A0QI8tnJ5grbqbNW5G2z3Yubs0EZc9opJNjqUuwjiKcI_sm68Bm50bPmUn4C8ubyui_kj894MoV77kas_mD35L5YxVLRhoCSIrUrfDT1JYsaZWPAbWWYc8OZDUCUYBImq">
+</div>
+<div>
+<h3 class="font-body-md text-on-surface truncate group-hover:text-primary transition-colors">Grand Theft Auto VI</h3>
+<p class="font-metadata text-on-surface-variant">OTT Release</p>
+</div>
+</div>
+<!-- Movie Card 4 -->
+<div class="flex flex-col gap-2 group cursor-pointer">
+<div class="movie-card rounded-lg overflow-hidden aspect-poster relative">
+<img alt="Daayra" class="w-full h-full object-cover" data-alt="A highly detailed movie poster for a historical drama titled 'Daayra', featuring a striking portrait of a warrior in traditional armor against a stark black background. Cinematic noir, dramatic rim lighting, intense expression, high contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDU9Q37CLvDe5NcXYC6k1FtN33ytfOsJ8-cL5U8V6GVNyQLEAHNCdcSW3IOwACgGet1E9FLLkBlw5hsaZV95vKZYKUEk7WjZ-Pk3OS-f2lzKZ09_psjrUJmM9aHL1ZOiDUtaD7PYyseEQSaIOszeOxjuwFS4OmIE6Dv7Yf2x3nj4_ZDIAmHVfBpfB5LU5iXhPtigfKXPEjPCIr8SVU1dTN1cFZLMcvJ9hmdRGCgAYcSsDKc8YjaXBP">
+</div>
+<div>
+<h3 class="font-body-md text-on-surface truncate group-hover:text-primary transition-colors">Daayra</h3>
+<p class="font-metadata text-on-surface-variant">Trailer</p>
+</div>
+</div>
+<!-- Movie Card 5 -->
+<div class="flex flex-col gap-2 group cursor-pointer hidden sm:flex">
+<div class="movie-card rounded-lg overflow-hidden aspect-poster relative">
+<img alt="Batman" class="w-full h-full object-cover" data-alt="A highly detailed movie poster for an action film titled 'Batman: Knightfall', featuring Batman diving through a rain-soaked, dark city at night. Cinematic noir style, deep obsidian blacks, dramatic lightning strikes, highly stylized, intense action." src="https://lh3.googleusercontent.com/aida-public/AB6AXuClANT1mLkL16DvdRUSD1mFO-L_ifG35FIjUs2lWu8-ETzdSGobu8yHhXS5yofj3k-_uEtRgAUbvLN6DzNRV4gvm-eShn3tznTkFXz5RvQACYbpTH45NVt6kmNhvVlpLvfiMkuPGw4Gq9LYmhzsxS7cLUYUW3CBJRILISAa30krEtN2zqNPcu3ffYOatWZkEM3gJA44HwOkkiFZ5YlZdBr_FrmxHKedQrSchTKRNdSLmtawCFl7zOg1">
+</div>
+<div>
+<h3 class="font-body-md text-on-surface truncate group-hover:text-primary transition-colors">Batman: Knightfall</h3>
+<p class="font-metadata text-on-surface-variant">New Movie</p>
+</div>
+</div>
+<!-- Movie Card 6 -->
+<div class="flex flex-col gap-2 group cursor-pointer hidden md:flex">
+<div class="movie-card rounded-lg overflow-hidden aspect-poster relative">
+<img alt="India's Got Latent" class="w-full h-full object-cover" data-alt="A highly detailed stand-up comedy special poster titled 'India's Got Latent', featuring a comedian in a red plaid shirt spotlighted against a pitch-black background. Cinematic contrast, vivid red accents, sharp focus, professional photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuARip0RW2vjBJGEDWoqaJUi_wDNZB3H1_ozYdHWH4fN3sIJERLkbHDLfN9PX5DhrIzXqNg-YUXnUM9En3E7sH39-YxMtqOZd0tsFN_P8eZVqtMN4zQCQfcHFDg16fDWvLqRJRkNXd6ezkSSvxgcDNi9SWq_2BbNtmzHlrO6et6Sho3qjrfULi49qTOTeeKLc67qh9zg0KJfYrKAY6NfRoxoFrDpJS0Kps6u62MkPW96cMG4SB1nAN4W">
+</div>
+<div>
+<h3 class="font-body-md text-on-surface truncate group-hover:text-primary transition-colors">India's Got Latent</h3>
+<p class="font-metadata text-on-surface-variant">New Episode</p>
+</div>
+</div>
+<!-- Movie Card 7 -->
+<div class="flex flex-col gap-2 group cursor-pointer hidden md:flex">
+<div class="movie-card rounded-lg overflow-hidden aspect-poster relative">
+<img alt="The Whisper Man" class="w-full h-full object-cover" data-alt="A highly detailed movie poster for a psychological horror titled 'The Whisper Man', featuring ghostly hands reaching from shadows. Cinematic noir style, deep blacks, eerie blue tinted lighting, chilling atmosphere, high contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuButUApPijAOWE2oaHwMUmjUhN14d1aNJjK5xZefXzucA0TeAHrk1UY_T0trubkAl-mNL0Gu3G1DhbVYbJpUSemjcc4d2Fcz9IrpqrGtf5XKkyqkKDwaficdSI0QpQA1hyEuJELZiYnUEfyw8Y0f7j44ChxASIMaGn78lx6R5uuu-vy3pXhqQ-z4it42_BDDrYSzrNRQAdlxGArnCt5VAE7tPvrOmFihkEDVi0qEZ8ZdqPjYMr_SRXD">
+</div>
+<div>
+<h3 class="font-body-md text-on-surface truncate group-hover:text-primary transition-colors">The Whisper Man</h3>
+<p class="font-metadata text-on-surface-variant">New Movie</p>
+</div>
+</div>
+<!-- Movie Card 8 -->
+<div class="flex flex-col gap-2 group cursor-pointer hidden lg:flex">
+<div class="movie-card rounded-lg overflow-hidden aspect-poster relative">
+<img alt="The Dog Stars" class="w-full h-full object-cover" data-alt="A highly detailed movie poster for a survival drama titled 'The Dog Stars', featuring a rugged man and his dog in a desolate snowy landscape under a dark, brooding sky. Cinematic, stark contrast, melancholic mood, deep shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbm44byJi8g-e8zhIwokLSw97J_ZRwmL8Lvz3CAubjGxgXMGS0p7OPt_DZUfKqSCB-jnUVuSvl61qQMmxM8XBke89TsO-ZB6xaA2h9E3bkdb15hmRXEQK2Z7WBIIja_-B3GDxXLYRzWdg77LHeeHYCWfkCHfHvsqpuMlUZKVCNkkmNWDg43reMgZ1wnI-3I5Yuaaq_cwHQRk80_rxxZtx16W5q9g-zJapcrHJUvoxrdZFKleqiex3A">
+</div>
+<div>
+<h3 class="font-body-md text-on-surface truncate group-hover:text-primary transition-colors">The Dog Stars</h3>
+<p class="font-metadata text-on-surface-variant">New Movie</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Watch It With District Section -->
+<section class="flex flex-col gap-stack-md mt-8">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="movie" style="font-variation-settings: &quot;FILL&quot; 1;">movie</span>
+<h2 class="font-headline-md text-on-surface">Watch It With District</h2>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+<!-- Cards omitted for brevity in this tier, following same pattern -->
+<div class="flex flex-col gap-2 group cursor-pointer">
+<div class="movie-card rounded-lg overflow-hidden aspect-poster relative">
+<img alt="I'm Game" class="w-full h-full object-cover" data-alt="A highly detailed movie poster for an indie drama titled 'I'm Game', featuring a neon-lit alleyway at night with deep shadows and vibrant red and purple highlights. Cinematic noir, modern aesthetic, high contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFAl4jR2OrbjqCJ4qHRYgexeopderPnzoLqXrm7k4ybewDngcYQpxZLd28a1a7BliX1_QB9SoszSnDM4qP7lNmUhpddRcE2Co6zwWQvJltBrU76Hz8iKCKimK6PTMypCxje62UtfkK7GZhmrucv-QCDm48F3rbpgrz7IeZW0cAoDwuliSTk78WDv5HdNkW4MMx5SRWNvtHPl1jICYkogc0_39SiEDCfxa5Q2Zjbe7N9nrFbJ4UhZmv">
+</div>
+<div>
+<h3 class="font-body-md text-on-surface truncate group-hover:text-primary transition-colors">I'm Game</h3>
+<p class="font-metadata text-on-surface-variant">Movie • 2024</p>
+</div>
+</div>
+<div class="flex flex-col gap-2 group cursor-pointer">
+<div class="movie-card rounded-lg overflow-hidden aspect-poster relative">
+<img alt="Batwara 1947" class="w-full h-full object-cover" data-alt="A highly detailed movie poster for a historical epic titled 'Batwara 1947', featuring a silhouette of people migrating against a fiery orange and black sunset. Cinematic depth, emotional tone, dramatic lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtV4u05dusa6zYTAM7oqa1H77O-d24NIF3f2UGOZcux3IWYS44hurn1jf0HIKrXgw-KjXlbtlt9n3J_xACE9pEIyNmbRkXLXTquoQo1cKMbHtmarD7UdfB9OvSGYaFmEXoCWPTfMOAOZJEtdAqW_eg-ASO1KbdH9Gu7_7jbw9EyIcsogLCLw-gAw4iLNg6GuQrGYIl9m3fahb5TG_v4Pqu5YXhiKSQnJ1RtutP0GfmUyRHenTm1Jww">
+</div>
+<div>
+<h3 class="font-body-md text-on-surface truncate group-hover:text-primary transition-colors">Batwara 1947</h3>
+<p class="font-metadata text-on-surface-variant">Movie • 2024</p>
+</div>
+</div>
+<div class="flex flex-col gap-2 group cursor-pointer">
+<div class="movie-card rounded-lg overflow-hidden aspect-poster relative">
+<img alt="Hi!" class="w-full h-full object-cover" data-alt="A highly detailed movie poster for a suspense thriller titled 'Hi!', featuring a glowing red elevator interior contrasting with a pitch-black exterior hallway. Cinematic noir, intense mood, minimalist composition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_zj5yCwwwLf2D6v48vf8LhLdV1igfaQU6b8eyTRnX4eyVJyEUl7i-VfR1y0mJ8j4pQPkTwv5whrTLZevbdoFI4jdv9L-U1lFNiAGBCf4yT0b9olr0KgC-wSrFd4EvnDRIP4kIT1sKW75rTSShFNwq8iYV0XfqqHJajSBJ1e111uvi8lLnJTahHlYHTj_tWX1fELtYRz3dKa4tMHJJoe1dxRobDASKfLhfg2gcqqfmoZALFLM5szxn">
+</div>
+<div>
+<h3 class="font-body-md text-on-surface truncate group-hover:text-primary transition-colors">Hi!</h3>
+<p class="font-metadata text-on-surface-variant">Movie • 2024</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Sidebar / Rankings -->
+<aside class="w-full lg:w-[350px] flex flex-col gap-stack-lg shrink-0"><!-- 5 Most Popular This Month -->
+<div class="flex flex-col gap-stack-md bg-surface-container-low p-4 rounded-xl border border-white/5">
+    <div class="flex items-center gap-2 mb-2">
+        <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+        <h3 class="font-headline-md text-on-surface text-xl">Popular This Month</h3>
+    </div>
+    <div class="flex flex-col gap-4">
+        <div class="flex items-center gap-4 group cursor-pointer p-2 hover:bg-surface-variant rounded-lg transition-colors">
+            <span class="font-display-lg text-2xl text-primary/40 w-6">1</span>
+            <div class="w-12 h-16 rounded overflow-hidden shrink-0 movie-card">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzfdUpbPzSmie3op_wj9PNbG0NvhQNHr1T3md1Ns9vNaWZjPNbCPJC33gLO_G60Rk1sJTFW7YciFnudHzh_LCo8f9H4ZdAWkFS0BQ84Noae9mXiDOjcsPGD8BxpGFe2fUT59hLReYd5D9GCWyoUS0KVVSzdyg3Yj3ys2MCjb_c0S2F37-rgLRe8u-gpqJhAkpxUUJftSA-Ker8VhGLCz7Fef8bUFMngDAipQLCrgk2iPtg9taMpb4T" class="w-full h-full object-cover" alt="Toxic">
+            </div>
+            <div class="flex flex-col justify-center">
+                <h4 class="font-body-md font-bold text-on-surface group-hover:text-primary transition-colors">Toxic</h4>
+                <p class="font-metadata text-yellow-400 text-xs flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span> 8.5</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4 group cursor-pointer p-2 hover:bg-surface-variant rounded-lg transition-colors">
+            <span class="font-display-lg text-2xl text-primary/40 w-6">2</span>
+            <div class="w-12 h-16 rounded overflow-hidden shrink-0 movie-card">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuClANT1mLkL16DvdRUSD1mFO-L_ifG35FIjUs2lWu8-ETzdSGobu8yHhXS5yofj3k-_uEtRgAUbvLN6DzNRV4gvm-eShn3tznTkFXz5RvQACYbpTH45NVt6kmNhvVlpLvfiMkuPGw4Gq9LYmhzsxS7cLUYUW3CBJRILISAa30krEtN2zqNPcu3ffYOatWZkEM3gJA44HwOkkiFZ5YlZdBr_FrmxHKedQrSchTKRNdSLmtawCFl7zOg1" class="w-full h-full object-cover" alt="Batman">
+            </div>
+            <div class="flex flex-col justify-center">
+                <h4 class="font-body-md font-bold text-on-surface group-hover:text-primary transition-colors">Batman: Knightfall</h4>
+                <p class="font-metadata text-yellow-400 text-xs flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span> 8.8</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4 group cursor-pointer p-2 hover:bg-surface-variant rounded-lg transition-colors">
+            <span class="font-display-lg text-2xl text-primary/40 w-6">3</span>
+            <div class="w-12 h-16 rounded overflow-hidden shrink-0 movie-card">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDU9Q37CLvDe5NcXYC6k1FtN33ytfOsJ8-cL5U8V6GVNyQLEAHNCdcSW3IOwACgGet1E9FLLkBlw5hsaZV95vKZYKUEk7WjZ-Pk3OS-f2lzKZ09_psjrUJmM9aHL1ZOiDUtaD7PYyseEQSaIOszeOxjuwFS4OmIE6Dv7Yf2x3nj4_ZDIAmHVfBpfB5LU5iXhPtigfKXPEjPCIr8SVU1dTN1cFZLMcvJ9hmdRGCgAYcSsDKc8YjaXBP" class="w-full h-full object-cover" alt="Daayra">
+            </div>
+            <div class="flex flex-col justify-center">
+                <h4 class="font-body-md font-bold text-on-surface group-hover:text-primary transition-colors">Daayra</h4>
+                <p class="font-metadata text-yellow-400 text-xs flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span> 8.0</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4 group cursor-pointer p-2 hover:bg-surface-variant rounded-lg transition-colors">
+            <span class="font-display-lg text-2xl text-primary/40 w-6">4</span>
+            <div class="w-12 h-16 rounded overflow-hidden shrink-0 movie-card">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOjXwp52FBhMgxvJ61iOxA4eQWvBf1gVqR5Szl8GNQBD1xmbKI0fv9AdxaSFKXQMiza4XLfdRpldBlFjXvWt8IdYfkf6ZP317jX8A2BNfWiLeRMngasIBbz4DIJ6Lfdzg3GWTX7A1r26gxqYD-5QFYpXwbILja9WQbe6HnHIWbk7TRSLxr-KibtF-sPbvUS1wPUCv-NcsJE5IZA4pZFfqc967QGz92Tp4aqidozDmJyM82xdiE6OX9" class="w-full h-full object-cover" alt="Lanterns">
+            </div>
+            <div class="flex flex-col justify-center">
+                <h4 class="font-body-md font-bold text-on-surface group-hover:text-primary transition-colors">Lanterns</h4>
+                <p class="font-metadata text-yellow-400 text-xs flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span> 7.9</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4 group cursor-pointer p-2 hover:bg-surface-variant rounded-lg transition-colors">
+            <span class="font-display-lg text-2xl text-primary/40 w-6">5</span>
+            <div class="w-12 h-16 rounded overflow-hidden shrink-0 movie-card">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuButUApPijAOWE2oaHwMUmjUhN14d1aNJjK5xZefXzucA0TeAHrk1UY_T0trubkAl-mNL0Gu3G1DhbVYbJpUSemjcc4d2Fcz9IrpqrGtf5XKkyqkKDwaficdSI0QpQA1hyEuJELZiYnUEfyw8Y0f7j44ChxASIMaGn78lx6R5uuu-vy3pXhqQ-z4it42_BDDrYSzrNRQAdlxGArnCt5VAE7tPvrOmFihkEDVi0qEZ8ZdqPjYMr_SRXD" class="w-full h-full object-cover" alt="Whisper Man">
+            </div>
+            <div class="flex flex-col justify-center">
+                <h4 class="font-body-md font-bold text-on-surface group-hover:text-primary transition-colors">The Whisper Man</h4>
+                <p class="font-metadata text-yellow-400 text-xs flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span> 7.0</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- From Your Watchlist -->
+<div class="flex flex-col gap-stack-md bg-surface-container-low p-4 rounded-xl border border-white/5">
+    <div class="flex items-center gap-2 mb-2">
+        <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">schedule</span>
+        <h3 class="font-headline-md text-on-surface text-xl">From Your Watchlist</h3>
+    </div>
+    <div class="flex flex-col gap-4">
+        <div class="flex items-center gap-4 group cursor-pointer p-2 hover:bg-surface-variant rounded-lg transition-colors">
+            <div class="w-12 h-16 rounded overflow-hidden shrink-0 movie-card">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzfdUpbPzSmie3op_wj9PNbG0NvhQNHr1T3md1Ns9vNaWZjPNbCPJC33gLO_G60Rk1sJTFW7YciFnudHzh_LCo8f9H4ZdAWkFS0BQ84Noae9mXiDOjcsPGD8BxpGFe2fUT59hLReYd5D9GCWyoUS0KVVSzdyg3Yj3ys2MCjb_c0S2F37-rgLRe8u-gpqJhAkpxUUJftSA-Ker8VhGLCz7Fef8bUFMngDAipQLCrgk2iPtg9taMpb4T" class="w-full h-full object-cover" alt="Backrooms">
+            </div>
+            <div class="flex flex-col justify-center">
+                <h4 class="font-body-md font-bold text-on-surface group-hover:text-primary transition-colors">Backrooms</h4>
+                <p class="font-metadata text-on-surface-variant text-xs">Added 2 days ago</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4 group cursor-pointer p-2 hover:bg-surface-variant rounded-lg transition-colors">
+            <div class="w-12 h-16 rounded overflow-hidden shrink-0 movie-card">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuClANT1mLkL16DvdRUSD1mFO-L_ifG35FIjUs2lWu8-ETzdSGobu8yHhXS5yofj3k-_uEtRgAUbvLN6DzNRV4gvm-eShn3tznTkFXz5RvQACYbpTH45NVt6kmNhvVlpLvfiMkuPGw4Gq9LYmhzsxS7cLUYUW3CBJRILISAa30krEtN2zqNPcu3ffYOatWZkEM3gJA44HwOkkiFZ5YlZdBr_FrmxHKedQrSchTKRNdSLmtawCFl7zOg1" class="w-full h-full object-cover" alt="Obsession">
+            </div>
+            <div class="flex flex-col justify-center">
+                <h4 class="font-body-md font-bold text-on-surface group-hover:text-primary transition-colors">Obsession</h4>
+                <p class="font-metadata text-on-surface-variant text-xs">Added 5 days ago</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4 group cursor-pointer p-2 hover:bg-surface-variant rounded-lg transition-colors">
+            <div class="w-12 h-16 rounded overflow-hidden shrink-0 movie-card">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuButUApPijAOWE2oaHwMUmjUhN14d1aNJjK5xZefXzucA0TeAHrk1UY_T0trubkAl-mNL0Gu3G1DhbVYbJpUSemjcc4d2Fcz9IrpqrGtf5XKkyqkKDwaficdSI0QpQA1hyEuJELZiYnUEfyw8Y0f7j44ChxASIMaGn78lx6R5uuu-vy3pXhqQ-z4it42_BDDrYSzrNRQAdlxGArnCt5VAE7tPvrOmFihkEDVi0qEZ8ZdqPjYMr_SRXD" class="w-full h-full object-cover" alt="Whiplash">
+            </div>
+            <div class="flex flex-col justify-center">
+                <h4 class="font-body-md font-bold text-on-surface group-hover:text-primary transition-colors">Whiplash</h4>
+                <p class="font-metadata text-on-surface-variant text-xs">Added 1 week ago</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Your Favorites -->
+<div class="flex flex-col gap-stack-md bg-surface-container-low p-4 rounded-xl border border-white/5">
+    <div class="flex items-center gap-2 mb-2">
+        <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">favorite</span>
+        <h3 class="font-headline-md text-on-surface text-xl">Your Favorites</h3>
+    </div>
+    <div class="flex flex-col gap-4">
+        <div class="flex items-center gap-4 group cursor-pointer p-2 hover:bg-surface-variant rounded-lg transition-colors">
+            <div class="w-12 h-16 rounded overflow-hidden shrink-0 movie-card">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdA562UEsjHrWegMevTD0tlEUOIRPiD3zomGJfhRILlx8O7oUGpWc5lYKaZj3xv1WewILdmhEe-23zJhmvOrFEUtUf-mr_dGuDWYtytONldwAFNFc0WnQAInxeNPcxuGprtcrlgam03PRUOrI35SelpcGz_7j5hWHk7TSc3oZOHYjVntkrFOcHKATPL6lyv_V5Bfs80g3nGaz-rC-4JURq-GAe1xFbSS64FKBqvZRjbUXjeG9S4XhH" class="w-full h-full object-cover" alt="Toy Story 3">
+            </div>
+            <div class="flex flex-col justify-center">
+                <h4 class="font-body-md font-bold text-on-surface group-hover:text-primary transition-colors">Toy Story 3</h4>
+                <p class="font-metadata text-yellow-400 text-xs flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span> 7.8</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4 group cursor-pointer p-2 hover:bg-surface-variant rounded-lg transition-colors">
+            <div class="w-12 h-16 rounded overflow-hidden shrink-0 movie-card">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDU9Q37CLvDe5NcXYC6k1FtN33ytfOsJ8-cL5U8V6GVNyQLEAHNCdcSW3IOwACgGet1E9FLLkBlw5hsaZV95vKZYKUEk7WjZ-Pk3OS-f2lzKZ09_psjrUJmM9aHL1ZOiDUtaD7PYyseEQSaIOszeOxjuwFS4OmIE6Dv7Yf2x3nj4_ZDIAmHVfBpfB5LU5iXhPtigfKXPEjPCIr8SVU1dTN1cFZLMcvJ9hmdRGCgAYcSsDKc8YjaXBP" class="w-full h-full object-cover" alt="The Wild Robot">
+            </div>
+            <div class="flex flex-col justify-center">
+                <h4 class="font-body-md font-bold text-on-surface group-hover:text-primary transition-colors">The Wild Robot</h4>
+                <p class="font-metadata text-yellow-400 text-xs flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span> 8.3</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4 group cursor-pointer p-2 hover:bg-surface-variant rounded-lg transition-colors">
+            <div class="w-12 h-16 rounded overflow-hidden shrink-0 movie-card">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOjXwp52FBhMgxvJ61iOxA4eQWvBf1gVqR5Szl8GNQBD1xmbKI0fv9AdxaSFKXQMiza4XLfdRpldBlFjXvWt8IdYfkf6ZP317jX8A2BNfWiLeRMngasIBbz4DIJ6Lfdzg3GWTX7A1r26gxqYD-5QFYpXwbILja9WQbe6HnHIWbk7TRSLxr-KibtF-sPbvUS1wPUCv-NcsJE5IZA4pZFfqc967QGz92Tp4aqidozDmJyM82xdiE6OX9" class="w-full h-full object-cover" alt="Spirited Away">
+            </div>
+            <div class="flex flex-col justify-center">
+                <h4 class="font-body-md font-bold text-on-surface group-hover:text-primary transition-colors">Spirited Away</h4>
+                <p class="font-metadata text-yellow-400 text-xs flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span> 8.5</p>
+            </div>
+        </div>
+    </div>
+</div></aside>
+</main>
+<!-- Footer -->
+<footer class="w-full py-stack-lg bg-surface-container-lowest border-t border-white/5 flat no shadows flex flex-col md:flex-row justify-between items-center px-gutter-desktop gap-stack-md mt-auto">
+<div class="font-headline-md text-on-surface text-xl">MovieDB</div>
+<div class="font-metadata text-metadata text-secondary opacity-80 hover:opacity-100">© 2024 MovieDB. All rights reserved.</div>
+<div class="flex gap-4">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-metadata text-metadata opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-metadata text-metadata opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-metadata text-metadata opacity-80 hover:opacity-100" href="#">Help Center</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-metadata text-metadata opacity-80 hover:opacity-100" href="#">Contact Us</a>
+</div>
+</footer>
+
+
+</body></html>

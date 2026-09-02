@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import { AuthProvider } from "./context/AuthContext"; 
 import NotFound from "./pages/NotFound.jsx";
+import ErrorPage from "./pages/ErrorPage.jsx";
 
 const ShowList = lazy(() => import("./pages/ShowList.jsx"));
 const Detail = lazy(() => import("./pages/Detail.jsx"));
@@ -15,19 +16,53 @@ const WatchLater = lazy(() => import("./pages/WatchList.jsx"));
 const Home = lazy(() => import("./pages/Home.jsx"));
 const Recommendations = lazy(() => import("./pages/Recommendations.jsx"));
 const Profile = lazy(() => import("./components/Profile.jsx"));
-const RegisterForm = lazy(() => import("./Auth/RegisterForm.jsx"));
+const LoginPage = lazy(() => import("./pages/LoginPage.jsx"));
+const SignupPage = lazy(() => import("./pages/SignupPage.jsx"));
+
+const Landing = lazy(() => import("./pages/Landing.jsx"));
 
 const router = createBrowserRouter([
   {
     path: "/",
+    errorElement: <ErrorPage />,
+    element: (
+      <Suspense fallback={<div className="global-loader">Loading...</div>}>
+        <Landing />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/login",
+    errorElement: <ErrorPage />,
+    element: (
+      <Suspense fallback={<div className="global-loader">Loading...</div>}>
+        <LoginPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/signup",
+    errorElement: <ErrorPage />,
+    element: (
+      <Suspense fallback={<div className="global-loader">Loading...</div>}>
+        <SignupPage />
+      </Suspense>
+    ),
+  },
+  {
     element: <App />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/home",
-        element: <Home />,
+        element: (
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute>
+        ),
       },
       {
-        index: true,
+        path: "/discover",
         element: (
           <ProtectedRoute>
             <ShowList />
@@ -35,11 +70,11 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "detail/:id",
+        path: "/detail/:id",
         element: <Detail />,
       },
       {
-        path: "favourite",
+        path: "/favourite",
         element: (
           <ProtectedRoute>
             <Favourite />
@@ -47,7 +82,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "watchList",
+        path: "/watchList",
         element: (
           <ProtectedRoute>
             <WatchLater />
@@ -55,11 +90,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/register",
-        element: <RegisterForm />,
-      },
-      {
-        path: "recommendations",
+        path: "/recommendations",
         element: (
           <ProtectedRoute>
             <Recommendations />
@@ -67,7 +98,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "profile",
+        path: "/profile",
         element: (
           <ProtectedRoute>
             <Profile />

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Recommendations - MovieDB</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Montserrat:wght@700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "error": "#ffb4ab",
+                      "outline": "#af8782",
+                      "surface-container-high": "#2a2a2b",
+                      "on-secondary": "#303032",
+                      "surface-variant": "#353436",
+                      "on-background": "#e5e2e3",
+                      "secondary": "#c8c6c8",
+                      "on-primary": "#690003",
+                      "surface-tint": "#ffb4aa",
+                      "on-surface-variant": "#e9bcb6",
+                      "surface": "#131314",
+                      "on-tertiary-container": "#fbf8fe",
+                      "on-tertiary-fixed": "#1b1b1f",
+                      "primary": "#ffb4aa",
+                      "background": "#131314",
+                      "on-surface": "#e5e2e3",
+                      "on-error-container": "#ffdad6",
+                      "on-primary-fixed-variant": "#930007",
+                      "on-secondary-fixed-variant": "#474649",
+                      "on-tertiary-fixed-variant": "#47464b",
+                      "surface-container-low": "#1c1b1c",
+                      "on-secondary-container": "#b7b4b7",
+                      "tertiary-container": "#737277",
+                      "error-container": "#93000a",
+                      "primary-container": "#e50914",
+                      "inverse-on-surface": "#313031",
+                      "inverse-surface": "#e5e2e3",
+                      "on-primary-container": "#fff7f6",
+                      "surface-dim": "#131314",
+                      "on-primary-fixed": "#410001",
+                      "secondary-container": "#474649",
+                      "inverse-primary": "#c0000c",
+                      "tertiary-fixed": "#e4e1e7",
+                      "outline-variant": "#5e3f3b",
+                      "surface-container-highest": "#353436",
+                      "surface-bright": "#3a393a",
+                      "tertiary": "#c8c5cb",
+                      "on-secondary-fixed": "#1b1b1d",
+                      "secondary-fixed-dim": "#c8c6c8",
+                      "on-error": "#690005",
+                      "on-tertiary": "#303034",
+                      "surface-container": "#201f20",
+                      "primary-fixed-dim": "#ffb4aa",
+                      "primary-fixed": "#ffdad5",
+                      "tertiary-fixed-dim": "#c8c5cb",
+                      "surface-container-lowest": "#0e0e0f",
+                      "secondary-fixed": "#e4e2e4"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter-mobile": "16px",
+                      "stack-lg": "32px",
+                      "margin-desktop": "64px",
+                      "margin-mobile": "20px",
+                      "stack-md": "16px",
+                      "gutter-desktop": "32px",
+                      "container-max": "1440px",
+                      "stack-sm": "8px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "metadata": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Montserrat"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Montserrat"
+                      ],
+                      "headline-md": [
+                              "Montserrat"
+                      ],
+                      "display-lg-mobile": [
+                              "Montserrat"
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "metadata": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-caps": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "0.1em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "64px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "800"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "40px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "800"
+                              }
+                      ]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        body {
+            background-color: #0A0A0B;
+        }
+        .glass-panel {
+            background: rgba(10, 10, 11, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+        }
+        .movie-card:hover {
+            transform: scale(1.05);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0A0A0B;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2A2A2E;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md custom-scrollbar antialiased min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/60 dark:bg-surface/60 backdrop-blur-xl border-b border-white/10 shadow-none">
+<div class="flex justify-between items-center h-20 px-gutter-desktop max-w-container-max mx-auto">
+<div class="flex items-center gap-8">
+<a class="font-headline-md text-headline-md font-bold text-on-surface dark:text-on-surface" href="#">MovieDB</a>
+<div class="hidden md:flex gap-6">
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface transition-colors hover:bg-white/5 duration-300 px-3 py-2 rounded-md" href="#">Favourites</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface transition-colors hover:bg-white/5 duration-300 px-3 py-2 rounded-md" href="#">Watch List</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 px-3 py-2" href="#">Recommendations</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface hover:text-primary transition-colors p-2 hover:bg-white/5 rounded-full">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<div class="flex items-center gap-2 bg-surface-container-highest rounded-full p-1 pr-4 cursor-pointer hover:bg-white/10 transition-colors">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-sm">
+                        JD
+                    </div>
+<span class="text-sm font-medium">Joe Doe</span>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-grow pt-32 pb-margin-desktop px-gutter-desktop max-w-container-max mx-auto w-full">
+<!-- Header -->
+<header class="mb-12 border-b border-outline-variant/20 pb-6">
+<h1 class="font-display-lg text-display-lg md:font-display-lg md:text-display-lg font-display-lg-mobile text-display-lg-mobile">
+                Recommended for <span class="text-primary-container">🎬 Spider-Man</span>
+</h1>
+</header>
+<!-- Movie Grid -->
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+<!-- Card 1 -->
+<div class="movie-card relative group cursor-pointer rounded-xl overflow-hidden bg-[#161618] transition-all duration-300 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]">
+<div class="aspect-[2/3] relative overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A cinematic movie poster featuring a superhero swinging through a dark, rainy city, dramatic lighting, high contrast, moody atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_dnV_sqSOBtuabtjzL7k7Uw_7vu3bgu26TJKs4bvEVFM1tDn5Ha5okKXPmcB71PSEkfVe4x_8A7kr8LMMCNATZHx5pqvohvmycPmDd7ZPuR_vaeCCa90k_m1T4YbQgZmV9euMbLrG68RhUhG2DsXDWPaftsQIrr1SJc480OGn9-bzHTUeQreAntVcNvl3fdlaTthGbZlWdkdb9vRL0Ny3df9RaqZUvzA3NcqXRBDuc7Jj9ZMrbyLz"/>
+<div class="absolute top-2 left-2 glass-panel px-2 py-1 rounded text-xs font-bold flex items-center gap-1 z-10">
+<span class="text-yellow-400">⭐</span> 6.5
+                    </div>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
+<button class="bg-primary-container text-white px-6 py-2 rounded font-bold tracking-wide hover:bg-red-700 transition-colors bg-gradient-to-r from-primary-container to-red-700">VIEW DETAILS</button>
+</div>
+</div>
+<div class="p-4">
+<h3 class="font-body-md text-body-md font-semibold truncate">Spider-Man 3</h3>
+<p class="font-metadata text-metadata text-on-surface-variant mt-1">2007</p>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="movie-card relative group cursor-pointer rounded-xl overflow-hidden bg-[#161618] transition-all duration-300 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]">
+<div class="aspect-[2/3] relative overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A cinematic movie poster featuring a superhero in a dynamic pose against a bright city backdrop, high action, vibrant colors, explosive." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0NEmKp8QlPhhjhvWq1Nczp20s6a0roki9_Cd-FzCJakS_0_XJyvWw-IkSWJH-qnngMxvKEVW1tb-l3nsKwdpkVty2OyI2lYQ2KICv04M-Z5Ov4Mj-gPQx7fCqOTOMqyXYUcZD7_uQNKSaXAcFOepngB5Jaovtpam7AtCMrw3iwc7yLHsfihmoy-gGeOzVDr9K3rPJBKDffk_5QK5RNPMD7Qjh2DRB0yOkhn892DiwzsKV6uOTKr3A"/>
+<div class="absolute top-2 left-2 glass-panel px-2 py-1 rounded text-xs font-bold flex items-center gap-1 z-10">
+<span class="text-yellow-400">⭐</span> 7.3
+                    </div>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
+<button class="bg-primary-container text-white px-6 py-2 rounded font-bold tracking-wide hover:bg-red-700 transition-colors bg-gradient-to-r from-primary-container to-red-700">VIEW DETAILS</button>
+</div>
+</div>
+<div class="p-4">
+<h3 class="font-body-md text-body-md font-semibold truncate">Spider-Man 2</h3>
+<p class="font-metadata text-metadata text-on-surface-variant mt-1">2004</p>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="movie-card relative group cursor-pointer rounded-xl overflow-hidden bg-[#161618] transition-all duration-300 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]">
+<div class="aspect-[2/3] relative overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A cinematic movie poster featuring a wisecracking anti-hero in a red and black suit, holding weapons, gritty urban background, dark comedy tone." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4JVsuX2DuSVA4PNtXbdc8f3NjGgRNK6VvEY9BgES1j0G9bHif3h4u2j93J-JmNfBNYn593yl-Gnx1WQ_wdMoQFfoHThVo47aEzpENx1olSc-v1136PmeOllndHJzjw2eRcLvDM9SWzD9fntsXkl_p7qXnH9ZemVPZw320IxtDXpgErev8Naiwps7hV_0Y8MAE8zw26yNxc_CoBaKN88RlfyZWTdFkIBsE7U7vMyvgs5Nx7Flq3iS6"/>
+<div class="absolute top-2 left-2 glass-panel px-2 py-1 rounded text-xs font-bold flex items-center gap-1 z-10">
+<span class="text-yellow-400">⭐</span> 7.6
+                    </div>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
+<button class="bg-primary-container text-white px-6 py-2 rounded font-bold tracking-wide hover:bg-red-700 transition-colors bg-gradient-to-r from-primary-container to-red-700">VIEW DETAILS</button>
+</div>
+</div>
+<div class="p-4">
+<h3 class="font-body-md text-body-md font-semibold truncate">Deadpool</h3>
+<p class="font-metadata text-metadata text-on-surface-variant mt-1">2016</p>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="movie-card relative group cursor-pointer rounded-xl overflow-hidden bg-[#161618] transition-all duration-300 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]">
+<div class="aspect-[2/3] relative overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A cinematic movie poster featuring a ragged superhero flying through the air, carrying something heavy, chaotic city scene, unconventional hero." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrlowj6GryWeoUh_gisbUqsSjSFINqQqGepbPQVFMcnY4MZHXwNAV-4dqyZ61A2W4_OAa5o_izpzgOm2fryJ19tiG8avROmFU1kqRZAjwAH2l9r0cSPobbxEyaXKuzqSv51Uusc_tELFtdbtzIxaEfHX32y8hpt-jnUNaZY2qgNtM2ZRuh92vPGWBQoe_rn0rd4eMxkB_6Xx9u5kzxXSU7BGreiQuotFr2nLrq__8HfXk9qKacE2FZ"/>
+<div class="absolute top-2 left-2 glass-panel px-2 py-1 rounded text-xs font-bold flex items-center gap-1 z-10">
+<span class="text-yellow-400">⭐</span> 6.4
+                    </div>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
+<button class="bg-primary-container text-white px-6 py-2 rounded font-bold tracking-wide hover:bg-red-700 transition-colors bg-gradient-to-r from-primary-container to-red-700">VIEW DETAILS</button>
+</div>
+</div>
+<div class="p-4">
+<h3 class="font-body-md text-body-md font-semibold truncate">Hancock</h3>
+<p class="font-metadata text-metadata text-on-surface-variant mt-1">2008</p>
+</div>
+</div>
+<!-- Card 5 -->
+<div class="movie-card relative group cursor-pointer rounded-xl overflow-hidden bg-[#161618] transition-all duration-300 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]">
+<div class="aspect-[2/3] relative overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A cinematic movie poster featuring a team of superheroes standing together, looking upwards, epic scale, cosmic background, high contrast lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7S8LEHTwBs8CDbdI-uLnlq2F71oJG1TXHflyjI4HjRxr7wx_CbRoEqsuAzaeTXZcRhoRYK-HXh1zpjx9OzFIuDNobFgCIj8upCDXIYjkk1TW4jxCYfzi-yv7ODLnZO13uW50ZsYcGeRomCRzDIggiuYk85h2Hs7O6OaK_aTSFFLqQTLV_jCiYGPk2MIA8t7A7xOr_mlxWIuYEefR8ItGPnnnt7efJ8onC96ghzMDleQXGaBQ-gXX2"/>
+<div class="absolute top-2 left-2 glass-panel px-2 py-1 rounded text-xs font-bold flex items-center gap-1 z-10">
+<span class="text-yellow-400">⭐</span> 8.0
+                    </div>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
+<button class="bg-primary-container text-white px-6 py-2 rounded font-bold tracking-wide hover:bg-red-700 transition-colors bg-gradient-to-r from-primary-container to-red-700">VIEW DETAILS</button>
+</div>
+</div>
+<div class="p-4">
+<h3 class="font-body-md text-body-md font-semibold truncate">The Avengers</h3>
+<p class="font-metadata text-metadata text-on-surface-variant mt-1">2012</p>
+</div>
+</div>
+<!-- Card 6 -->
+<div class="movie-card relative group cursor-pointer rounded-xl overflow-hidden bg-[#161618] transition-all duration-300 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]">
+<div class="aspect-[2/3] relative overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A cinematic movie poster featuring a superhero with a hammer, dark and mystical background, magical energy, epic fantasy style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7u1IjK1bZrN9EQfo4xTY3YrUqJw3kcXe95GommyNI9AoUlAjL3JXrONSnmB337W8-veWXEwKnpUt0-t_Vn2CysbZkLVCx_5_zLY9XPJE_USsLr7b0MLgztP61vnzEZ9-VN6fgipLF0BdPipzRVeovNQTD2o-UuEk0P7qnLdmrIlbnw8jfyAVSgf9t_nERDdwb4w7NN0BYZ_edFWk25tB1w_-Lm5od2qgmJjQ9DqItUEPhQZwzDsUX"/>
+<div class="absolute top-2 left-2 glass-panel px-2 py-1 rounded text-xs font-bold flex items-center gap-1 z-10">
+<span class="text-yellow-400">⭐</span> 6.5
+                    </div>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
+<button class="bg-primary-container text-white px-6 py-2 rounded font-bold tracking-wide hover:bg-red-700 transition-colors bg-gradient-to-r from-primary-container to-red-700">VIEW DETAILS</button>
+</div>
+</div>
+<div class="p-4">
+<h3 class="font-body-md text-body-md font-semibold truncate">Thor: The Dark World</h3>
+<p class="font-metadata text-metadata text-on-surface-variant mt-1">2013</p>
+</div>
+</div>
+<!-- Card 7 -->
+<div class="movie-card relative group cursor-pointer rounded-xl overflow-hidden bg-[#161618] transition-all duration-300 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]">
+<div class="aspect-[2/3] relative overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A cinematic movie poster featuring a superhero in high-tech red and gold armor flying upwards, sleek design, futuristic, bright metallic reflections." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsy5UZ0DH7aetUaxEoDmr3W7QWvdimQUX-uzpAdjsWPFCZZxxev5tNHwxJuAfahmo8iMwuoPKmWUGnk7irwxBeisYGwqiMzP_mVH5q7F0sTcXTegJl0h8HEilLNUiPW0VLSEF9nusg0oJwdFe7YPOt8ocEfCnSAWZzyJ8fU4b25_vgx91JCJGFt3o3QootR94aH3KH8k40e5y0aEcUCXkUP_OIheyLwZL06Jf2RVpraMyjSEFx9169"/>
+<div class="absolute top-2 left-2 glass-panel px-2 py-1 rounded text-xs font-bold flex items-center gap-1 z-10">
+<span class="text-yellow-400">⭐</span> 7.7
+                    </div>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
+<button class="bg-primary-container text-white px-6 py-2 rounded font-bold tracking-wide hover:bg-red-700 transition-colors bg-gradient-to-r from-primary-container to-red-700">VIEW DETAILS</button>
+</div>
+</div>
+<div class="p-4">
+<h3 class="font-body-md text-body-md font-semibold truncate">Iron Man</h3>
+<p class="font-metadata text-metadata text-on-surface-variant mt-1">2008</p>
+</div>
+</div>
+<!-- Card 8 -->
+<div class="movie-card relative group cursor-pointer rounded-xl overflow-hidden bg-[#161618] transition-all duration-300 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]">
+<div class="aspect-[2/3] relative overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A cinematic movie poster featuring a gritty superhero with claws, black and white aesthetic with striking red accents, minimalist, intense expression." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB34o__lt50z01bYdne7xEDldQGfUvBUNVBvHcGjWoKInYGvB2HJycv0ro10R-aEWOeoocz-c6Xo6fE8hyKZLQDKdbiB608J5bUS6oPLHe6K9AIgcRunvi_nB7AUKG0qvbeQye4oYmn13MiMPV-COL0S_IcjkTCjYvcopjKsAO8FOcU7g_VdKNewDzTSBYjEEtL0U5PrJU2l5Nd1RyulAijqS3CADVXo7a4gTLfF8aZR1x2r0-HoxsL"/>
+<div class="absolute top-2 left-2 glass-panel px-2 py-1 rounded text-xs font-bold flex items-center gap-1 z-10">
+<span class="text-yellow-400">⭐</span> 6.4
+                    </div>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
+<button class="bg-primary-container text-white px-6 py-2 rounded font-bold tracking-wide hover:bg-red-700 transition-colors bg-gradient-to-r from-primary-container to-red-700">VIEW DETAILS</button>
+</div>
+</div>
+<div class="p-4">
+<h3 class="font-body-md text-body-md font-semibold truncate">The Wolverine</h3>
+<p class="font-metadata text-metadata text-on-surface-variant mt-1">2013</p>
+</div>
+</div>
+<!-- Card 9 -->
+<div class="movie-card relative group cursor-pointer rounded-xl overflow-hidden bg-[#161618] transition-all duration-300 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]">
+<div class="aspect-[2/3] relative overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A cinematic movie poster featuring a tiny superhero standing amidst giant everyday objects, playful scale, high-tech suit, dynamic lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwrUs3MbvKCSZKK6TgQ7oBxq2C1ev2ipOfC_2xKcOdiBFQ2aOyToB6TNbeAiZ-lysWOtEC5a2utzYmUMN3Vn47wY63_AKvVVxohTRm4mLw8ALC2nj1blR97IOmNdLRJxfKNr03-U_u1fwP8pTVMZ2EW1808N_IS8hul4Up35WfsLp--WYEJlCmfHYu4ZKAbfIvzQzN_OCKR5ovbChsBdGFsAwk4d-T5RThZUW4WcceZ6LGALZRL6l0"/>
+<div class="absolute top-2 left-2 glass-panel px-2 py-1 rounded text-xs font-bold flex items-center gap-1 z-10">
+<span class="text-yellow-400">⭐</span> 7.1
+                    </div>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
+<button class="bg-primary-container text-white px-6 py-2 rounded font-bold tracking-wide hover:bg-red-700 transition-colors bg-gradient-to-r from-primary-container to-red-700">VIEW DETAILS</button>
+</div>
+</div>
+<div class="p-4">
+<h3 class="font-body-md text-body-md font-semibold truncate">Ant-Man</h3>
+<p class="font-metadata text-metadata text-on-surface-variant mt-1">2015</p>
+</div>
+</div>
+<!-- Card 10 -->
+<div class="movie-card relative group cursor-pointer rounded-xl overflow-hidden bg-[#161618] transition-all duration-300 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]">
+<div class="aspect-[2/3] relative overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A cinematic movie poster featuring a superhero in high-tech red and gold armor facing off against drones, intense action, sparks, dark atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHDGWsSO_pRjmzchasws_Xf0dbJ0V2Waua9cmT7zqVN9qCYch3QKp8g_s1O9hV_i2ohsJE4dJFnsp10B0DlZoi9r9YN31LhYLf1t12qkimleTJEolNyfpJz5p931QVpLjugmAQa5mViQHZMNRQgh0Gdz9LeGgHZ_TnxvlFT4pE7SQEJRwIAyMbmoBCfIK_RPtg8BWEEpK45e72X0eyKi2Ht_DDpZEizL6kuWzyXhVAvOjLWeSUPXe7"/>
+<div class="absolute top-2 left-2 glass-panel px-2 py-1 rounded text-xs font-bold flex items-center gap-1 z-10">
+<span class="text-yellow-400">⭐</span> 6.9
+                    </div>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
+<button class="bg-primary-container text-white px-6 py-2 rounded font-bold tracking-wide hover:bg-red-700 transition-colors bg-gradient-to-r from-primary-container to-red-700">VIEW DETAILS</button>
+</div>
+</div>
+<div class="p-4">
+<h3 class="font-body-md text-body-md font-semibold truncate">Iron Man 2</h3>
+<p class="font-metadata text-metadata text-on-surface-variant mt-1">2010</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-outline-variant/20 mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center py-stack-lg px-gutter-desktop max-w-container-max mx-auto">
+<div class="font-label-caps text-label-caps text-primary mb-4 md:mb-0">
+                © 2024 MovieDB Streaming. All rights reserved.
+            </div>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="font-metadata text-metadata text-on-surface-variant hover:text-on-surface hover:underline transition-all opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="font-metadata text-metadata text-on-surface-variant hover:text-on-surface hover:underline transition-all opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="font-metadata text-metadata text-on-surface-variant hover:text-on-surface hover:underline transition-all opacity-80 hover:opacity-100" href="#">Help Center</a>
+<a class="font-metadata text-metadata text-on-surface-variant hover:text-on-surface hover:underline transition-all opacity-80 hover:opacity-100" href="#">Contact Us</a>
+</div>
+</div>
+</footer>
+</body></html>

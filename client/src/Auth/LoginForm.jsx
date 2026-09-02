@@ -2,46 +2,36 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../utils/api";
 import notify from "../utils/toast";
-import "../style/AuthStyle.css";
 import { useAuth } from "../context/AuthContext";
+import { FiMail, FiLock, FiEye, FiEyeOff, FiLogIn } from "react-icons/fi";
 
-const LoginForm = () => {
+const LoginForm = ({ onSwitch }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     try {
-      // ── Validation ──
       if (!email || !password) {
         notify.warning("Please fill all required fields.");
         return;
       }
-
       if (!/\S+@\S+\.\S+/.test(email)) {
         notify.warning("Invalid email format.");
         return;
       }
-
-      const res = await api.post("/api/auth/login", {
-        email,
-        password,
-      });
-
+      const res = await api.post("/api/auth/login", { email, password });
       const { user } = res.data;
       login(user);
-
       setEmail("");
       setPassword("");
-
       notify.success(`Welcome back, ${user.name}!`);
-      navigate("/");
+      navigate("/home");
     } catch (error) {
-      // Parse specific backend error messages
-      const message =
-        error.response?.data?.message || "";
-
+      const message = error.response?.data?.message || "";
       if (error.response?.status === 400) {
         if (message.toLowerCase().includes("not found")) {
           notify.error("No account found with this email.");
@@ -52,42 +42,80 @@ const LoginForm = () => {
         } else {
           notify.error(message || "Login failed. Please try again.");
         }
-      } else if (!error.response) {
-        // Network error — already handled by interceptor
-      } else {
-        // 500 etc. — already handled by interceptor
       }
     }
   };
 
-  return (
-    <div className="form-container">
-      <p className="text-center">Sign in with:</p>
-      <input
-        type="email"
-        placeholder="Email address"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+  const inputStyle = {
+    width: '100%',
+    background: 'rgba(255, 255, 255, 0.05)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    borderRadius: 'var(--radius-lg)',
+    padding: '12px 16px 12px 40px',
+    color: 'var(--color-on-surface)',
+    fontFamily: 'var(--font-body)',
+    fontSize: '16px',
+    outline: 'none',
+    transition: 'all 0.3s'
+  };
 
-      <div className="options">
-        <label>
-          <input type="checkbox" />
-          Remember me
-        </label>
-        <a href="#">Forgot password?</a>
+  return (
+    <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--stack-md)' }}>
+      <div>
+        <label className="font-label-caps text-on-surface-variant" style={{ display: 'block', marginBottom: '8px', marginLeft: '4px' }}>Email</label>
+        <div style={{ position: 'relative' }}>
+          <FiMail style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-on-surface-variant)' }} />
+          <input
+            type="email"
+            placeholder="name@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            style={inputStyle}
+            onFocus={(e) => e.target.style.borderColor = 'var(--color-primary)'}
+            onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)'}
+            required
+          />
+        </div>
+      </div>
+      
+      <div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', marginLeft: '4px' }}>
+          <label className="font-label-caps text-on-surface-variant">Password</label>
+          <a href="#" className="font-label-caps text-primary" style={{ textDecoration: 'none' }}>Forgot Password?</a>
+        </div>
+        <div style={{ position: 'relative' }}>
+          <FiLock style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-on-surface-variant)' }} />
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={{ ...inputStyle, paddingRight: '40px' }}
+            onFocus={(e) => e.target.style.borderColor = 'var(--color-primary)'}
+            onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)'}
+            required
+          />
+          <button 
+            type="button"
+            style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--color-on-surface-variant)', cursor: 'pointer' }}
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? <FiEyeOff /> : <FiEye />}
+          </button>
+        </div>
       </div>
 
-      <button className="submit-button" type="submit" onClick={handleLogin}>
-        Sign in
+      <button className="btn-primary font-label-caps" type="submit" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', padding: '16px', borderRadius: 'var(--radius-lg)', marginTop: 'var(--stack-md)', width: '100%' }}>
+        <span>Login</span>
+        <FiLogIn size={18} />
       </button>
-    </div>
+
+      <div style={{ marginTop: 'var(--stack-lg)', textAlign: 'center', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: 'var(--stack-md)' }}>
+        <p className="font-body-md text-on-surface-variant">
+          Don't have an account? <button type="button" onClick={onSwitch} className="text-primary font-body-md" style={{ background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600, padding: 0 }}>Sign Up</button>
+        </p>
+      </div>
+    </form>
   );
 };
 

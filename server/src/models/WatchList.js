@@ -10,6 +10,7 @@ const WatchSchema = new mongoose.Schema({
   movieId: String,
   title: String,
   year: String,
+  rating: Number,
   img: String,
 });
 

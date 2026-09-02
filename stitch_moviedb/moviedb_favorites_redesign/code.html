@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MovieDB - Your Favorites</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Montserrat:wght@700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#930007",
+                        "surface-container-highest": "#353436",
+                        "surface-container-low": "#1c1b1c",
+                        "on-error": "#690005",
+                        "secondary": "#c8c6c8",
+                        "on-secondary-container": "#b7b4b7",
+                        "on-tertiary": "#303034",
+                        "on-background": "#e5e2e3",
+                        "error": "#ffb4ab",
+                        "on-surface-variant": "#e9bcb6",
+                        "surface-variant": "#353436",
+                        "surface-dim": "#131314",
+                        "on-primary-container": "#fff7f6",
+                        "on-tertiary-fixed": "#1b1b1f",
+                        "tertiary": "#c8c5cb",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-container": "#737277",
+                        "surface-container-lowest": "#0e0e0f",
+                        "primary-container": "#e50914",
+                        "on-surface": "#e5e2e3",
+                        "primary-fixed": "#ffdad5",
+                        "background": "#131314",
+                        "secondary-fixed": "#e4e2e4",
+                        "secondary-fixed-dim": "#c8c6c8",
+                        "inverse-on-surface": "#313031",
+                        "surface-container-high": "#2a2a2b",
+                        "outline": "#af8782",
+                        "on-primary-fixed": "#410001",
+                        "on-primary": "#690003",
+                        "surface-tint": "#ffb4aa",
+                        "primary": "#ffb4aa",
+                        "on-tertiary-container": "#fbf8fe",
+                        "on-secondary-fixed-variant": "#474649",
+                        "inverse-primary": "#c0000c",
+                        "on-secondary-fixed": "#1b1b1d",
+                        "on-tertiary-fixed-variant": "#47464b",
+                        "outline-variant": "#5e3f3b",
+                        "tertiary-fixed": "#e4e1e7",
+                        "surface-container": "#201f20",
+                        "surface-bright": "#3a393a",
+                        "on-secondary": "#303032",
+                        "primary-fixed-dim": "#ffb4aa",
+                        "error-container": "#93000a",
+                        "surface": "#131314",
+                        "secondary-container": "#474649",
+                        "tertiary-fixed-dim": "#c8c5cb",
+                        "inverse-surface": "#e5e2e3"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter-mobile": "16px",
+                        "stack-sm": "8px",
+                        "gutter-desktop": "32px",
+                        "stack-md": "16px",
+                        "margin-mobile": "20px",
+                        "margin-desktop": "64px",
+                        "container-max": "1440px",
+                        "stack-lg": "32px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "display-lg-mobile": ["Montserrat"],
+                        "display-lg": ["Montserrat"],
+                        "metadata": ["Inter"],
+                        "headline-lg": ["Montserrat"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "display-lg-mobile": ["40px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "display-lg": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "metadata": ["14px", { "lineHeight": "1.0", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "700" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #0A0A0B; /* Level 0: Pure obsidian */
+            color: #e5e2e3; /* on-surface */
+        }
+        /* Custom slim scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0A0A0B; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a2a2b; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #353436; 
+        }
+        
+        .movie-card {
+            background-color: #161618; /* Level 1 */
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.2s ease-in-out;
+        }
+        .movie-card:hover {
+            transform: scale(1.05);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+        
+        .aspect-poster {
+            aspect-ratio: 2 / 3;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md antialiased min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="bg-surface/60 backdrop-blur-xl text-primary font-body-md text-body-md fixed top-0 w-full z-50 border-b border-white/5 shadow-none">
+<div class="flex justify-between items-center px-gutter-desktop h-20 w-full max-w-container-max mx-auto">
+<div class="font-display-lg text-primary tracking-tighter uppercase text-3xl">MovieDB</div>
+<nav class="hidden md:flex gap-8">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors hover:scale-105 transition-transform duration-200 active:scale-95 transition-all" href="#">Recommendations</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors hover:scale-105 transition-transform duration-200 active:scale-95 transition-all" href="#">Watchlist</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 hover:scale-105 transition-transform duration-200 active:scale-95 transition-all" href="#">Favorites</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-white/5">
+<span class="material-symbols-outlined">search</span>
+</button>
+<div class="h-10 w-10 rounded-full overflow-hidden border-2 border-white/10 hover:border-primary transition-colors cursor-pointer">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="A stylized, minimalist avatar profile picture for a movie database user, featuring subtle cinematic lighting and dark tones, highly detailed." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDt1F5H-sJtDeJ8uq258ODYVPtdqHshRA3WXAs9KCFEtHJC5moM5SR9ozqX2mEdFZuFrx9bCq1hq_z4SzbfTIiDblUfiUf1T3l6GwqYACBcNnT2-YkWFfFfbwMheDspXC7KZR1-mJ-quweM_n0GDgyGvQcFT2G61rUDe8VwyLAMxEQGpmGGwOipFUefNqQI3a7ykds8mjsjv9LUYufiovgkXNIzMALGAxC1-TtNBJdS_QmvYKh2Mqrq"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow pt-[100px] pb-margin-desktop px-gutter-mobile md:px-gutter-desktop max-w-container-max mx-auto w-full">
+<!-- Header -->
+<div class="mb-stack-lg flex items-center gap-4">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Your Favorites</h1>
+<span class="text-3xl">❤️</span>
+</div>
+<!-- Movie Grid -->
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-stack-md md:gap-stack-lg">
+<!-- Card 1 -->
+<div class="movie-card rounded-xl overflow-hidden flex flex-col group relative cursor-pointer">
+<div class="relative aspect-poster w-full overflow-hidden">
+<img alt="Movie Poster" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZvms7-FtpcA-JjMluuAFXuKXVFmsq77BW74PAL_v5EIj5d9dhQKCac_huMY59dabS_ycoZCBfHPdodUwjf6pkdrppT38ghB4f_ePJF1r4o_7VUE47tta2TKI5xC8ENQys0TsKxBaZbp6SvNB0ucxnsyqbnioUd5g3d9zVeHsSrEsMmAsapfb97hLs-C_2nXohVPi7U6wOLBHF-JXKIX_NvhEuBCR_4sk8xt6mdC5LZhjh7KD67ApJGAuK1KjEu27LMw"/>
+<div class="absolute top-2 right-2 bg-surface/60 backdrop-blur-md rounded-full p-2 border border-white/10">
+<span class="material-symbols-outlined text-primary-container text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+</div>
+<div class="p-4 flex flex-col flex-grow">
+<h3 class="font-body-md text-body-md font-bold text-on-surface truncate mb-1">Toy Story 3</h3>
+<div class="flex items-center gap-1 mb-4">
+<span class="material-symbols-outlined text-yellow-500 text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-metadata text-metadata text-on-surface-variant">7.8</span>
+</div>
+<button class="mt-auto w-full bg-primary-container text-white py-2 rounded-lg font-label-caps text-label-caps bg-gradient-to-r from-primary-container to-[#c20711] hover:brightness-110 transition-all">VIEW DETAILS</button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="movie-card rounded-xl overflow-hidden flex flex-col group relative cursor-pointer">
+<div class="relative aspect-poster w-full overflow-hidden">
+<img alt="Movie Poster" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDvYYUxeuZsmhTvgeAvhVBs4oQ4tSRzntZgC9StrBffo1msLGLp-QV3A5Vlx2clwXQvjQp5TB4qHUIzFkvp6USFUsnH1vNun6UxTLcR6SgZzoi4_MKbQbpIyOv10sdEAbYTa-MgN3rmeEWx5m_1jt3BdvXlYKQa6O0fLGygWK_MHpFOxi4ddxnICPvi_zQi5GyYrkjWeOuJ001JAGaQ1-hk8DFiAryEiZpwt2pB2drP9TkvuPQEBdjKho3__S5V9dGNA"/>
+<div class="absolute top-2 right-2 bg-surface/60 backdrop-blur-md rounded-full p-2 border border-white/10">
+<span class="material-symbols-outlined text-primary-container text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+</div>
+<div class="p-4 flex flex-col flex-grow">
+<h3 class="font-body-md text-body-md font-bold text-on-surface truncate mb-1">Toy Story 5</h3>
+<div class="flex items-center gap-1 mb-4">
+<span class="material-symbols-outlined text-yellow-500 text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-metadata text-metadata text-on-surface-variant">7.4</span>
+</div>
+<button class="mt-auto w-full bg-primary-container text-white py-2 rounded-lg font-label-caps text-label-caps bg-gradient-to-r from-primary-container to-[#c20711] hover:brightness-110 transition-all">VIEW DETAILS</button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="movie-card rounded-xl overflow-hidden flex flex-col group relative cursor-pointer">
+<div class="relative aspect-poster w-full overflow-hidden">
+<img alt="Movie Poster" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZlgeJBTqhLKa_hPvoBlwCjJvbp0fXGC1X3hNLfvcMvxt1pgdwAkuEmXfkZvQ0cQ4HmDO3_ZlTVKRPmeN3ILiKNgAXLIZ88alMr6UzjntUMNGJcNil6rjo11SmdkNCz-dujoFSMKI8Z3SMHjrpcykfySXr_0V925zoj_99mao2WA0YgbZ470MkAidsBzDCvEVoebf2L1kSoiP9-Gc6qiA6zvwCdXm9BTMlInL4uFdNt8d0BbNNJ1LaCgOYWYLJOGmi6Q"/>
+<div class="absolute top-2 right-2 bg-surface/60 backdrop-blur-md rounded-full p-2 border border-white/10">
+<span class="material-symbols-outlined text-primary-container text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+</div>
+<div class="p-4 flex flex-col flex-grow">
+<h3 class="font-body-md text-body-md font-bold text-on-surface truncate mb-1">The Wild Robot</h3>
+<div class="flex items-center gap-1 mb-4">
+<span class="material-symbols-outlined text-yellow-500 text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-metadata text-metadata text-on-surface-variant">8.3</span>
+</div>
+<button class="mt-auto w-full bg-primary-container text-white py-2 rounded-lg font-label-caps text-label-caps bg-gradient-to-r from-primary-container to-[#c20711] hover:brightness-110 transition-all">VIEW DETAILS</button>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="movie-card rounded-xl overflow-hidden flex flex-col group relative cursor-pointer">
+<div class="relative aspect-poster w-full overflow-hidden">
+<img alt="Movie Poster" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAC1U-DO1YwRK5F4a0VpJpGf6MG6rwmwMEwG71qYcjGrwFt4WSUske5Q7Bzlvvp2TLfiV9SagrsEJiPlbckKWQ63XAfxeDUhmSuS0YAGSgJPRDLpBa0y2IH9cmmIrtm9PcQeZTIo7m1l3OJCfcDZc5Xq8EZIzius2gHL-qEwPKb6klQ5nbiM3i541owk5ES6zd5kF_R8CEl_S8Ee_YYH9W4L07edVToJReiFmM1KP5kRgN_wEemocI5bGq2-_USi1fs_w"/>
+<div class="absolute top-2 right-2 bg-surface/60 backdrop-blur-md rounded-full p-2 border border-white/10">
+<span class="material-symbols-outlined text-primary-container text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+</div>
+<div class="p-4 flex flex-col flex-grow">
+<h3 class="font-body-md text-body-md font-bold text-on-surface truncate mb-1">Harry Potter and the...</h3>
+<div class="flex items-center gap-1 mb-4">
+<span class="material-symbols-outlined text-yellow-500 text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-metadata text-metadata text-on-surface-variant">7.7</span>
+</div>
+<button class="mt-auto w-full bg-primary-container text-white py-2 rounded-lg font-label-caps text-label-caps bg-gradient-to-r from-primary-container to-[#c20711] hover:brightness-110 transition-all">VIEW DETAILS</button>
+</div>
+</div>
+<!-- Card 5 -->
+<div class="movie-card rounded-xl overflow-hidden flex flex-col group relative cursor-pointer">
+<div class="relative aspect-poster w-full overflow-hidden">
+<img alt="Movie Poster" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmNUPcCKa6ZyLpKG5ZLfweIyYHe-nuZgjNPsTaM-AC5u2Ktw5wQ9q1LzCdN6oM993cd4esX_9wLnZRXMIp_sTn_OAhZPIVKhU7i3O9_GnBHZsGMWL86j1AKflQ4VKUs8FE0NRl76K-kWxuf-BX2jY_PpIKMdCSiwI5CP6lbwSYS8PnKzTQDeq11jPOxwFHRW0w1-khrIM9NAUi4jqxtg5Ywz5jMOA7zcMegAkcD7XMDe47JB8H7Ou1vCbDBUBatklPtw"/>
+<div class="absolute top-2 right-2 bg-surface/60 backdrop-blur-md rounded-full p-2 border border-white/10">
+<span class="material-symbols-outlined text-primary-container text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+</div>
+<div class="p-4 flex flex-col flex-grow">
+<h3 class="font-body-md text-body-md font-bold text-on-surface truncate mb-1">Spirited Away</h3>
+<div class="flex items-center gap-1 mb-4">
+<span class="material-symbols-outlined text-yellow-500 text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-metadata text-metadata text-on-surface-variant">8.5</span>
+</div>
+<button class="mt-auto w-full bg-primary-container text-white py-2 rounded-lg font-label-caps text-label-caps bg-gradient-to-r from-primary-container to-[#c20711] hover:brightness-110 transition-all">VIEW DETAILS</button>
+</div>
+</div>
+<!-- Card 6 -->
+<div class="movie-card rounded-xl overflow-hidden flex flex-col group relative cursor-pointer">
+<div class="relative aspect-poster w-full overflow-hidden">
+<img alt="Movie Poster" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGz6c4tQaI8Z1S8HNuaioMXdPaMMbhRU4LM2fBIdf7Wps_t7CfbmDt3sLIj_8xx6f3nazaqjJmuvB5mTunQWsvkuCYSvUwiVUIN7Aq9b80Fr1vClaoF8GMEUUcCV03NlLkqHEs6RRMTi6-fOTaKLpmoQXtostrOsGTqAjwhtKf5VkuLM8-zxMqbFF-23EIeesKciZY2pjpZC5zOdgP9k6nHV69CbkUyhiwsT3vzx_vKWAeg3iJWo1w_eArFIHXSAoTvA"/>
+<div class="absolute top-2 right-2 bg-surface/60 backdrop-blur-md rounded-full p-2 border border-white/10">
+<span class="material-symbols-outlined text-primary-container text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+</div>
+<div class="p-4 flex flex-col flex-grow">
+<h3 class="font-body-md text-body-md font-bold text-on-surface truncate mb-1">The Sheep Detectives</h3>
+<div class="flex items-center gap-1 mb-4">
+<span class="material-symbols-outlined text-yellow-500 text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-metadata text-metadata text-on-surface-variant">7.8</span>
+</div>
+<button class="mt-auto w-full bg-primary-container text-white py-2 rounded-lg font-label-caps text-label-caps bg-gradient-to-r from-primary-container to-[#c20711] hover:brightness-110 transition-all">VIEW DETAILS</button>
+</div>
+</div>
+<!-- Card 7 -->
+<div class="movie-card rounded-xl overflow-hidden flex flex-col group relative cursor-pointer">
+<div class="relative aspect-poster w-full overflow-hidden">
+<img alt="Movie Poster" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJeQpC5JorSpDZJRo1OmVRDoBTqiUnI0F_fquLKIba1DfG1xCMcQdsCBITFTOwGdYsQTks0DSpJAWP7Q0SclkVSasEb3UPugRyJZlUb8e68D-5C21STMXZDd-IucH-WTvASs08YP8Uhw1q-S6vunP1if9VtpV1WIFZwnG1bBosponsNdQAGB5GOG_PU58z5GCw9SJCthtpvyvntqQldylG7tQ-QFrIXbh_l8JS39h0lqFvhi4iK5lbDUhDj4TfjS4Q_g"/>
+<div class="absolute top-2 right-2 bg-surface/60 backdrop-blur-md rounded-full p-2 border border-white/10">
+<span class="material-symbols-outlined text-primary-container text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+</div>
+<div class="p-4 flex flex-col flex-grow">
+<h3 class="font-body-md text-body-md font-bold text-on-surface truncate mb-1">Kung Fu Panda 3</h3>
+<div class="flex items-center gap-1 mb-4">
+<span class="material-symbols-outlined text-yellow-500 text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-metadata text-metadata text-on-surface-variant">6.9</span>
+</div>
+<button class="mt-auto w-full bg-primary-container text-white py-2 rounded-lg font-label-caps text-label-caps bg-gradient-to-r from-primary-container to-[#c20711] hover:brightness-110 transition-all">VIEW DETAILS</button>
+</div>
+</div>
+<!-- Card 8 -->
+<div class="movie-card rounded-xl overflow-hidden flex flex-col group relative cursor-pointer">
+<div class="relative aspect-poster w-full overflow-hidden">
+<img alt="Movie Poster" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZTRCH0XMVazsG8hMpeMNroe0cz0Jlkix3V3PoxmevmRESToehzQyNo8E01HvsuZvthpA8F1rrvQsb2fVC2SimuV0AFNFvBUSZ-1Z4mngDIujv_SgIVscIHNtV5Av-cxDIg0q2ex5MVYfdDXcefTfQurEpTZxkv-LhmRFxRetREaN8Kf9W1SuWI2c7VFoXonIaW_ggUzqk4V1GCVO_xcDYIwHOxm8bUbjW1KI9KoUDvndd7ihl3cociJ6Wpj8L1xxKSg"/>
+<div class="absolute top-2 right-2 bg-surface/60 backdrop-blur-md rounded-full p-2 border border-white/10">
+<span class="material-symbols-outlined text-primary-container text-sm" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+</div>
+<div class="p-4 flex flex-col flex-grow">
+<h3 class="font-body-md text-body-md font-bold text-on-surface truncate mb-1">Swades</h3>
+<div class="flex items-center gap-1 mb-4">
+<span class="material-symbols-outlined text-yellow-500 text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-metadata text-metadata text-on-surface-variant">8.2</span>
+</div>
+<button class="mt-auto w-full bg-primary-container text-white py-2 rounded-lg font-label-caps text-label-caps bg-gradient-to-r from-primary-container to-[#c20711] hover:brightness-110 transition-all">VIEW DETAILS</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest text-secondary font-metadata text-metadata w-full py-stack-lg border-t border-white/5 mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center px-gutter-desktop gap-stack-md max-w-container-max mx-auto">
+<div class="font-headline-md text-on-surface">MovieDB</div>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Help Center</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Contact Us</a>
+</div>
+<div class="text-on-surface-variant opacity-80">© 2024 MovieDB. All rights reserved.</div>
+</div>
+</footer>
+</body></html>

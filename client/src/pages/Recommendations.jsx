@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import notify from "../utils/toast";
-import { FaSearch, FaTimes, FaExclamationCircle } from "react-icons/fa";
+import { useAuth } from "../context/AuthContext";
+import api from "../utils/api";
+import MovieCard from "../components/MovieCard";
+import { FaSearch, FaTimes, FaExclamationCircle, FaVideo } from "react-icons/fa";
 
 import "../style/ShowListStyle.css";
 import "../style/Recommendations.css";
@@ -11,14 +13,56 @@ const flaskUrl = import.meta.env.VITE_FLASK_URL;
 const apikey = import.meta.env.VITE_API_KEY;
 
 function Recommendations() {
+  const { user } = useAuth();
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [selectedMovie, setSelectedMovie] = useState(null);
+  
+  const [favorites, setFavorites] = useState([]);
 
-  // Debounced Search Effect
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      if (!user) return;
+      try {
+        const res = await api.get("/api/favorites");
+        setFavorites(res.data);
+      } catch (err) {}
+    };
+    fetchFavorites();
+  }, [user]);
+
+  const isFavorite = (movieId) => favorites.some((fav) => String(fav.movieId) === String(movieId));
+
+  const toggleFavorite = async (movie) => {
+    if (!user) {
+      notify.warning("Please login to add to Favorites.");
+      return;
+    }
+    const isFav = isFavorite(movie._id);
+    setFavorites((prev) => {
+      if (isFav) return prev.filter((fav) => String(fav.movieId) !== String(movie._id));
+      return [...prev, { movieId: movie._id }];
+    });
+
+    try {
+      if (isFav) {
+        await api.delete(`/api/favorites/${movie._id}`);
+        notify.success("Removed from Favorites.");
+      } else {
+        await api.post("/api/favorites", {
+          movieId: movie._id, title: movie.title, year: movie.year, rating: movie.rating, img: movie.poster,
+        });
+        notify.success("Added to Favorites ❤️");
+      }
+    } catch (err) {
+      if (isFav) setFavorites((prev) => [...prev, { movieId: movie._id }]);
+      else setFavorites((prev) => prev.filter((fav) => String(fav.movieId) !== String(movie._id)));
+    }
+  };
+
   useEffect(() => {
     const timer = setTimeout(() => {
       if (query.trim()) {
@@ -38,9 +82,7 @@ function Recommendations() {
       );
       const data = await res.json();
       setMovies(data.results || []);
-    } catch (err) {
-      // Silent — autocomplete search shouldn't spam toasts
-    }
+    } catch (err) {}
   };
 
   const handleClearSearch = () => {
@@ -64,8 +106,7 @@ function Recommendations() {
 
       if (!response.data.success) {
         setRecommendations([]);
-        const errMsg = response.data.message || "Failed to find recommendations for this movie.";
-        setError(errMsg);
+        setError(response.data.message || "Failed to find recommendations.");
         notify.info("No recommendations available for this movie.");
         return;
       }
@@ -81,26 +122,22 @@ function Recommendations() {
 
           return {
             _id: tmdbMovie.id,
+            id: tmdbMovie.id,
             title: tmdbMovie.title,
             poster: tmdbMovie.poster_path
               ? `https://image.tmdb.org/t/p/w500${tmdbMovie.poster_path}`
-              : "https://via.placeholder.com/500x750?text=No+Image",
+              : "/no_poster_found.png",
             rating: tmdbMovie.vote_average,
-            release_date: tmdbMovie.release_date,
+            year: tmdbMovie.release_date ? tmdbMovie.release_date.substring(0, 4) : "Unknown",
             score: movie.score,
           };
         })
       );
 
       setRecommendations(moviesWithDetails);
-
-      if (moviesWithDetails.length > 0) {
-        notify.success("Recommendations loaded!");
-      } else {
-        notify.info("No recommendations available for this movie.");
-      }
+      if (moviesWithDetails.length > 0) notify.success("Recommendations loaded!");
     } catch (err) {
-      setError("Failed to fetch recommendations. Please ensure the backend is running.");
+      setError("Failed to fetch recommendations. Is the ML backend running?");
       notify.error("Unable to load recommendations.");
     } finally {
       setLoading(false);
@@ -108,8 +145,7 @@ function Recommendations() {
   };
 
   return (
-    <div className="recommendations-page">
-      {/* 🎬 HERO & SEARCH SECTION */}
+    <div className="discover-page">
       <section className="rec-hero-section">
         <h1 className="rec-hero-title">Discover Your Next Favorite</h1>
         <p className="rec-hero-subtitle">
@@ -133,10 +169,8 @@ function Recommendations() {
         </div>
       </section>
 
-      {/* 🎬 MAIN CONTENT AREA */}
       <main className="rec-main-container">
-
-        {/* Error State */}
+        
         {error && (
           <div className="rec-error-state">
             <FaExclamationCircle className="rec-error-icon" />
@@ -144,17 +178,15 @@ function Recommendations() {
           </div>
         )}
 
-        {/* Empty State */}
         {!query && !selectedMovie && movies.length === 0 && (
           <div className="rec-empty-state">
-            <div className="rec-empty-icon">🎬</div>
+            <div className="rec-empty-icon">🍿</div>
             <p className="rec-empty-text">
               Search for a movie above to discover personalized recommendations.
             </p>
           </div>
         )}
 
-        {/* Search Results (Hide if a movie is selected to focus on recommendations) */}
         {query && movies.length > 0 && !selectedMovie && (
           <div className="rec-search-results">
             <h2 className="rec-section-title">Select a Movie</h2>
@@ -170,7 +202,7 @@ function Recommendations() {
                       src={
                         movie.poster_path
                           ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                          : "https://via.placeholder.com/300x450?text=No+Image"
+                          : "/no_poster_found.png"
                       }
                       alt={movie.title}
                       className="rec-result-poster"
@@ -193,14 +225,12 @@ function Recommendations() {
           </div>
         )}
 
-        {/* Recommendations Context Header */}
         {selectedMovie && (
           <h2 className="rec-section-title" style={{ marginTop: "20px", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "15px" }}>
-            Recommended for <span style={{ color: "#e50914", marginLeft: "8px" }}>🎬 {selectedMovie}</span>
+            Recommended for <span style={{ color: "var(--color-primary)", marginLeft: "8px" }}>🎬 {selectedMovie}</span>
           </h2>
         )}
 
-        {/* Loading State (Skeleton) */}
         {loading && (
           <div className="rec-skeleton-grid" style={{ marginTop: "30px" }}>
             {[...Array(10)].map((_, i) => (
@@ -209,26 +239,15 @@ function Recommendations() {
           </div>
         )}
 
-        {/* Recommendations Grid (Reusing existing ShowList classes) */}
         {!loading && recommendations.length > 0 && (
           <div className="movie-grid" style={{ marginTop: "30px" }}>
             {recommendations.map((movie) => (
-              <div key={movie._id} className="movie-card">
-                <div className="movie-poster-wrapper">
-                  <img src={movie.poster} alt={movie.title} className="movie-img" />
-                  <div className="movie-rating-badge">⭐ {movie.rating?.toFixed(1)}</div>
-                  <div className="movie-hover-overlay">
-                    <Link to={`/detail/${movie._id}`} className="details-link">
-                      View Details
-                    </Link>
-                  </div>
-                </div>
-
-                <div className="movie-info">
-                  <h3>{movie.title}</h3>
-                  <p className="movie-year">{movie.release_date ? movie.release_date.slice(0, 4) : ""}</p>
-                </div>
-              </div>
+              <MovieCard 
+                key={movie._id} 
+                movie={movie} 
+                isFavorite={isFavorite} 
+                toggleFavorite={toggleFavorite} 
+              />
             ))}
           </div>
         )}

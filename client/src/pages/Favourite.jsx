@@ -1,10 +1,11 @@
-/** @format */
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../utils/api";
 import notify from "../utils/toast";
-import "../style/ShowListStyle.css";
+import "../style/ShowListStyle.css"; 
 import { useAuth } from "../context/AuthContext";
+import MovieCard from "../components/MovieCard";
+import { FaHeart } from "react-icons/fa";
 
 function Favourite() {
   const { user } = useAuth();
@@ -16,87 +17,70 @@ function Favourite() {
         setFavorites([]);
         return;
       }
-
       try {
         const res = await api.get("/api/favorites");
         setFavorites(res.data);
-      } catch (err) {
-        if (err.response?.status !== 401) {
-          // Interceptor handles 500s etc.
-        }
-      }
+      } catch (err) {}
     };
-
     fetchFavorites();
-  }, []);
+  }, [user]);
 
-  const removeFavorite = async (movieId) => {
+  const isFavorite = (movieId) => true; 
+
+  const toggleFavorite = async (movie) => {
     if (!user) return;
+    const movieId = movie._id;
 
-    // Optimistic removal
     const previous = [...favorites];
-    setFavorites((prev) =>
-      prev.filter((fav) => fav.movieId !== movieId)
-    );
+    setFavorites((prev) => prev.filter((fav) => String(fav.movieId) !== String(movieId)));
 
     try {
       await api.delete(`/api/favorites/${movieId}`);
       notify.success("Removed from Favorites.");
     } catch (err) {
-      // Revert on failure
       setFavorites(previous);
       notify.error("Failed to remove from Favorites.");
     }
   };
 
   return (
-    <div className="showlist-container">
-      <br />
-      <br />
-      <div className="movie_header">
-        <h1>Your Favorites ❤️</h1>
-        <hr />
-      </div>
+    <div className="discover-page">
+      <div className="discover-container" style={{ display: 'block', padding: '2rem 1.5rem', maxWidth: '100%' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
+          <FaHeart size={32} color="var(--color-primary)" />
+          <h1 className="font-headline-lg text-headline-lg text-on-surface" style={{ margin: 0 }}>Your Favorites</h1>
+        </div>
 
-      <div className="movie-grid">
         {favorites.length === 0 ? (
-          <div className="empty-state">
-            <div className="empty-state-icon">🍿</div>
-            <h2>No Favorites Yet</h2>
-            <p>Find your favorite movies and save them here.</p>
-            <Link to="/" className="submit-button" style={{display:'inline-block', marginTop:'1rem', padding:'0.5rem 1rem'}}>Explore Movies</Link>
+          <div className="loader-container" style={{ border: '1px dashed rgba(255,255,255,0.1)', borderRadius: 'var(--radius-lg)', padding: '4rem 2rem', textAlign: 'center' }}>
+            <FaHeart size={48} color="var(--color-on-surface-variant)" style={{ marginBottom: '1rem', opacity: 0.5 }} />
+            <h2 className="font-headline-md text-on-surface" style={{ marginBottom: '0.5rem' }}>No Favorites Yet</h2>
+            <p className="text-on-surface-variant" style={{ marginBottom: '2rem' }}>Find your favorite movies and save them here.</p>
+            <Link to="/home" className="btn-primary" style={{ textDecoration: 'none', padding: '12px 24px', borderRadius: 'var(--radius-sm)' }}>
+              Explore Movies
+            </Link>
           </div>
         ) : (
-          favorites.map((movie) => (
-            <div className="movie-card" key={movie.movieId}>
-              <img src={movie.img} alt={movie.title} className="movie-img" />
-
-              <div className="movie-info">
-                <h3>{movie.title}</h3>
-
-                <p className="movie-rating">
-                  ⭐ {movie.rating ? movie.rating.toFixed(1) : "N/A"}
-                </p>
-
-                <div className="movie-actions">
-                  <Link
-                    to={`/detail/${movie.movieId}`}
-                    className="details-link"
-                  >
-                    View Details
-                  </Link>
-
-                  <button
-                    className="favorite-link"
-                    onClick={() => removeFavorite(movie.movieId)}
-                    title="Remove from Favorites"
-                  >
-                    ❤️
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))
+          <div className="movie-grid">
+            {favorites.map((fav) => {
+              const movieObj = {
+                _id: fav.movieId,
+                id: fav.movieId,
+                title: fav.title,
+                poster: fav.img,
+                year: fav.year,
+                rating: fav.rating,
+              };
+              return (
+                <MovieCard
+                  key={fav.movieId}
+                  movie={movieObj}
+                  isFavorite={isFavorite}
+                  toggleFavorite={toggleFavorite}
+                />
+              );
+            })}
+          </div>
         )}
       </div>
     </div>

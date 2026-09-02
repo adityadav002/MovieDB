@@ -1,39 +1,35 @@
-/** @format */
-
-import "../style/FooterStyle.css";
 import { FaInstagram, FaGithub, FaLinkedin } from 'react-icons/fa';
+
 function Footer() {
   return (
-    <footer className="footer">
-      <div className="footer-container">
-        <div className="footer-section">
-          <h4>About Us</h4>
-          <p>We provide the best movie recommendations and reviews online.</p>
-        </div>
-
-        <div className="footer-section">
-          <h4>Quick Links</h4>
-          <ul>
-            <li>
-              <a href="#">Home</a>
-            </li>
-            <li>
-              <a href="/addmovies">Add Movies</a>
-            </li>
-            <li>
-              <a href="#">Contact</a>
-            </li>
-          </ul>
-        </div>
-
-        <div className="footer-section">
-          <h4>Follow Us</h4>
-          <div className="social-icons">
-            <a
+    <footer className="bg-surface-container-lowest w-full" style={{ borderTop: '1px solid rgba(94, 63, 59, 0.2)' }}>
+      <div className="flex flex-col items-center justify-between container-max mx-auto" style={{ padding: 'var(--stack-lg) var(--margin-mobile)', gap: '1.5rem', flexDirection: 'column' }}>
+        
+        {/* Top layer can be flex-row on desktop */}
+        <div className="flex w-full justify-between items-center" style={{ flexWrap: 'wrap', gap: '1.5rem' }}>
+          <div className="font-headline-sm text-primary">
+            MovieDB
+          </div>
+          
+          <div className="flex justify-center gap-4" style={{ flexWrap: 'wrap' }}>
+            <a className="font-metadata text-on-surface-variant" style={{ opacity: 0.8, transition: 'color 0.3s' }} onMouseOver={(e) => e.target.style.color = 'var(--color-primary)'} onMouseOut={(e) => e.target.style.color = 'var(--color-on-surface-variant)'} href="#">Movies</a>
+            <a className="font-metadata text-on-surface-variant" style={{ opacity: 0.8, transition: 'color 0.3s' }} onMouseOver={(e) => e.target.style.color = 'var(--color-primary)'} onMouseOut={(e) => e.target.style.color = 'var(--color-on-surface-variant)'} href="#">TV Shows</a>
+            <a className="font-metadata text-on-surface-variant" style={{ opacity: 0.8, transition: 'color 0.3s' }} onMouseOver={(e) => e.target.style.color = 'var(--color-primary)'} onMouseOut={(e) => e.target.style.color = 'var(--color-on-surface-variant)'} href="#">Pricing</a>
+            <a className="font-metadata text-on-surface-variant" style={{ opacity: 0.8, transition: 'color 0.3s' }} onMouseOver={(e) => e.target.style.color = 'var(--color-primary)'} onMouseOut={(e) => e.target.style.color = 'var(--color-on-surface-variant)'} href="#">Privacy Policy</a>
+            <a className="font-metadata text-on-surface-variant" style={{ opacity: 0.8, transition: 'color 0.3s' }} onMouseOver={(e) => e.target.style.color = 'var(--color-primary)'} onMouseOut={(e) => e.target.style.color = 'var(--color-on-surface-variant)'} href="#">Terms of Service</a>
+            <a className="font-metadata text-on-surface-variant" style={{ opacity: 0.8, transition: 'color 0.3s' }} onMouseOver={(e) => e.target.style.color = 'var(--color-primary)'} onMouseOut={(e) => e.target.style.color = 'var(--color-on-surface-variant)'} href="#">Help Center</a>
+          </div>
+          
+          <div className="flex gap-4 items-center">
+             <a
               href="https://www.linkedin.com/in/aditya-yadav003/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
+              className="text-on-surface-variant"
+              style={{ fontSize: '1.25rem', transition: 'color 0.3s' }}
+              onMouseOver={(e) => e.currentTarget.style.color = 'var(--color-primary)'}
+              onMouseOut={(e) => e.currentTarget.style.color = 'var(--color-on-surface-variant)'}
             >
               <FaLinkedin />
             </a>
@@ -42,6 +38,10 @@ function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
+              className="text-on-surface-variant"
+              style={{ fontSize: '1.25rem', transition: 'color 0.3s' }}
+              onMouseOver={(e) => e.currentTarget.style.color = 'var(--color-primary)'}
+              onMouseOut={(e) => e.currentTarget.style.color = 'var(--color-on-surface-variant)'}
             >
               <FaGithub />
             </a>
@@ -49,18 +49,20 @@ function Footer() {
               href="https://www.instagram.com/_aditya_yadav__ay/?utm_source=qr&igsh=MTJsMjdxZGduZGQwdA%3D%3D#"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Instagrm"
+              aria-label="Instagram"
+              className="text-on-surface-variant"
+              style={{ fontSize: '1.25rem', transition: 'color 0.3s' }}
+              onMouseOver={(e) => e.currentTarget.style.color = 'var(--color-primary)'}
+              onMouseOut={(e) => e.currentTarget.style.color = 'var(--color-on-surface-variant)'}
             >
               <FaInstagram />
             </a>
           </div>
         </div>
-      </div>
 
-      <div className="footer-bottom">
-        <p>
-          &copy; {new Date().getFullYear()} Movie-List. All rights reserved.
-        </p>
+        <div className="w-full font-metadata text-secondary text-center" style={{ paddingTop: '1rem', borderTop: '1px solid rgba(94, 63, 59, 0.1)' }}>
+          © {new Date().getFullYear()} MovieDB. All rights reserved. Cinematic Noir Experience.
+        </div>
       </div>
     </footer>
   );

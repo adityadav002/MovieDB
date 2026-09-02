@@ -1,9 +1,8 @@
-
 .footer {
-  background-color: #141414;
-  color: #b3b3b3;
+  background-color: var(--color-surface);
+  color: var(--color-text-secondary);
   padding: 60px 30px 30px;
-  font-family: 'Inter', sans-serif;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .footer-container {
@@ -21,9 +20,12 @@
 }
 
 .footer-section h4 {
-  color: #ffffff;
+  color: var(--color-text-primary);
   margin-bottom: 20px;
   font-size: 16px;
+  font-family: var(--font-headline);
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
 .footer-section ul {
@@ -33,35 +35,39 @@
 
 .footer-section li {
   margin-bottom: 10px;
-  font-size: 13px;
+  font-size: 14px;
+  font-family: var(--font-body);
 }
 
 .footer-section a {
-  color: #b3b3b3;
+  color: var(--color-text-secondary);
   text-decoration: none;
-  transition: color 0.3s;
+  transition: color var(--duration-fast) ease;
 }
 
 .footer-section a:hover {
-  color: #ffffff;
+  color: var(--color-primary);
 }
 
 .social-icons a {
   margin-right: 15px;
   font-size: 20px;
-  color: #b3b3b3;
-  transition: color 0.3s ease;
+  color: var(--color-text-secondary);
+  transition: color var(--duration-fast) ease, transform var(--duration-fast) ease;
+  display: inline-block;
 }
 
 .social-icons a:hover {
-  color: #ffffff;
+  color: var(--color-primary);
+  transform: translateY(-3px);
 }
 
 .footer-bottom {
   text-align: center;
-  border-top: 1px solid #333;
-  margin-top: 30px;
-  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  margin-top: 40px;
+  padding-top: 20px;
   font-size: 13px;
-  color: #666;
+  font-family: var(--font-body);
+  color: rgba(255, 255, 255, 0.3);
 }

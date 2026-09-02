@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en" style=""><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MovieDB - Home</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Montserrat:wght@700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Custom slim scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0A0A0B; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a2a2b; 
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #474649; 
+        }
+        
+        /* Hide scrollbar for horizontal scrolling containers but keep functionality */
+        .hide-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#3a393a",
+                        "primary-fixed-dim": "#ffb4aa",
+                        "surface-container-low": "#1c1b1c",
+                        "outline-variant": "#5e3f3b",
+                        "tertiary": "#c8c5cb",
+                        "on-tertiary-fixed-variant": "#47464b",
+                        "inverse-on-surface": "#313031",
+                        "on-secondary-fixed-variant": "#474649",
+                        "tertiary-fixed-dim": "#c8c5cb",
+                        "on-primary-fixed-variant": "#930007",
+                        "on-primary-container": "#fff7f6",
+                        "on-tertiary-fixed": "#1b1b1f",
+                        "secondary-container": "#474649",
+                        "background": "#131314",
+                        "on-surface-variant": "#e9bcb6",
+                        "on-tertiary": "#303034",
+                        "error": "#ffb4ab",
+                        "surface-container-highest": "#353436",
+                        "surface-container-high": "#2a2a2b",
+                        "on-primary-fixed": "#410001",
+                        "outline": "#af8782",
+                        "on-surface": "#e5e2e3",
+                        "secondary-fixed-dim": "#c8c6c8",
+                        "on-secondary-fixed": "#1b1b1d",
+                        "inverse-primary": "#c0000c",
+                        "tertiary-fixed": "#e4e1e7",
+                        "surface-container": "#201f20",
+                        "surface-variant": "#353436",
+                        "secondary": "#c8c6c8",
+                        "inverse-surface": "#e5e2e3",
+                        "on-error": "#690005",
+                        "on-background": "#e5e2e3",
+                        "on-secondary-container": "#b7b4b7",
+                        "on-primary": "#690003",
+                        "secondary-fixed": "#e4e2e4",
+                        "primary-container": "#e50914",
+                        "surface": "#131314",
+                        "surface-dim": "#131314",
+                        "surface-tint": "#ffb4aa",
+                        "primary-fixed": "#ffdad5",
+                        "tertiary-container": "#737277",
+                        "on-tertiary-container": "#fbf8fe",
+                        "primary": "#ffb4aa",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-lowest": "#0e0e0f",
+                        "on-secondary": "#303032",
+                        "error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px",
+                        "stack-md": "16px",
+                        "gutter-mobile": "16px",
+                        "container-max": "1440px",
+                        "stack-sm": "8px",
+                        "gutter-desktop": "32px",
+                        "stack-lg": "32px"
+                    },
+                    "fontFamily": {
+                        "metadata": ["Inter", "sans-serif"],
+                        "display-lg-mobile": ["Montserrat", "sans-serif"],
+                        "headline-md": ["Montserrat", "sans-serif"],
+                        "headline-lg": ["Montserrat", "sans-serif"],
+                        "display-lg": ["Montserrat", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"],
+                        "body-lg": ["Inter", "sans-serif"],
+                        "label-caps": ["Inter", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "metadata": ["14px", { "lineHeight": "1.0", "fontWeight": "500" }],
+                        "display-lg-mobile": ["40px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "display-lg": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#0A0A0B] text-on-background min-h-screen font-body-md antialiased selection:bg-primary-container selection:text-white pb-20 md:pb-0">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl bg-background/60 backdrop-blur-md border-b border-white/5 shadow-lg transition-all duration-300 hidden md:block" id="topNav">
+<div class="flex justify-between items-center px-margin-desktop py-4 w-full max-w-container-max mx-auto">
+<!-- Brand -->
+<a class="font-display-lg text-headline-lg font-extrabold text-on-surface tracking-tighter" href="#">MovieDB</a>
+<!-- Navigation Links -->
+<nav class="hidden lg:flex items-center gap-8">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md scale-95 active:scale-90 transition-transform" href="#">Recommendations</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors duration-300 font-body-md text-body-md scale-95 active:scale-90 transition-transform" href="#">Watchlist</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors duration-300 font-body-md text-body-md scale-95 active:scale-90 transition-transform" href="#">Favorites</a>
+</nav>
+<!-- Actions -->
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:bg-white/10 rounded-full transition-all duration-300 scale-95 active:scale-90 transition-transform flex items-center justify-center">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden border border-white/10 hover:border-white/30 transition-colors">
+<img alt="Aditya Yadav Profile" class="w-full h-full object-cover" data-alt="A cinematic portrait of a user profile avatar in high resolution, moody lighting, dark background, sharp focus, 8k" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxOiaCPFZKSTUai2aRkpIT3ollhDTNvAaWsP4UOhct0Oj--22_XCodRrIPzvzci2DALtyUhZ28yyH4lPalHGWI3wEpyBKCPOoeu2Xoe4DASXMhtmy5am0hfH7AWTzG-z3P-m0aiZ9RBV8mSZ9LnyXv8MSiBbnCJKMbpmPgLtDfGIlEXW2uNmHaN0nsXvDQ7p_J89wB7Os3j7OjKfuRKsYivu-tElsly51sYclGvX66Ei76s_4eLt1f"/>
+</button>
+</div>
+</div>
+</header>
+<!-- Mobile Top Header (Simplified) -->
+<header class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b border-white/5 px-margin-mobile py-4 flex justify-between items-center md:hidden">
+<a class="font-display-lg text-headline-md font-extrabold text-on-surface tracking-tighter" href="#">MovieDB</a>
+<button class="p-2 text-on-surface-variant hover:bg-white/10 rounded-full transition-all duration-300 flex items-center justify-center">
+<span class="material-symbols-outlined">search</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="w-full">
+<!-- Hero Section -->
+<section class="relative w-full h-[85vh] md:h-[90vh] overflow-hidden flex items-end">
+<!-- Background Image with Gradient Overlay -->
+<div class="absolute inset-0 w-full h-full">
+<img alt="Hero Banner" class="w-full h-full object-cover object-top" data-alt="A dramatic cinematic wide shot of a science fiction movie hero standing on a desolate alien planet. Deep red and orange sky, towering metallic structures in the distance, dramatic lighting, high contrast, 8k resolution, photorealistic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5p8oRB0uaOpZeTsZQkgX64e_rWCdXrOl7ErnCq7VeDA9-se9X4xWifmTpxHKV6ehT7HIKsh66FuqVpcEfy18Rnje34iUE8LiO8UDe6OYT6TQP-LdxzCT5CW0i3WWTfSkE1PBa8OjlGlJ4bT6nO0gYka5RnUKMts958k1RMzeu76nii8ExCUtQypifQqFrk8xlIQoQzwf45ygnIQJmzFrXwDo3AJoaIpw_KVcijMiUmZFL35H7gD7R"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0B] via-[#0A0A0B]/60 to-transparent"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-[#0A0A0B]/80 via-transparent to-transparent md:block hidden"></div>
+</div>
+<!-- Hero Content -->
+<div class="relative z-10 w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pb-stack-lg md:pb-24">
+<div class="flex flex-col md:flex-row items-center md:items-end gap-8 md:gap-12">
+<!-- Movie Poster -->
+<div class="flex-shrink-0 w-48 md:w-64 lg:w-72 aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10 hidden md:block">
+<img alt="Chronicles of Eden Poster" class="w-full h-full object-cover" data-alt="A high-quality vertical movie poster for 'Chronicles of Eden', featuring a lone explorer on a bioluminescent alien planet, cinematic noir style, moody lighting, 8k resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5p8oRB0uaOpZeTsZQkgX64e_rWCdXrOl7ErnCq7VeDA9-se9X4xWifmTpxHKV6ehT7HIKsh66FuqVpcEfy18Rnje34iUE8LiO8UDe6OYT6TQP-LdxzCT5CW0i3WWTfSkE1PBa8OjlGlJ4bT6nO0gYka5RnUKMts958k1RMzeu76nii8ExCUtQypifQqFrk8xlIQoQzwf45ygnIQJmzFrXwDo3AJoaIpw_KVcijMiUmZFL35H7gD7R"/>
+</div>
+<!-- Movie Details -->
+<div class="max-w-3xl flex flex-col gap-stack-sm md:gap-stack-md">
+<!-- Badges -->
+<div class="flex items-center gap-3 mb-2">
+<span class="bg-[#2A2A2E] text-on-surface px-3 py-1 rounded-full font-label-caps text-label-caps uppercase tracking-wider backdrop-blur-md border border-white/10">Sci-Fi</span>
+<span class="bg-[#2A2A2E] text-on-surface px-3 py-1 rounded-full font-label-caps text-label-caps uppercase tracking-wider backdrop-blur-md border border-white/10">Action</span>
+<div class="flex items-center gap-1 text-[#f5c518] bg-black/40 backdrop-blur-md px-2 py-1 rounded-md border border-white/10">
+<span class="material-symbols-outlined filled text-sm">star</span>
+<span class="font-metadata text-metadata text-white">8.9</span>
+</div>
+</div>
+<!-- Title -->
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-white mb-2 text-balance shadow-black/50 drop-shadow-lg">Chronicles of Eden</h1>
+<!-- Metadata -->
+<div class="flex items-center gap-4 text-on-surface-variant font-metadata text-metadata mb-4">
+<span class="">2026</span>
+<span class="w-1 h-1 bg-on-surface-variant rounded-full"></span>
+<span class="">2h 34m</span>
+<span class="w-1 h-1 bg-on-surface-variant rounded-full"></span>
+<span class="border border-on-surface-variant px-1.5 rounded text-xs">PG-13</span>
+</div>
+<!-- Description -->
+<p class="font-body-md md:font-body-lg text-body-md md:text-body-lg text-on-surface-variant mb-6 line-clamp-3 md:line-clamp-none max-w-2xl">
+            In a distant future where Earth is uninhabitable, a lone explorer discovers a forgotten paradise planet. But as they delve deeper into its lush jungles, they realize they are not alone. A visual masterpiece of survival and discovery.
+        </p>
+<!-- Actions -->
+<div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+<button class="w-full sm:w-auto flex items-center justify-center gap-2 bg-primary-container text-white px-8 py-4 rounded-lg font-metadata text-metadata hover:bg-primary-container/90 transition-colors shadow-[0_0_20px_rgba(229,9,20,0.3)] bg-gradient-to-r from-primary-container to-primary-container/80">
+<span class="material-symbols-outlined filled">play_arrow</span>
+                Watch Now
+            </button>
+<button class="w-full sm:w-auto flex items-center justify-center gap-2 bg-surface-container-high hover:bg-surface-container-highest text-white border border-white/20 backdrop-blur-md px-8 py-4 rounded-lg font-metadata text-metadata transition-colors">
+<span class="material-symbols-outlined filled">play_circle</span>
+                Play Trailer
+            </button>
+<div class="flex gap-2 w-full sm:w-auto">
+<button class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white/5 text-white border border-white/20 backdrop-blur-md p-4 rounded-lg hover:bg-white/10 transition-colors" title="Add to Watchlist">
+<span class="material-symbols-outlined">bookmark_add</span>
+</button>
+<button class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white/5 text-white border border-white/20 backdrop-blur-md p-4 rounded-lg hover:bg-white/10 transition-colors" title="Add to Favorites">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Trending Now (Carousel) -->
+<!-- Recommended for You Section (using the required image) -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg border-t border-white/5">
+<div class="max-w-3xl">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-stack-md flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container">info</span>
+            Overview
+        </h2>
+<div class="space-y-4">
+<p class="text-body-lg text-on-surface leading-relaxed">
+                In the year 2026, Earth has become a silent tomb of steel and glass. Commander Elias Thorne, a veteran explorer, embarks on a desperate mission to the edge of the known galaxy following a faint signal from a long-lost probe.
+            </p>
+<p class="text-body-md text-on-surface-variant leading-relaxed">
+                What he finds is Eden—a world of impossible beauty and terrifying secrets. As Elias and his crew navigate the bioluminescent jungles, they discover that the planet's ecosystem is a sentient network that has been waiting for humanity's return. Chronicles of Eden is a profound exploration of survival, legacy, and the cost of a second chance.
+            </p>
+</div>
+</div>
+</section><section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg border-t border-white/5"><h2 class="font-headline-md text-headline-md text-on-surface mb-stack-md flex items-center gap-2"><span class="material-symbols-outlined text-primary-container">image</span>Movie Screenshots</h2><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"><div class="aspect-video rounded-xl overflow-hidden border border-white/10"><img alt="Screenshot" class="w-full h-full object-cover" data-alt="Cinematic screenshot from an epic sci-fi movie, dramatic lighting, detailed environment, 8k" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5p8oRB0uaOpZeTsZQkgX64e_rWCdXrOl7ErnCq7VeDA9-se9X4xWifmTpxHKV6ehT7HIKsh66FuqVpcEfy18Rnje34iUE8LiO8UDe6OYT6TQP-LdxzCT5CW0i3WWTfSkE1PBa8OjlGlJ4bT6nO0gYka5RnUKMts958k1RMzeu76nii8ExCUtQypifQqFrk8xlIQoQzwf45ygnIQJmzFrXwDo3AJoaIpw_KVcijMiUmZFL35H7gD7R"/></div><div class="aspect-video rounded-xl overflow-hidden border border-white/10"><img alt="Screenshot" class="w-full h-full object-cover" data-alt="Cinematic screenshot from an epic sci-fi movie, dramatic lighting, detailed environment, 8k" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5p8oRB0uaOpZeTsZQkgX64e_rWCdXrOl7ErnCq7VeDA9-se9X4xWifmTpxHKV6ehT7HIKsh66FuqVpcEfy18Rnje34iUE8LiO8UDe6OYT6TQP-LdxzCT5CW0i3WWTfSkE1PBa8OjlGlJ4bT6nO0gYka5RnUKMts958k1RMzeu76nii8ExCUtQypifQqFrk8xlIQoQzwf45ygnIQJmzFrXwDo3AJoaIpw_KVcijMiUmZFL35H7gD7R"/></div><div class="aspect-video rounded-xl overflow-hidden border border-white/10"><img alt="Screenshot" class="w-full h-full object-cover" data-alt="Cinematic screenshot from an epic sci-fi movie, dramatic lighting, detailed environment, 8k" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5p8oRB0uaOpZeTsZQkgX64e_rWCdXrOl7ErnCq7VeDA9-se9X4xWifmTpxHKV6ehT7HIKsh66FuqVpcEfy18Rnje34iUE8LiO8UDe6OYT6TQP-LdxzCT5CW0i3WWTfSkE1PBa8OjlGlJ4bT6nO0gYka5RnUKMts958k1RMzeu76nii8ExCUtQypifQqFrk8xlIQoQzwf45ygnIQJmzFrXwDo3AJoaIpw_KVcijMiUmZFL35H7gD7R"/></div><div class="aspect-video rounded-xl overflow-hidden border border-white/10"><img alt="Screenshot" class="w-full h-full object-cover" data-alt="Cinematic screenshot from an epic sci-fi movie, dramatic lighting, detailed environment, 8k" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5p8oRB0uaOpZeTsZQkgX64e_rWCdXrOl7ErnCq7VeDA9-se9X4xWifmTpxHKV6ehT7HIKsh66FuqVpcEfy18Rnje34iUE8LiO8UDe6OYT6TQP-LdxzCT5CW0i3WWTfSkE1PBa8OjlGlJ4bT6nO0gYka5RnUKMts958k1RMzeu76nii8ExCUtQypifQqFrk8xlIQoQzwf45ygnIQJmzFrXwDo3AJoaIpw_KVcijMiUmZFL35H7gD7R"/></div></div></section>
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg border-t border-white/5">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-stack-md flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container">groups</span>
+        Cast
+    </h2>
+<div class="flex gap-6 overflow-x-auto pb-6 hide-scroll"><div class="flex-shrink-0 w-32 md:w-40 group"><div class="aspect-square w-24 h-24 rounded-full overflow-hidden mb-3 border-2 border-white/10 group-hover:border-primary transition-all duration-300"><img alt="Director" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxOiaCPFZKSTUai2aRkpIT3ollhDTNvAaWsP4UOhct0Oj--22_XCodRrIPzvzci2DALtyUhZ28yyH4lPalHGWI3wEpyBKCPOoeu2Xoe4DASXMhtmy5am0hfH7AWTzG-z3P-m0aiZ9RBV8mSZ9LnyXv8MSiBbnCJKMbpmPgLtDfGIlEXW2uNmHaN0nsXvDQ7p_J89wB7Os3j7OjKfuRKsYivu-tElsly51sYclGvX66Ei76s_4eLt1f"/></div><div class="text-center"><p class="text-on-surface font-display-lg text-body-md font-bold truncate">Aditya Yadav</p><p class="text-on-surface-variant font-body-md text-xs">Director</p></div></div>
+<!-- Cast Member 1 -->
+<div class="flex-shrink-0 w-32 md:w-40 group">
+<div class="aspect-square rounded-full overflow-hidden mb-3 border-2 border-transparent group-hover:border-primary transition-all duration-300 w-24 h-24 border-white/10">
+<img alt="Actor" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxOiaCPFZKSTUai2aRkpIT3ollhDTNvAaWsP4UOhct0Oj--22_XCodRrIPzvzci2DALtyUhZ28yyH4lPalHGWI3wEpyBKCPOoeu2Xoe4DASXMhtmy5am0hfH7AWTzG-z3P-m0aiZ9RBV8mSZ9LnyXv8MSiBbnCJKMbpmPgLtDfGIlEXW2uNmHaN0nsXvDQ7p_J89wB7Os3j7OjKfuRKsYivu-tElsly51sYclGvX66Ei76s_4eLt1f"/>
+</div>
+<div class="text-center">
+<p class="text-on-surface font-semibold truncate font-display-lg">Elias Thorne</p>
+<p class="text-on-surface-variant text-xs">Aditya Yadav</p>
+</div>
+</div>
+<!-- Cast Member 2 -->
+<div class="flex-shrink-0 w-32 md:w-40 group">
+<div class="aspect-square rounded-full overflow-hidden mb-3 border-2 border-transparent group-hover:border-primary transition-all duration-300 w-24 h-24 border-white/10">
+<img alt="Actor" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxOiaCPFZKSTUai2aRkpIT3ollhDTNvAaWsP4UOhct0Oj--22_XCodRrIPzvzci2DALtyUhZ28yyH4lPalHGWI3wEpyBKCPOoeu2Xoe4DASXMhtmy5am0hfH7AWTzG-z3P-m0aiZ9RBV8mSZ9LnyXv8MSiBbnCJKMbpmPgLtDfGIlEXW2uNmHaN0nsXvDQ7p_J89wB7Os3j7OjKfuRKsYivu-tElsly51sYclGvX66Ei76s_4eLt1f"/>
+</div>
+<div class="text-center">
+<p class="text-on-surface font-semibold truncate font-display-lg">Dr. Sarah Chen</p>
+<p class="text-on-surface-variant text-xs">Elena Rossi</p>
+</div>
+</div>
+<!-- Cast Member 3 -->
+<div class="flex-shrink-0 w-32 md:w-40 group">
+<div class="aspect-square rounded-full overflow-hidden mb-3 border-2 border-transparent group-hover:border-primary transition-all duration-300 w-24 h-24 border-white/10">
+<img alt="Actor" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxOiaCPFZKSTUai2aRkpIT3ollhDTNvAaWsP4UOhct0Oj--22_XCodRrIPzvzci2DALtyUhZ28yyH4lPalHGWI3wEpyBKCPOoeu2Xoe4DASXMhtmy5am0hfH7AWTzG-z3P-m0aiZ9RBV8mSZ9LnyXv8MSiBbnCJKMbpmPgLtDfGIlEXW2uNmHaN0nsXvDQ7p_J89wB7Os3j7OjKfuRKsYivu-tElsly51sYclGvX66Ei76s_4eLt1f"/>
+</div>
+<div class="text-center">
+<p class="text-on-surface font-semibold truncate font-display-lg">Marcus Vane</p>
+<p class="text-on-surface-variant text-xs">Liam O'Connell</p>
+</div>
+</div>
+<!-- Cast Member 4 -->
+<div class="flex-shrink-0 w-32 md:w-40 group">
+<div class="aspect-square rounded-full overflow-hidden mb-3 border-2 border-transparent group-hover:border-primary transition-all duration-300 w-24 h-24 border-white/10">
+<img alt="Actor" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxOiaCPFZKSTUai2aRkpIT3ollhDTNvAaWsP4UOhct0Oj--22_XCodRrIPzvzci2DALtyUhZ28yyH4lPalHGWI3wEpyBKCPOoeu2Xoe4DASXMhtmy5am0hfH7AWTzG-z3P-m0aiZ9RBV8mSZ9LnyXv8MSiBbnCJKMbpmPgLtDfGIlEXW2uNmHaN0nsXvDQ7p_J89wB7Os3j7OjKfuRKsYivu-tElsly51sYclGvX66Ei76s_4eLt1f"/>
+</div>
+<div class="text-center">
+<p class="text-on-surface font-semibold truncate font-display-lg">Nova</p>
+<p class="text-on-surface-variant text-xs">A.I. Synthesis</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Popular Movies Grid -->
+</main>
+<!-- Bottom Navigation Bar (Mobile Only) -->
+<nav class="fixed bottom-0 w-full z-50 md:hidden bg-surface-container/90 backdrop-blur-2xl border-t border-white/5 shadow-[0_-4px_20px_rgba(0,0,0,0.5)]">
+<div class="flex justify-around items-center px-4 py-3 pb-safe">
+<!-- Active Tab: Home -->
+<a class="flex flex-col items-center justify-center text-primary-container bg-primary/10 rounded-xl px-3 py-1 scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined filled">recommend</span>
+<span class="font-label-caps text-label-caps mt-1">Recommendations</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-bright scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">bookmark</span>
+<span class="font-label-caps text-label-caps mt-1">Watchlist</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-bright scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">favorite</span>
+<span class="font-label-caps text-label-caps mt-1">Favorites</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-bright scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-caps text-label-caps mt-1">Profile</span>
+</a>
+</div>
+</nav>
+<!-- Footer -->
+<footer class="w-full py-stack-lg border-t border-surface-container-highest bg-background hidden md:block">
+<div class="max-w-container-max mx-auto px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-stack-md">
+<div class="font-display-lg text-headline-md text-on-surface font-extrabold tracking-tighter">MovieDB</div>
+<nav class="flex gap-6">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-metadata text-metadata" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-metadata text-metadata" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-metadata text-metadata" href="#">Help Center</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-metadata text-metadata" href="#">Contact Us</a>
+</nav>
+<div class="text-on-surface-variant font-metadata text-metadata">
+                © 2024 MovieDB. All rights reserved.
+            </div>
+</div>
+</footer>
+<script>
+        // Simple script to add background opacity to TopNav on scroll
+        window.addEventListener('scroll', () => {
+            const topNav = document.getElementById('topNav');
+            if (window.scrollY > 50) {
+                topNav.classList.add('bg-background/90', 'shadow-md');
+                topNav.classList.remove('bg-background/60');
+            } else {
+                topNav.classList.add('bg-background/60');
+                topNav.classList.remove('bg-background/90', 'shadow-md');
+            }
+        });
+    </script>
+</body></html>
