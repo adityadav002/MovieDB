@@ -93,15 +93,16 @@ function Recommendations() {
     setError("");
   };
 
-  const getRecommendations = async (movieTitle) => {
+  const getRecommendations = async (movieObj) => {
     try {
       setLoading(true);
       setError("");
       setRecommendations([]);
-      setSelectedMovie(movieTitle);
+      setSelectedMovie(movieObj.title);
 
       const response = await axios.post(`${flaskUrl}/recommend`, {
-        movie: movieTitle,
+        movie: movieObj.title,
+        tmdb_id: movieObj.id
       });
 
       if (!response.data.success) {
@@ -113,26 +114,16 @@ function Recommendations() {
 
       const recommendationData = response.data.recommendations;
 
-      const moviesWithDetails = await Promise.all(
-        recommendationData.map(async (movie) => {
-          const tmdbResponse = await fetch(
-            `https://api.themoviedb.org/3/movie/${movie.movie_id}?api_key=${apikey}`
-          );
-          const tmdbMovie = await tmdbResponse.json();
-
-          return {
-            _id: tmdbMovie.id,
-            id: tmdbMovie.id,
-            title: tmdbMovie.title,
-            poster: tmdbMovie.poster_path
-              ? `https://image.tmdb.org/t/p/w500${tmdbMovie.poster_path}`
-              : "/no_poster_found.png",
-            rating: tmdbMovie.vote_average,
-            year: tmdbMovie.release_date ? tmdbMovie.release_date.substring(0, 4) : "Unknown",
-            score: movie.score,
-          };
-        })
-      );
+      const moviesWithDetails = recommendationData.map((movie) => ({
+        _id: movie.id,
+        id: movie.id,
+        title: movie.title,
+        poster: movie.poster,
+        rating: movie.rating,
+        year: movie.year,
+        score: movie.score,
+        reason: movie.reason
+      }));
 
       setRecommendations(moviesWithDetails);
       if (moviesWithDetails.length > 0) notify.success("Recommendations loaded!");
@@ -195,7 +186,7 @@ function Recommendations() {
                 <div
                   key={movie.id}
                   className="rec-result-card"
-                  onClick={() => getRecommendations(movie.title)}
+                  onClick={() => getRecommendations(movie)}
                 >
                   <div className="rec-result-poster-wrapper">
                     <img

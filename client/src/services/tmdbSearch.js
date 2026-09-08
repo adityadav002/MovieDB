@@ -47,8 +47,11 @@ export const universalSearch = async (query, page = 1) => {
   query = query.trim();
   const person = await searchPerson(query);
 
-  // Actor search
-  if (person && person.name.toLowerCase() === query.toLowerCase()) {
+  // Actor search - use normalized exact match to prevent false positives (like "Bahubali" matching "Bahubali Prabhakar")
+  const normalize = (str) => str.toLowerCase().replace(/\s+/g, ' ').trim();
+  const isActor = person && person.name && (normalize(person.name) === normalize(query));
+
+  if (isActor) {
     const actorMovies = await getActorMovies(person.id, page);
 
     return {

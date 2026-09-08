@@ -3,29 +3,26 @@ import json
 import joblib
 from datetime import datetime
 from utils import compute_combined_hash
-from preprocessing import run_preprocessing
+from preprocessing import PreprocessingPipeline
 
 CACHE_DIR = "cache"
 METADATA_FILE = os.path.join(CACHE_DIR, "metadata.json")
 MOVIES_FILE = os.path.join(CACHE_DIR, "movies_processed.joblib")
 FEATURE_MATRIX_FILE = os.path.join(CACHE_DIR, "feature_matrix.joblib")
+EMBEDDINGS_MATRIX_FILE = os.path.join(CACHE_DIR, "embeddings_matrix.joblib")
 MOVIE_INDEX_FILE = os.path.join(CACHE_DIR, "movie_index.joblib")
-VECTORIZER_FILE = os.path.join(CACHE_DIR, "vectorizer.joblib")
+PIPELINE_FILE = os.path.join(CACHE_DIR, "pipeline.joblib")
 
 CSV_FILES = ["tmdb_5000_movies.csv", "tmdb_5000_credits.csv"]
-CACHE_VERSION = "1.0"
+CACHE_VERSION = "2.0" # Incremented for semantic embeddings support
 
 class CacheManager:
     @staticmethod
     def is_cache_valid():
-        """
-        Checks if the cache directory exists, all required files are present,
-        and the CSV hash matches the hash stored in metadata.json.
-        """
         if not os.path.exists(CACHE_DIR):
             return False
 
-        required_files = [METADATA_FILE, MOVIES_FILE, FEATURE_MATRIX_FILE, MOVIE_INDEX_FILE, VECTORIZER_FILE]
+        required_files = [METADATA_FILE, MOVIES_FILE, FEATURE_MATRIX_FILE, EMBEDDINGS_MATRIX_FILE, MOVIE_INDEX_FILE, PIPELINE_FILE]
         if any(not os.path.exists(f) for f in required_files):
             return False
 
@@ -47,9 +44,6 @@ class CacheManager:
 
     @staticmethod
     def generate_cache():
-        """
-        Runs the preprocessing pipeline and saves the artifacts to the cache directory.
-        """
         print("Cache invalid or missing. Generating new cache...")
         if not os.path.exists(CACHE_DIR):
             os.makedirs(CACHE_DIR)
@@ -57,16 +51,19 @@ class CacheManager:
         if not all(os.path.exists(f) for f in CSV_FILES):
             raise FileNotFoundError(f"Missing required CSV files: {CSV_FILES}")
 
-        # Run preprocessing (does not generate similarity matrix)
-        movies_df, feature_matrix, movie_index, vectorizer = run_preprocessing(CSV_FILES[0], CSV_FILES[1])
+        pipeline = PreprocessingPipeline()
+        movies_df, feature_matrix, embeddings_matrix, movie_index = pipeline.process_dataset(CSV_FILES[0], CSV_FILES[1])
 
         print("Saving artifacts to cache...")
         joblib.dump(movies_df, MOVIES_FILE, compress=3)
         joblib.dump(feature_matrix, FEATURE_MATRIX_FILE, compress=3)
+        joblib.dump(embeddings_matrix, EMBEDDINGS_MATRIX_FILE, compress=3)
         joblib.dump(movie_index, MOVIE_INDEX_FILE, compress=3)
-        joblib.dump(vectorizer, VECTORIZER_FILE, compress=3)
+        
+        # We don't want to pickle the large sentence transformer model
+        pipeline.encoder = None 
+        joblib.dump(pipeline, PIPELINE_FILE, compress=3)
 
-        # Write metadata
         current_hash = compute_combined_hash(CSV_FILES)
         metadata = {
             "csv_hash": current_hash,
@@ -80,22 +77,17 @@ class CacheManager:
 
     @staticmethod
     def load_cache():
-        """
-        Loads the cached artifacts into memory.
-        """
         print("Loading cached artifacts into memory...")
         movies_df = joblib.load(MOVIES_FILE)
         feature_matrix = joblib.load(FEATURE_MATRIX_FILE)
+        embeddings_matrix = joblib.load(EMBEDDINGS_MATRIX_FILE)
         movie_index = joblib.load(MOVIE_INDEX_FILE)
-        vectorizer = joblib.load(VECTORIZER_FILE)
+        pipeline = joblib.load(PIPELINE_FILE)
         print("Cache loaded successfully.")
-        return movies_df, feature_matrix, movie_index, vectorizer
+        return movies_df, feature_matrix, embeddings_matrix, movie_index, pipeline
 
     @staticmethod
     def ensure_cache():
-        """
-        Validates cache, regenerates if necessary, and returns loaded artifacts.
-        """
         if not CacheManager.is_cache_valid():
             CacheManager.generate_cache()
         else:

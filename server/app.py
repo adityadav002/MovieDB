@@ -24,9 +24,9 @@ engine = None
 try:
     print("Initializing application...")
     # This will generate cache if it doesn't exist or is invalid
-    movies_df, feature_matrix, movie_index, vectorizer = CacheManager.ensure_cache()
+    movies_df, feature_matrix, embeddings_matrix, movie_index, pipeline = CacheManager.ensure_cache()
     
-    engine = RecommendationEngine(movies_df, feature_matrix, movie_index)
+    engine = RecommendationEngine(movies_df, feature_matrix, embeddings_matrix, movie_index, pipeline)
     print("Recommendation engine initialized successfully.")
 except Exception as e:
     print(f"Failed to initialize recommendation engine: {e}")
@@ -38,13 +38,11 @@ def get_recommendations():
         data = request.get_json()
         print("REQUEST DATA:", data)
 
-        if data:
-            print("MOVIE NAME:", data.get("movie"))
-
         if not data or "movie" not in data:
             return jsonify({"success": False, "message": "Missing 'movie' in request body"}), 400
         
         movie_name = data.get("movie")
+        tmdb_id = data.get("tmdb_id")
         
         if engine is None or not engine.is_ready:
             return jsonify({
@@ -52,7 +50,7 @@ def get_recommendations():
                 "message": "Recommendation engine is not available."
             }), 503
             
-        result = engine.recommend(movie_name)
+        result = engine.recommend(movie_name, tmdb_id=tmdb_id)
         print("ENGINE RESULT:", result)
         
         if result["success"]:
