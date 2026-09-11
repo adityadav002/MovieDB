@@ -5,9 +5,9 @@ import notify from "../utils/toast";
 import { BiSolidMovie } from "react-icons/bi";
 import { FiSearch, FiX, FiMenu } from "react-icons/fi";
 import { useAuth } from "../context/AuthContext";
+import SearchOverlay from "./SearchOverlay";
 
 function Navbar() {
-  const [searchQuery, setSearchQuery] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -22,16 +22,6 @@ function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const handleSearch = (e) => {
-    if (e.key === "Enter" && searchQuery.trim()) {
-      e.preventDefault();
-      navigate(`/discover?q=${encodeURIComponent(searchQuery)}`);
-      setSearchOpen(false);
-      setSearchQuery("");
-      setMenuOpen(false);
-    }
-  };
 
   const navItemStyle = (path) => {
     const isActive = location.pathname === path;
@@ -86,27 +76,13 @@ function Navbar() {
             {user ? (
               <div className="flex items-center gap-6" style={{ display: 'none' }} id="desktop-right-actions">
                 <style>{`@media(min-width: 768px) { #desktop-right-actions { display: flex !important; } }`}</style>
-                <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-                  <FiSearch style={{ color: 'var(--color-on-surface-variant)', position: 'absolute', left: '10px' }} />
-                  <input 
-                    type="text" 
-                    placeholder="Search movies..." 
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onKeyDown={handleSearch}
-                    style={{ 
-                      background: 'rgba(255,255,255,0.05)', 
-                      border: '1px solid rgba(255,255,255,0.1)',
-                      color: 'var(--color-on-surface)',
-                      borderRadius: 'var(--radius-xl)',
-                      padding: '8px 16px 8px 36px',
-                      outline: 'none',
-                      width: '200px',
-                      fontFamily: 'var(--font-body)',
-                      fontSize: '14px'
-                    }} 
-                  />
-                </div>
+                <button 
+                  onClick={() => setSearchOpen(true)}
+                  style={{ background: 'none', border: 'none', color: 'var(--color-on-surface-variant)', fontSize: '24px', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+                  aria-label="Open Search"
+                >
+                  <FiSearch />
+                </button>
 
                 <Link to="/profile" style={{ textDecoration: 'none' }}>
                   <div style={{ 
@@ -154,27 +130,28 @@ function Navbar() {
           display: 'flex', flexDirection: 'column', padding: 'var(--margin-mobile)',
           gap: '1.5rem'
         }}>
-          <div style={{ position: 'relative', display: 'flex', alignItems: 'center', width: '100%' }}>
-            <FiSearch style={{ color: 'var(--color-on-surface-variant)', position: 'absolute', left: '16px' }} />
-            <input 
-              type="text" 
-              placeholder="Search movies..." 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyDown={handleSearch}
-              style={{ 
-                background: 'rgba(255,255,255,0.05)', 
-                border: '1px solid rgba(255,255,255,0.1)',
-                color: 'var(--color-on-surface)',
-                borderRadius: 'var(--radius-xl)',
-                padding: '12px 16px 12px 48px',
-                outline: 'none',
-                width: '100%',
-                fontFamily: 'var(--font-body)',
-                fontSize: '16px'
-              }} 
-            />
-          </div>
+          <button 
+            onClick={() => {
+               setSearchOpen(true);
+               setMenuOpen(false);
+            }}
+            style={{ 
+              background: 'rgba(255,255,255,0.05)', 
+              border: '1px solid rgba(255,255,255,0.1)',
+              color: 'var(--color-on-surface-variant)',
+              borderRadius: 'var(--radius-xl)',
+              padding: '12px 16px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              width: '100%',
+              fontSize: '16px',
+              cursor: 'pointer'
+            }} 
+          >
+            <FiSearch />
+            <span>Search movies...</span>
+          </button>
           
           <div className="flex flex-col gap-6" style={{ marginTop: '1rem' }}>
             <Link to="/home" onClick={()=>setMenuOpen(false)} style={{...navItemStyle("/home"), fontSize: '1.2rem'}}>Home</Link>
@@ -186,6 +163,9 @@ function Navbar() {
           </div>
         </div>
       )}
+
+      {/* Search Overlay Portal/Component */}
+      {searchOpen && <SearchOverlay onClose={() => setSearchOpen(false)} />}
     </>
   );
 }

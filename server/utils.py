@@ -26,20 +26,35 @@ from dotenv import load_dotenv
 load_dotenv()
 TMDB_API_KEY = os.environ.get("TMDB_API_KEY", "").strip('"').strip("'")
 
-def fetch_tmdb_movie_details(movie_id):
+# Standard browser User-Agent to prevent API blocking/connection resets
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+    "Accept": "application/json"
+}
+
+import time
+
+def fetch_tmdb_movie_details(movie_id, retries=3):
     if not TMDB_API_KEY:
         print("Missing TMDB_API_KEY")
         return None
+        
     url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}&append_to_response=credits,keywords"
-    try:
-        response = requests.get(url, timeout=5)
-        if response.status_code == 200:
-            return response.json()
-        else:
-            print(f"TMDB API Error: {response.status_code} - {response.text}")
-
-    except Exception as e:
-        print(f"Error fetching from TMDB: {e}")
+    
+    for attempt in range(retries):
+        try:
+            response = requests.get(url, headers=HEADERS, timeout=5)
+            if response.status_code == 200:
+                return response.json()
+            elif response.status_code == 429:
+                time.sleep(1) # Rate limit hit
+            else:
+                return None
+        except requests.exceptions.RequestException as e:
+            print(f"Error fetching from TMDB: {e}")
+            if attempt < retries - 1:
+                time.sleep(1)
+                
     return None
 
 def fetch_tmdb_search(movie_title):
@@ -48,7 +63,7 @@ def fetch_tmdb_search(movie_title):
         return None
     url = f"https://api.themoviedb.org/3/search/movie?api_key={TMDB_API_KEY}&query={movie_title}"
     try:
-        response = requests.get(url, timeout=5)
+        response = requests.get(url, headers=HEADERS, timeout=5)
         if response.status_code == 200:
             data = response.json()
             if data.get("results"):
