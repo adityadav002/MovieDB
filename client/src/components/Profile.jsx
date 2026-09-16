@@ -3,15 +3,31 @@ import "../style/Profile.css";
 import { useState, useEffect } from "react";
 import api from "../utils/api";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import notify from "../utils/toast";
 import { FaBookmark, FaHeart, FaShapes, FaSignOutAlt } from "react-icons/fa";
+import { FiClock } from "react-icons/fi";
+import MovieCard from "./MovieCard";
 
 const Profile = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [historyList, setHistoryList] = useState([]);
   const [watchLaterList, setWatchLaterList] = useState([]);
   const [favorites, setFavorites] = useState([]);
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      if (!user) return;
+      try {
+        const res = await api.get("/api/history");
+        setHistoryList(res.data);
+      } catch (err) {
+        console.error("Failed to fetch history", err);
+      }
+    };
+    fetchHistory();
+  }, [user]);
 
   useEffect(() => {
     const fetchWatchLater = async () => {
@@ -79,6 +95,13 @@ const Profile = () => {
           <div className="profile-stats-grid">
             <div className="card-surface">
               <div className="card-surface-gradient"></div>
+              <FiClock className="card-bg-icon" />
+              <h3 className="card-stat-value">{historyList.length}+</h3>
+              <p className="card-stat-label">Movies Explored</p>
+            </div>
+
+            <div className="card-surface">
+              <div className="card-surface-gradient"></div>
               <FaBookmark className="card-bg-icon" />
               <h3 className="card-stat-value">{watchLaterList.length}+</h3>
               <p className="card-stat-label">Watchlist</p>
@@ -90,16 +113,29 @@ const Profile = () => {
               <h3 className="card-stat-value">{favorites.length}+</h3>
               <p className="card-stat-label">Favorites</p>
             </div>
-
-            <div className="card-surface">
-              <div className="card-surface-gradient"></div>
-              <FaShapes className="card-bg-icon" />
-              <h3 className="card-stat-value">10+</h3>
-              <p className="card-stat-label">Genres Explored</p>
-            </div>
           </div>
 
-          <div style={{ marginTop: '32px', marginBottom: '64px' }}>
+          {/* --- HISTORY --- */}
+          {historyList.length > 0 ? (
+            <div style={{ width: '100%', marginTop: '4rem', textAlign: 'left' }}>
+              <h2 className="font-headline-md" style={{ color: 'var(--color-text-primary)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <FiClock style={{ color: 'var(--color-primary)' }}/> Your History
+              </h2>
+              <div style={{ display: 'flex', gap: '1.5rem', overflowX: 'auto', paddingBottom: '1.5rem', scrollbarWidth: 'thin', scrollbarColor: '#2a2a2b transparent' }}>
+                {historyList.map(movie => (
+                  <div key={movie._id} style={{ flexShrink: 0, width: "200px" }}>
+                    <MovieCard movie={{ _id: movie.movieId, ...movie }} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div style={{ width: '100%', marginTop: '4rem', textAlign: 'center', color: 'var(--color-text-secondary)' }}>
+              <p>You haven't searched for or watched any movies yet.</p>
+            </div>
+          )}
+
+          <div style={{ marginTop: '4rem', marginBottom: '64px' }}>
             <button className="profile-logout-btn" onClick={handleLogout}>
               <FaSignOutAlt style={{ fontSize: '18px' }} />
               Logout

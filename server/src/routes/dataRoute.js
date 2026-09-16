@@ -16,7 +16,9 @@ import {
   getHorrorMovies,
   addWatchList,
   removeWatchList,
-  getWatchList
+  getWatchList,
+  getHistory,
+  addHistory
 } from "../controllers/dataController.js";
 import {
   searchTmdbMovies,
@@ -43,6 +45,10 @@ router.get("/watch", authMiddleware, getWatchList);
 router.post("/watch", authMiddleware, addWatchList);
 
 router.delete("/watch/:movieId", authMiddleware, removeWatchList);
+
+router.get("/history", authMiddleware, getHistory);
+
+router.post("/history", authMiddleware, addHistory);
 
 router.get("/animated", getAnimatedMovies);
 

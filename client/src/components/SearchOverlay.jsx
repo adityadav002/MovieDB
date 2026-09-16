@@ -2,9 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiSearch, FiX, FiClock } from 'react-icons/fi';
 import { searchMovies, searchPerson } from '../services/tmdbSearch';
+import api from '../utils/api';
+import { useAuth } from '../context/AuthContext';
 import '../style/SearchOverlay.css';
 
 const SearchOverlay = ({ onClose }) => {
+  const { user } = useAuth();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [activeTab, setActiveTab] = useState('Content');
@@ -119,6 +122,15 @@ const SearchOverlay = ({ onClose }) => {
     addRecentSearch(query || item.title || item.name);
     onClose();
     if (activeTab === 'Content') {
+      if (user) {
+        api.post("/api/history", {
+          movieId: item.id,
+          title: item.title,
+          year: item.release_date?.substring(0, 4) || "Unknown",
+          rating: item.vote_average,
+          img: item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : null
+        }).catch(err => console.error("Failed to add to history", err));
+      }
       navigate(`/detail/${item.id}`);
     } else {
       // If it's an actor, we might navigate to actor page or search

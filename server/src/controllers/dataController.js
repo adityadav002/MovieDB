@@ -3,6 +3,7 @@
 import Movie from "../models/movies.js";
 import Favorite from "../models/favorite.js";
 import Watch from "../models/WatchList.js";
+import History from "../models/History.js";
 
 /* ===========================
    MOVIES
@@ -168,6 +169,50 @@ export const removeFavorite = async (req, res) => {
     res.status(200).json({ message: "Removed from favorites" });
   } catch (err) {
     res.status(500).json({ error: "Failed to remove favorite" });
+  }
+};
+
+/* ===========================
+   HISTORY
+=========================== */
+
+export const getHistory = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const history = await History.find({ userId })
+      .sort({ timestamp: -1 })
+      .limit(20);
+    res.status(200).json(history);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const addHistory = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { movieId, title, year, img, rating } = req.body;
+
+    let history = await History.findOne({ userId, movieId });
+    if (history) {
+      history.timestamp = Date.now();
+      await history.save();
+      return res.status(200).json({ message: "History updated" });
+    }
+
+    history = new History({
+      userId,
+      movieId,
+      title,
+      year,
+      img,
+      rating,
+    });
+
+    await history.save();
+    res.status(201).json({ message: "Added to history" });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to add history" });
   }
 };
 

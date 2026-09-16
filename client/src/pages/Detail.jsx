@@ -406,6 +406,15 @@ function Detail() {
               notify.error("IMDb ID not available for this movie.");
               return;
             }
+            if (user) {
+              api.post("/api/history", {
+                movieId: movie._id,
+                title: movie.title,
+                year: movie.release_date?.split("-")[0] || "Unknown",
+                rating: movie.rating,
+                img: movie.poster
+              }).catch(err => console.error("Failed to add to history", err));
+            }
             window.open(
               `https://streamimdb.ru/embed/movie/${movie.imdbID}`,
               "_blank",
