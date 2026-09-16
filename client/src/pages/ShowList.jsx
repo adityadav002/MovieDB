@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import axios from "axios";
-import { FaChevronDown, FaSearch, FaVolumeUp, FaPalette, FaFire, FaChartLine, FaHeart, FaStar, FaClock, FaTheaterMasks, FaGhost, FaRocket, FaUsers, FaSmile } from "react-icons/fa";
+import { FaChevronDown, FaSearch, FaVolumeUp, FaPalette, FaFire, FaChartLine, FaHeart, FaStar, FaClock, FaTheaterMasks, FaGhost, FaRocket, FaUsers, FaSmile, FaCalendarPlus } from "react-icons/fa";
 import { MdLocalMovies } from "react-icons/md";
 import "../style/ShowListStyle.css";
 import MovieCard from "../components/MovieCard";
@@ -20,6 +20,8 @@ function ShowList() {
   const { user } = useAuth();
 
   const [movies, setMovies] = useState([]);
+  const [newlyReleased, setNewlyReleased] = useState([]);
+  const [newlyReleasedIndian, setNewlyReleasedIndian] = useState([]);
   const [animated, setAnimated] = useState([]);
   const [action, setAction] = useState([]);
   const [drama, setDrama] = useState([]);
@@ -114,6 +116,29 @@ function ShowList() {
 
   useEffect(() => {
     if (!searchQuery) {
+      const fetchNewlyReleased = async () => {
+        try {
+          const today = new Date();
+          const threeMonthsAgo = new Date();
+          threeMonthsAgo.setMonth(today.getMonth() - 3);
+          const lteDate = today.toISOString().split('T')[0];
+          const gteDate = threeMonthsAgo.toISOString().split('T')[0];
+
+          const resGlobal = await axios.get(
+            `https://api.themoviedb.org/3/discover/movie?api_key=${apikey}&primary_release_date.gte=${gteDate}&primary_release_date.lte=${lteDate}&sort_by=popularity.desc&with_original_language=en|hi`,
+            { withCredentials: false }
+          );
+          setNewlyReleased(resGlobal.data.results.map(mapMovie));
+
+          const resIndian = await axios.get(
+            `https://api.themoviedb.org/3/discover/movie?api_key=${apikey}&primary_release_date.gte=${gteDate}&primary_release_date.lte=${lteDate}&sort_by=popularity.desc&with_origin_country=IN`,
+            { withCredentials: false }
+          );
+          setNewlyReleasedIndian(resIndian.data.results.map(mapMovie));
+        } catch (err) {}
+      };
+
+      fetchNewlyReleased();
       fetchGenre(16, setAnimated);
       fetchGenre(28, setAction);
       fetchGenre(18, setDrama);
@@ -209,7 +234,40 @@ function ShowList() {
         {/* ================= LEFT COLUMN ================= */}
         <div className="discover-main">
           
-          {/* Main Grid (Search or Discover) */}
+          {/* Newly Released Categories (Global & Indian) */}
+          {!searchQuery && (
+            <>
+              {newlyReleased.length > 0 && (
+                <section className="discover-section">
+                  <div className="section-header-row">
+                    <FaCalendarPlus size={24} color="var(--color-primary)" />
+                    <h2>Newly Released Worldwide</h2>
+                  </div>
+                  <div className="movie-grid">
+                    {newlyReleased.slice(0, 15).map((movie) => (
+                      <MovieCard key={movie._id} movie={movie} isFavorite={isFavorite} toggleFavorite={toggleFavorite} />
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {newlyReleasedIndian.length > 0 && (
+                <section className="discover-section">
+                  <div className="section-header-row">
+                    <FaCalendarPlus size={24} color="var(--color-primary)" />
+                    <h2>Newly Released Indian Movies</h2>
+                  </div>
+                  <div className="movie-grid">
+                    {newlyReleasedIndian.slice(0, 15).map((movie) => (
+                      <MovieCard key={movie._id} movie={movie} isFavorite={isFavorite} toggleFavorite={toggleFavorite} />
+                    ))}
+                  </div>
+                </section>
+              )}
+            </>
+          )}
+
+          {/* Main Grid (Search or Discover/Talk of The Town) */}
           <section className="discover-section">
             <div className="section-header-row">
               {searchQuery ? <FaSearch size={28} color="var(--color-primary)" /> : <FaVolumeUp size={28} color="var(--color-primary)" />}
@@ -259,7 +317,7 @@ function ShowList() {
                     <h2>Animated Movies</h2>
                   </div>
                   <div className="movie-grid">
-                    {animated.slice(0, 10).map((movie) => (
+                    {animated.slice(0, 15).map((movie) => (
                       <MovieCard key={movie._id} movie={movie} isFavorite={isFavorite} toggleFavorite={toggleFavorite} />
                     ))}
                   </div>
@@ -273,7 +331,7 @@ function ShowList() {
                     <h2>Action Movies</h2>
                   </div>
                   <div className="movie-grid">
-                    {action.slice(0, 10).map((movie) => (
+                    {action.slice(0, 15).map((movie) => (
                       <MovieCard key={movie._id} movie={movie} isFavorite={isFavorite} toggleFavorite={toggleFavorite} />
                     ))}
                   </div>
@@ -287,7 +345,7 @@ function ShowList() {
                     <h2>Comedy Movies</h2>
                   </div>
                   <div className="movie-grid">
-                    {comedy.slice(0, 10).map((movie) => (
+                    {comedy.slice(0, 15).map((movie) => (
                       <MovieCard key={movie._id} movie={movie} isFavorite={isFavorite} toggleFavorite={toggleFavorite} />
                     ))}
                   </div>
@@ -301,7 +359,7 @@ function ShowList() {
                     <h2>Drama</h2>
                   </div>
                   <div className="movie-grid">
-                    {drama.slice(0, 10).map((movie) => (
+                    {drama.slice(0, 15).map((movie) => (
                       <MovieCard key={movie._id} movie={movie} isFavorite={isFavorite} toggleFavorite={toggleFavorite} />
                     ))}
                   </div>
@@ -315,7 +373,7 @@ function ShowList() {
                     <h2>Horror</h2>
                   </div>
                   <div className="movie-grid">
-                    {horror.slice(0, 10).map((movie) => (
+                    {horror.slice(0, 15).map((movie) => (
                       <MovieCard key={movie._id} movie={movie} isFavorite={isFavorite} toggleFavorite={toggleFavorite} />
                     ))}
                   </div>
@@ -329,7 +387,7 @@ function ShowList() {
                     <h2>Romance</h2>
                   </div>
                   <div className="movie-grid">
-                    {romance.slice(0, 10).map((movie) => (
+                    {romance.slice(0, 15).map((movie) => (
                       <MovieCard key={movie._id} movie={movie} isFavorite={isFavorite} toggleFavorite={toggleFavorite} />
                     ))}
                   </div>
@@ -343,7 +401,7 @@ function ShowList() {
                     <h2>Sci-Fi</h2>
                   </div>
                   <div className="movie-grid">
-                    {sciFi.slice(0, 10).map((movie) => (
+                    {sciFi.slice(0, 15).map((movie) => (
                       <MovieCard key={movie._id} movie={movie} isFavorite={isFavorite} toggleFavorite={toggleFavorite} />
                     ))}
                   </div>
@@ -357,7 +415,7 @@ function ShowList() {
                     <h2>Family & Emotion</h2>
                   </div>
                   <div className="movie-grid">
-                    {family.slice(0, 10).map((movie) => (
+                    {family.slice(0, 15).map((movie) => (
                       <MovieCard key={movie._id} movie={movie} isFavorite={isFavorite} toggleFavorite={toggleFavorite} />
                     ))}
                   </div>
