@@ -515,7 +515,7 @@ function Detail() {
           <div className="section-block">
             <h2>Director</h2>
             <div className="cast-grid director-grid">
-              <div className="cast-card">
+              <Link to={`/discover?q=${encodeURIComponent(movie.director.name)}`} className="cast-card">
                 <div className="cast-img-wrapper">
                   <img
                     src={movie.director.image}
@@ -528,7 +528,7 @@ function Detail() {
                   />
                 </div>
                 <h4 className="cast-name">{movie.director.name}</h4>
-              </div>
+              </Link>
             </div>
           </div>
         )}

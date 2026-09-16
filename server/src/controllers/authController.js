@@ -21,12 +21,10 @@ export const registerUser = async (req, res) => {
 
     const token = jwt.sign({ id: newUser._id, email }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-    const isProd = process.env.NODE_ENV === "production" || (process.env.CLIENT_URL && process.env.CLIENT_URL.includes("https"));
-
     res.cookie("token", token, {
       httpOnly: true,
-      secure: isProd,
-      sameSite: isProd ? "none" : "lax",
+      secure: true,
+      sameSite: "none",
       maxAge: 3600000 // 1 hour
     });
 
@@ -53,12 +51,10 @@ export const loginUser = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch) {
       const token = jwt.sign({ id: user._id, email }, process.env.JWT_SECRET, { expiresIn: "1h" });
-      const isProd = process.env.NODE_ENV === "production" || (process.env.CLIENT_URL && process.env.CLIENT_URL.includes("https"));
-      
       res.cookie("token", token, {
         httpOnly: true,
-        secure: isProd,
-        sameSite: isProd ? "none" : "lax",
+        secure: true,
+        sameSite: "none",
         maxAge: 3600000 // 1 hour
       });
       
@@ -76,11 +72,10 @@ export const loginUser = async (req, res) => {
 };
 
 export const logoutUser = (req, res) => {
-  const isProd = process.env.NODE_ENV === "production" || (process.env.CLIENT_URL && process.env.CLIENT_URL.includes("https"));
   res.clearCookie("token", {
     httpOnly: true,
-    secure: isProd,
-    sameSite: isProd ? "none" : "lax",
+    secure: true,
+    sameSite: "none",
   });
   return res.status(200).json({ message: "Logout successful" });
 };

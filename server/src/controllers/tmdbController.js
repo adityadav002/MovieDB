@@ -29,13 +29,13 @@ export const searchTmdbPerson = async (req, res) => {
     if (!query) return res.status(200).json(null);
     const url = `https://api.themoviedb.org/3/search/person?api_key=${apikey}&query=${encodeURIComponent(query)}`;
     const response = await tmdbApi.get(url);
-    const actors = response.data?.results?.filter(
-      (person) => person.known_for_department === "Acting"
+    const people = response.data?.results?.filter(
+      (person) => person.known_for_department === "Acting" || person.known_for_department === "Directing"
     ) || [];
-    res.status(200).json(actors[0] || null);
+    res.status(200).json({ results: people });
   } catch (error) {
     console.error("TMDB Person Error:", error.message);
-    res.status(200).json(null);
+    res.status(200).json({ results: [] });
   }
 };
 
@@ -43,7 +43,7 @@ export const getTmdbActorMovies = async (req, res) => {
   try {
     const { personId, page = 1 } = req.query;
     if (!personId) return res.status(200).json({ results: [], total_pages: 1 });
-    const url = `https://api.themoviedb.org/3/discover/movie?api_key=${apikey}&with_cast=${personId}&sort_by=vote_count.desc&page=${page}`;
+    const url = `https://api.themoviedb.org/3/discover/movie?api_key=${apikey}&with_people=${personId}&sort_by=vote_count.desc&page=${page}`;
     const response = await tmdbApi.get(url);
     res.status(200).json(response.data);
   } catch (error) {
