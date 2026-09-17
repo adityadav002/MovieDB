@@ -6,7 +6,7 @@ const noPoster = "/no_poster_found.png";
 function MovieCard({ movie, isFavorite, toggleFavorite }) {
   const fav = isFavorite ? isFavorite(movie._id || movie.id) : false;
   const hasRating = typeof movie.rating === "number" && movie.rating > 0;
-  const poster = movie.poster ? movie.poster : (movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : noPoster);
+  const poster = movie.poster || movie.img || (movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : noPoster);
 
   return (
     <div className="glass-card hover-lift flex flex-col relative" style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', position: 'relative' }}>

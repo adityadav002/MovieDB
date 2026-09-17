@@ -24,7 +24,8 @@ import requests
 from dotenv import load_dotenv
 
 load_dotenv()
-TMDB_API_KEY = os.environ.get("TMDB_API_KEY", "").strip('"').strip("'")
+TMDB_API_KEY = os.environ.get("TMDB_API_KEY") or os.environ.get("VITE_API_KEY") or os.environ.get("API_KEY") or "8b4dfcdc32cc08aef3d163eb1b30bd1c"
+TMDB_API_KEY = TMDB_API_KEY.strip('"').strip("'")
 
 # Standard browser User-Agent to prevent API blocking/connection resets
 HEADERS = {
