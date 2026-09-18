@@ -68,6 +68,7 @@ function Navbar() {
               <Link to="/favourite" style={navItemStyle("/favourite")} onMouseOver={(e)=>e.target.style.color='var(--color-primary)'} onMouseOut={(e)=>e.target.style.color=navItemStyle("/favourite").color}>Favourites</Link>
               <Link to="/watchList" style={navItemStyle("/watchList")} onMouseOver={(e)=>e.target.style.color='var(--color-primary)'} onMouseOut={(e)=>e.target.style.color=navItemStyle("/watchList").color}>Watchlist</Link>
               <Link to="/recommendations" style={navItemStyle("/recommendations")} onMouseOver={(e)=>e.target.style.color='var(--color-primary)'} onMouseOut={(e)=>e.target.style.color=navItemStyle("/recommendations").color}>Recommendations</Link>
+              <Link to="/collections" style={navItemStyle("/collections")} onMouseOver={(e)=>e.target.style.color='var(--color-primary)'} onMouseOut={(e)=>e.target.style.color=navItemStyle("/collections").color}>Collections</Link>
             </div>
           )}
 
@@ -159,6 +160,7 @@ function Navbar() {
             <Link to="/favourite" onClick={()=>setMenuOpen(false)} style={{...navItemStyle("/favourite"), fontSize: '1.2rem'}}>Favourites</Link>
             <Link to="/watchList" onClick={()=>setMenuOpen(false)} style={{...navItemStyle("/watchList"), fontSize: '1.2rem'}}>Watchlist</Link>
             <Link to="/recommendations" onClick={()=>setMenuOpen(false)} style={{...navItemStyle("/recommendations"), fontSize: '1.2rem'}}>Recommendations</Link>
+            <Link to="/collections" onClick={()=>setMenuOpen(false)} style={{...navItemStyle("/collections"), fontSize: '1.2rem'}}>Collections</Link>
             <Link to="/profile" onClick={()=>setMenuOpen(false)} style={{...navItemStyle("/profile"), fontSize: '1.2rem'}}>Profile</Link>
           </div>
         </div>

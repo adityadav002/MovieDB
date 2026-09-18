@@ -25,6 +25,15 @@ import {
   searchTmdbPerson,
   getTmdbActorMovies
 } from "../controllers/tmdbController.js";
+import {
+  getCollections,
+  createCollection,
+  getCollectionById,
+  updateCollection,
+  deleteCollection,
+  getMovieCollections,
+  syncMovieCollections
+} from "../controllers/collectionController.js";
 
 const router = express.Router();
 
@@ -64,5 +73,16 @@ router.get("/horror", getHorrorMovies);
 router.get("/tmdb/search/movie", searchTmdbMovies);
 router.get("/tmdb/search/person", searchTmdbPerson);
 router.get("/tmdb/discover/actor", getTmdbActorMovies);
+
+/* ===========================
+   COLLECTIONS
+=========================== */
+router.get("/collections", authMiddleware, getCollections);
+router.post("/collections", authMiddleware, createCollection);
+router.get("/collections/:id", authMiddleware, getCollectionById);
+router.put("/collections/:id", authMiddleware, updateCollection);
+router.delete("/collections/:id", authMiddleware, deleteCollection);
+router.get("/movies/:movieId/collections", authMiddleware, getMovieCollections);
+router.put("/movies/:movieId/collections", authMiddleware, syncMovieCollections);
 
 export default router;

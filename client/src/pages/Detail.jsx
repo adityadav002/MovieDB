@@ -16,7 +16,9 @@ import {
   FaRegHeart,
   FaXmark,
   FaStar,
+  FaFolderPlus,
 } from "react-icons/fa6";
+import CollectionSelectorModal from "../components/CollectionSelectorModal";
 
 const apikey = import.meta.env.VITE_API_KEY;
 
@@ -28,6 +30,8 @@ function Detail() {
   const [watchList, setWatchList] = useState([]);
   const [showTrailer, setShowTrailer] = useState(false);
   const [favorites, setFavorites] = useState([]);
+  const [showCollectionModal, setShowCollectionModal] = useState(false);
+  const [collectionCount, setCollectionCount] = useState(0);
 
   // ------------------------------------------------
   // WATCHLIST FETCH (SYNC ON PAGE CHANGE)
@@ -272,6 +276,22 @@ function Detail() {
     fetchDetails();
   }, [id]);
 
+  // ------------------------------------------------
+  // FETCH COLLECTIONS
+  // ------------------------------------------------
+  useEffect(() => {
+    const fetchMovieCollections = async () => {
+      if (!user || !movie?._id) return;
+      try {
+        const res = await api.get(`/api/movies/${movie._id}/collections`);
+        setCollectionCount(res.data.length);
+      } catch (err) {
+        // ignore
+      }
+    };
+    fetchMovieCollections();
+  }, [user, movie?._id]);
+
   if (!movie)
     return (
       <div className="loading-container">
@@ -428,6 +448,27 @@ function Detail() {
         </button>
 
         <button
+          className={`action-btn ${collectionCount > 0 ? "active" : ""}`}
+          onClick={() => {
+            if (!user) {
+              notify.warning("Please login to use Collections.");
+              return;
+            }
+            setShowCollectionModal(true);
+          }}
+          style={collectionCount > 0 ? { borderColor: 'var(--color-primary)', color: 'var(--color-primary)' } : {}}
+        >
+          <span className="btn-icon">
+            {collectionCount > 0 ? <FaCheck /> : <FaFolderPlus />}
+          </span>
+          <span className="btn-text">
+            {collectionCount > 0 
+              ? `In ${collectionCount} Collection${collectionCount > 1 ? 's' : ''}` 
+              : "Add to Collection"}
+          </span>
+        </button>
+
+        <button
           className={`action-btn watchlist-btn ${
             isWatched(movie._id) ? "active" : ""
           }`}
@@ -542,6 +583,20 @@ function Detail() {
           </div>
         )}
       </div>
+
+      {showCollectionModal && (
+        <CollectionSelectorModal 
+          mode="select"
+          movie={movie}
+          onClose={() => setShowCollectionModal(false)}
+          onCreated={() => {
+            // Refresh count
+            api.get(`/api/movies/${movie._id}/collections`).then(res => {
+              setCollectionCount(res.data.length);
+            }).catch(() => {});
+          }}
+        />
+      )}
     </div>
   );
 }

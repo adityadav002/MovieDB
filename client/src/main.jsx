@@ -20,6 +20,8 @@ const LoginPage = lazy(() => import("./pages/LoginPage.jsx"));
 const SignupPage = lazy(() => import("./pages/SignupPage.jsx"));
 
 const Landing = lazy(() => import("./pages/Landing.jsx"));
+const Collections = lazy(() => import("./pages/Collections.jsx"));
+const CollectionDetail = lazy(() => import("./pages/CollectionDetail.jsx"));
 
 const router = createBrowserRouter([
   {
@@ -94,6 +96,22 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <Recommendations />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/collections",
+        element: (
+          <ProtectedRoute>
+            <Collections />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/collections/:id",
+        element: (
+          <ProtectedRoute>
+            <CollectionDetail />
           </ProtectedRoute>
         ),
       },
